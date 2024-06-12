@@ -118,7 +118,8 @@ class _SignInPageState extends State<SignInPage> {
                                 fontWeight: FontWeight.w500,
                               ),
                               recognizer: TapGestureRecognizer()
-                                ..onTap = () => Modular.to.navigate('/signup'),
+                                ..onTap = () =>
+                                    Modular.to.navigate('/forgot-password'),
                             )
                           ]),
                     ),

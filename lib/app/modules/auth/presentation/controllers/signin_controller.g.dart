@@ -41,6 +41,14 @@ mixin _$SignInController on _SignInControllerBase, Store {
     });
   }
 
+  late final _$signInAsyncAction =
+      AsyncAction('_SignInControllerBase.signIn', context: context);
+
+  @override
+  Future<void> signIn() {
+    return _$signInAsyncAction.run(() => super.signIn());
+  }
+
   late final _$_SignInControllerBaseActionController =
       ActionController(name: '_SignInControllerBase', context: context);
 

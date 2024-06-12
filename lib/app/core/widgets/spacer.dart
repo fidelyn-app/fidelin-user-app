@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-enum SpaceSize { xs, s, m, l, xl, xxl }
+enum SpaceSize { xs, s, m, l, xl, xxl, xxxl }
 
 class SpaceWidget extends StatelessWidget {
   final SpaceSize size;
@@ -13,7 +13,8 @@ class SpaceWidget extends StatelessWidget {
     SpaceSize.m: 8.0,
     SpaceSize.l: 16.0,
     SpaceSize.xl: 32.0,
-    SpaceSize.xxl: 64.0,
+    SpaceSize.xxl: 48.0,
+    SpaceSize.xxxl: 64.0,
   };
 
   @override
