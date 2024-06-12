@@ -1,31 +1,25 @@
-import 'package:fidelin_user_app/app/core/utils/text_validators.dart';
 import 'package:fidelin_user_app/app/core/widgets/spacer.dart';
-import 'package:fidelin_user_app/app/modules/auth/presentation/controllers/signin_controller.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
-class SignInPage extends StatefulWidget {
-  const SignInPage({super.key});
+import '../controllers/signup_controller.dart';
+
+class SignUpPage extends StatefulWidget {
+  const SignUpPage({super.key});
 
   @override
-  State<SignInPage> createState() => _SignInPageState();
+  State<SignUpPage> createState() => _SignUpPageState();
 }
 
-class _SignInPageState extends State<SignInPage> {
-  final SignInController _controller = Modular.get<SignInController>();
-
-  @override
-  void initState() {
-    super.initState();
-    // _controller.emailTextController.text = 'jonatha_rihan@hotmail.com';
-    // _controller.passwordTextController.text = '12345678';
-  }
+class _SignUpPageState extends State<SignUpPage> {
+  final SignUpController _controller = Modular.get<SignUpController>();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(),
       backgroundColor: Colors.white,
       body: LayoutBuilder(
         builder: (BuildContext context, BoxConstraints constraints) =>
@@ -40,13 +34,8 @@ class _SignInPageState extends State<SignInPage> {
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    SizedBox(
-                      height: 150,
-                      child: Image.asset('assets/images/white-logo.png'),
-                    ),
-                    SpaceWidget(size: SpaceSize.xxl),
                     Text(
-                      "Login",
+                      "Cadastre-se",
                       style: TextStyle(
                         fontSize: 36.0,
                         fontWeight: FontWeight.w500,
@@ -54,10 +43,28 @@ class _SignInPageState extends State<SignInPage> {
                       ),
                     ),
                     const SizedBox(
-                      height: 32.0,
+                      height: 16.0,
                     ),
                     TextFormField(
-                      validator: Validators.email,
+                      // validator: Validators.name,
+                      controller: _controller.nameTextController,
+                      decoration: const InputDecoration(
+                        border: OutlineInputBorder(),
+                        labelText: 'Nome completo',
+                        prefixIcon: Align(
+                          widthFactor: 1.0,
+                          heightFactor: 1.0,
+                          child: Icon(
+                            Icons.person,
+                          ),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 16.0,
+                    ),
+                    TextFormField(
+                      // validator: Validators.email,
                       controller: _controller.emailTextController,
                       decoration: const InputDecoration(
                         border: OutlineInputBorder(),
@@ -72,63 +79,44 @@ class _SignInPageState extends State<SignInPage> {
                       ),
                     ),
                     SpaceWidget(size: SpaceSize.l),
-                    Observer(
-                      builder: (_) => TextFormField(
-                        validator: Validators.password,
-                        controller: _controller.passwordTextController,
-                        obscureText: !_controller.passwordVisible,
-                        enableSuggestions: false,
-                        autocorrect: false,
-                        decoration: InputDecoration(
-                          suffixIcon: IconButton(
-                              onPressed: () =>
-                                  _controller.togglePasswordVisible(),
-                              icon: Icon(
-                                // Based on passwordVisible state choose the icon
-                                _controller.passwordVisible
-                                    ? Icons.visibility
-                                    : Icons.visibility_off,
-                                color: Theme.of(context).colorScheme.primary,
-                              )),
-                          border: const OutlineInputBorder(),
-                          labelText: 'Senha',
-                          prefixIcon: const Align(
-                            widthFactor: 1.0,
-                            heightFactor: 1.0,
-                            child: Icon(
-                              Icons.lock,
-                            ),
+                    TextFormField(
+                      validator: _controller.passwordEquals,
+                      controller: _controller.passwordTextController,
+                      decoration: const InputDecoration(
+                        border: OutlineInputBorder(),
+                        labelText: 'Senha',
+                        prefixIcon: Align(
+                          widthFactor: 1.0,
+                          heightFactor: 1.0,
+                          child: Icon(
+                            Icons.lock,
                           ),
                         ),
                       ),
                     ),
                     SpaceWidget(size: SpaceSize.l),
-                    RichText(
-                      textAlign: TextAlign.right,
-                      text: TextSpan(
-                          style: const TextStyle(
-                            color: Colors.black54,
+                    TextFormField(
+                      validator: _controller.passwordEquals,
+                      controller: _controller.confirmPasswordTextController,
+                      decoration: const InputDecoration(
+                        border: OutlineInputBorder(),
+                        labelText: 'Confirmação de senha',
+                        prefixIcon: Align(
+                          widthFactor: 1.0,
+                          heightFactor: 1.0,
+                          child: Icon(
+                            Icons.lock,
                           ),
-                          children: <TextSpan>[
-                            TextSpan(
-                              text: 'Esqueceu a senha?',
-                              style: TextStyle(
-                                color: Theme.of(context).colorScheme.primary,
-                                decoration: TextDecoration.underline,
-                                fontWeight: FontWeight.w500,
-                              ),
-                              recognizer: TapGestureRecognizer()
-                                ..onTap = () => Modular.to.navigate('/signup'),
-                            )
-                          ]),
+                        ),
+                      ),
                     ),
-                    SpaceWidget(size: SpaceSize.l),
+                    SpaceWidget(size: SpaceSize.xl),
                     Observer(
                       builder: (_) => ElevatedButton(
-                        onPressed: _controller.loading
+                        onPressed: _controller.isLoading
                             ? null
-                            : () => _controller.signIn(),
-                        child: _controller.loading
+                            : () => {}, //_controller.signUp(),
+                        child: _controller.isLoading
                             ? SizedBox(
                                 height: 25.0,
                                 width: 25.0,
@@ -140,11 +128,11 @@ class _SignInPageState extends State<SignInPage> {
                                 ),
                               )
                             : Text(
-                                "Entrar",
+                                "Criar conta",
                                 style: TextStyle(
-                                  fontSize: 16.0,
-                                  color: Theme.of(context).colorScheme.surface,
-                                ),
+                                    fontSize: 16.0,
+                                    color:
+                                        Theme.of(context).colorScheme.surface),
                               ),
                       ),
                     ),
@@ -163,17 +151,17 @@ class _SignInPageState extends State<SignInPage> {
                         child: Divider(),
                       ),
                     ]),
-                    SpaceWidget(size: SpaceSize.l),
+                    SpaceWidget(size: SpaceSize.m),
                     Container(
-                        padding: EdgeInsets.all(10),
+                        padding: const EdgeInsets.all(10),
                         child: Center(
                           child: RichText(
                             text: TextSpan(
-                                text: 'Não tem uma conta? ',
+                                text: 'Já possui uma conta? faça ',
                                 style: TextStyle(color: Colors.black54),
                                 children: <TextSpan>[
                                   TextSpan(
-                                    text: 'Cadastre-se!',
+                                    text: 'Login!',
                                     style: TextStyle(
                                       color:
                                           Theme.of(context).colorScheme.primary,
@@ -181,15 +169,13 @@ class _SignInPageState extends State<SignInPage> {
                                       fontWeight: FontWeight.w500,
                                     ),
                                     recognizer: TapGestureRecognizer()
-                                      ..onTap =
-                                          () => Modular.to.navigate('/signup'),
+                                      ..onTap = () =>
+                                          Modular.to.pushReplacementNamed('/'),
                                   )
                                 ]),
                           ),
                         )),
-                    const SizedBox(
-                      height: 32.0,
-                    ),
+                    SpaceWidget(size: SpaceSize.xl),
                   ],
                 ),
               ),

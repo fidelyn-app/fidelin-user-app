@@ -33,22 +33,22 @@ abstract class _SignInControllerBase with Store {
     passwordVisible = !passwordVisible;
   }
 
-  // @action
-  // Future<void> signIn() async {
-  //   // formField.currentState!.validate()
-  //   if (formField.currentState!.validate()) {
-  //     loading = true;
+  @action
+  Future<void> signIn() async {
+    // formField.currentState!.validate()
+    if (formField.currentState!.validate()) {
+      loading = true;
 
-  //     final Either<Exception, UserEntity> _response =
-  //         await _signInWithEmailUseCase.call(
-  //       email: emailTextController.text,
-  //       password: passwordTextController.text,
-  //     );
-  //     _response.fold((Exception e) {}, (UserEntity user) {
-  //       _userStore.setUser(user);
-  //       Modular.to.navigate('/home/');
-  //     });
-  //     loading = false;
-  //   }
-  // }
+      // final Either<Exception, UserEntity> _response =
+      //     await _signInWithEmailUseCase.call(
+      //   email: emailTextController.text,
+      //   password: passwordTextController.text,
+      // );
+      // _response.fold((Exception e) {}, (UserEntity user) {
+      //   _userStore.setUser(user);
+      //   Modular.to.navigate('/home/');
+      // });
+      loading = false;
+    }
+  }
 }
