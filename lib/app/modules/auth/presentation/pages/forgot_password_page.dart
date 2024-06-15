@@ -1,3 +1,4 @@
+import 'package:fidelin_user_app/app/core/widgets/spacer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
@@ -16,20 +17,26 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
       Modular.get<ForgotPasswordController>();
 
   void _handleForgotPasswordRequest(String email) {
-    // _controller.requestForgotPassword(email: email).then((bool? value) {
-    //   Navigator.of(context).push(
-    //     MaterialPageRoute(
-    //       builder: (context) => const CheckEmailPage(),
-    //     ),
-    //   );
-    // });
+    _controller.requestForgotPassword(email: email).then((bool? value) {
+      Modular.to.pushNamed('/check-email');
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: AppBar(),
+      appBar: AppBar(
+        leading: IconButton(
+          icon: const Icon(
+            Icons.arrow_back,
+            size: 28,
+          ),
+          onPressed: () {
+            Modular.to.pop('/');
+          },
+        ),
+      ),
       body: LayoutBuilder(
         builder: (BuildContext context, BoxConstraints constraints) =>
             SingleChildScrollView(
@@ -45,9 +52,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                       height: 200,
                       child: Image.asset('assets/images/forgot_password.png'),
                     ),
-                    const SizedBox(
-                      height: 16.0,
-                    ),
+                    SpaceWidget(size: SpaceSize.xl),
                     Text(
                       "Esqueceu a \nSenha?",
                       style: TextStyle(
@@ -77,38 +82,32 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                         ),
                       ),
                     ),
-                    const SizedBox(
-                      height: 16.0,
-                    ),
+                    SpaceWidget(size: SpaceSize.l),
                     Observer(
                       builder: (_) => ElevatedButton(
                         onPressed: () => _handleForgotPasswordRequest(
                             "jonatha_rihan@hotmail.com"),
                         child: _controller.loading
                             ? SizedBox(
-                                child: Center(
-                                  child: CircularProgressIndicator(
-                                    color: Theme.of(context)
-                                        .colorScheme
-                                        .background,
-                                  ),
-                                ),
                                 height: 25.0,
                                 width: 25.0,
+                                child: Center(
+                                  child: CircularProgressIndicator(
+                                    color:
+                                        Theme.of(context).colorScheme.surface,
+                                  ),
+                                ),
                               )
                             : Text(
                                 "Enviar",
                                 style: TextStyle(
                                     fontSize: 16.0,
-                                    color: Theme.of(context)
-                                        .colorScheme
-                                        .background),
+                                    color:
+                                        Theme.of(context).colorScheme.surface),
                               ),
                       ),
                     ),
-                    const SizedBox(
-                      height: 48.0,
-                    ),
+                    SpaceWidget(size: SpaceSize.xxxl)
                   ],
                 ),
               )),

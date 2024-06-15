@@ -38,6 +38,9 @@ dependencies:
   mobx: ^2.3.3+2
   flutter_mobx: ^2.2.1+1
   dartz: ^0.10.1
+  equatable: ^2.0.5
+  http: ^1.2.1
+  flutter_dotenv: ^5.1.0
 
 dev_dependencies:
   flutter_test:
@@ -67,6 +70,7 @@ flutter:
     - assets/images/forgot_password.png
     - assets/images/mail_sent.png
     - assets/images/dialog_success.png
+    - .env
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

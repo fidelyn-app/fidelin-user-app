@@ -11,8 +11,8 @@ abstract class _ForgotPasswordControllerBase with Store {
 
   @action
   Future<bool> requestForgotPassword({required String email}) async {
-    loading = true;
+    //loading = true;
 
-    return false;
+    return true;
   }
 }

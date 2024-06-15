@@ -119,7 +119,7 @@ class _SignInPageState extends State<SignInPage> {
                               ),
                               recognizer: TapGestureRecognizer()
                                 ..onTap = () =>
-                                    Modular.to.navigate('/forgot-password'),
+                                    Modular.to.pushNamed('/forgot-password'),
                             )
                           ]),
                     ),
@@ -183,14 +183,12 @@ class _SignInPageState extends State<SignInPage> {
                                     ),
                                     recognizer: TapGestureRecognizer()
                                       ..onTap =
-                                          () => Modular.to.navigate('/signup'),
+                                          () => Modular.to.pushNamed('/signup'),
                                   )
                                 ]),
                           ),
                         )),
-                    const SizedBox(
-                      height: 32.0,
-                    ),
+                    SpaceWidget(size: SpaceSize.xl)
                   ],
                 ),
               ),

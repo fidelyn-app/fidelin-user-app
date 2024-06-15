@@ -115,7 +115,7 @@ class _SignUpPageState extends State<SignUpPage> {
                       builder: (_) => ElevatedButton(
                         onPressed: _controller.isLoading
                             ? null
-                            : () => {}, //_controller.signUp(),
+                            : () => _controller.signUp(),
                         child: _controller.isLoading
                             ? SizedBox(
                                 height: 25.0,
