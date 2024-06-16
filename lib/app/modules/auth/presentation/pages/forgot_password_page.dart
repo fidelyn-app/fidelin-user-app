@@ -18,7 +18,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
 
   void _handleForgotPasswordRequest(String email) {
     _controller.requestForgotPassword(email: email).then((bool? value) {
-      Modular.to.pushNamed('/check-email');
+      Modular.to.pushNamed('/auth/check-email');
     });
   }
 
@@ -107,7 +107,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                               ),
                       ),
                     ),
-                    SpaceWidget(size: SpaceSize.xxxl)
+                    SpaceWidget(size: SpaceSize.xxl)
                   ],
                 ),
               )),

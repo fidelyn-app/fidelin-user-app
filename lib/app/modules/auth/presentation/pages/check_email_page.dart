@@ -15,7 +15,7 @@ class CheckEmailPage extends StatelessWidget {
             size: 28,
           ),
           onPressed: () {
-            Modular.to.pushReplacementNamed('/');
+            Modular.to.pop();
           },
         ),
       ),
@@ -60,7 +60,8 @@ class CheckEmailPage extends StatelessWidget {
                         height: 16.0,
                       ),
                       ElevatedButton(
-                        onPressed: () => Modular.to.pushReplacementNamed('/'),
+                        onPressed: () =>
+                            Modular.to.popUntil((route) => route.isFirst),
                         child: Text(
                           "Ok",
                           style: TextStyle(

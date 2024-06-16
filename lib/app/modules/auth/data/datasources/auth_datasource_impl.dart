@@ -1,8 +1,10 @@
 import 'dart:convert';
 
 import 'package:fidelin_user_app/app/core/errors/Failure.dart';
+import 'package:fidelin_user_app/app/core/stores/token_store.dart';
 import 'package:fidelin_user_app/app/modules/auth/data/dto/create_user_dto.dart';
 import 'package:fidelin_user_app/app/modules/auth/data/dto/user_dto.dart';
+import 'package:flutter_modular/flutter_modular.dart';
 import 'package:http/http.dart' as http;
 
 import 'auth_datasource.dart';
@@ -11,6 +13,10 @@ class AuthDataSourceImpl implements AuthDataSource {
   final String _baseUrl;
 
   AuthDataSourceImpl(this._baseUrl); // Inject the base URL during construction
+
+  _setToken(String token) {
+    Modular.get<TokenStore>().setToken(token);
+  }
 
   @override
   Future<void> requestForgotPassword({required String email}) async {
@@ -37,12 +43,18 @@ class AuthDataSourceImpl implements AuthDataSource {
           await http.post(url, body: {'email': email, 'password': password});
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body) as Map<String, dynamic>;
-        return UserDTO.fromJSON(data);
+        _setToken(data['token']);
+        return UserDTO.fromJSON(data['user']);
       } else {
-        throw Exception(
-            'Login failed with status code: ${response.statusCode}');
+        final data = jsonDecode(response.body) as Map<String, dynamic>;
+
+        throw Failure(
+          error: data['error'] ?? '',
+          message: data['message'] ?? '',
+          statusCode: response.statusCode,
+        );
       }
-    } on Exception catch (error) {
+    } on Failure catch (error) {
       print('Error signing in: ${error.toString()}');
       throw error;
     }

@@ -3,8 +3,10 @@
 // import 'package:customer/shared/stores/user_store.dart';
 import 'package:dartz/dartz.dart';
 import 'package:fidelin_user_app/app/core/domain/entities/user_entity.dart';
+import 'package:fidelin_user_app/app/core/stores/user_store.dart';
 import 'package:fidelin_user_app/app/modules/auth/domain/usecases/signin_with_email_usecase.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_modular/flutter_modular.dart';
 import 'package:mobx/mobx.dart';
 
 part 'signin_controller.g.dart';
@@ -14,7 +16,7 @@ class SignInController = _SignInControllerBase with _$SignInController;
 abstract class _SignInControllerBase with Store {
   late SignInWithEmailUseCase _signInWithEmailUseCase;
 
-  //final UserStore _userStore = Modular.get<UserStore>();
+  final UserStore _userStore = Modular.get<UserStore>();
 
   _SignInControllerBase(
       {required SignInWithEmailUseCase signInWithEmailUseCase}) {
@@ -38,7 +40,7 @@ abstract class _SignInControllerBase with Store {
 
   @action
   Future<void> signIn() async {
-    // formField.currentState!.validate()
+    formField.currentState!.validate();
     if (formField.currentState!.validate()) {
       loading = true;
 
@@ -48,8 +50,8 @@ abstract class _SignInControllerBase with Store {
         password: passwordTextController.text,
       );
       _response.fold((Exception e) {}, (UserEntity user) {
-        //_userStore.setUser(user);
-        //Modular.to.navigate('/home');
+        _userStore.setUser(user);
+        Modular.to.navigate('/home');
       });
       loading = false;
     }

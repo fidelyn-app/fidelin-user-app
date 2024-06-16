@@ -7,5 +7,7 @@ import 'package:flutter_modular/flutter_modular.dart';
 void main() async {
   await dotenv.load(fileName: ".env");
 
+  Modular.setInitialRoute('/splash');
+
   runApp(ModularApp(module: AppModule(), child: const AppWidget()));
 }

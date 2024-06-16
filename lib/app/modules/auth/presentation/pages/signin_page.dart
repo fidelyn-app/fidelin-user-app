@@ -19,8 +19,8 @@ class _SignInPageState extends State<SignInPage> {
   @override
   void initState() {
     super.initState();
-    // _controller.emailTextController.text = 'jonatha_rihan@hotmail.com';
-    // _controller.passwordTextController.text = '12345678';
+    _controller.emailTextController.text = 'jonatha_rihan@hotmail.com';
+    _controller.passwordTextController.text = '12345678';
   }
 
   @override
@@ -118,8 +118,8 @@ class _SignInPageState extends State<SignInPage> {
                                 fontWeight: FontWeight.w500,
                               ),
                               recognizer: TapGestureRecognizer()
-                                ..onTap = () =>
-                                    Modular.to.pushNamed('/forgot-password'),
+                                ..onTap = () => Modular.to
+                                    .pushNamed('/auth/forgot-password'),
                             )
                           ]),
                     ),
@@ -182,8 +182,8 @@ class _SignInPageState extends State<SignInPage> {
                                       fontWeight: FontWeight.w500,
                                     ),
                                     recognizer: TapGestureRecognizer()
-                                      ..onTap =
-                                          () => Modular.to.pushNamed('/signup'),
+                                      ..onTap = () =>
+                                          Modular.to.pushNamed('/auth/signup'),
                                   )
                                 ]),
                           ),

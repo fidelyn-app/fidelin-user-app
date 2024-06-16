@@ -28,7 +28,23 @@ abstract class _SignUpControllerBase with Store {
   TextEditingController confirmPasswordTextController = TextEditingController();
 
   @observable
+  bool passwordVisible = false;
+
+  @observable
+  bool confirmPasswordVisible = false;
+
+  @observable
   bool isLoading = false;
+
+  @action
+  void togglePasswordVisible() {
+    passwordVisible = !passwordVisible;
+  }
+
+  @action
+  void toggleConfirmPasswordVisible() {
+    confirmPasswordVisible = !confirmPasswordVisible;
+  }
 
   @action
   Future<void> signUp() async {

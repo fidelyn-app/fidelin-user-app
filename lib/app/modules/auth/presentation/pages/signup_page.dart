@@ -34,6 +34,11 @@ class _SignUpPageState extends State<SignUpPage> {
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
+                    // SizedBox(
+                    //   height: 150,
+                    //   child: Image.asset('assets/images/white-logo.png'),
+                    // ),
+                    // SpaceWidget(size: SpaceSize.xxl),
                     Text(
                       "Cadastre-se",
                       style: TextStyle(
@@ -42,9 +47,7 @@ class _SignUpPageState extends State<SignUpPage> {
                         color: Theme.of(context).colorScheme.primary,
                       ),
                     ),
-                    const SizedBox(
-                      height: 16.0,
-                    ),
+                    SpaceWidget(size: SpaceSize.xl),
                     TextFormField(
                       // validator: Validators.name,
                       controller: _controller.nameTextController,
@@ -79,37 +82,62 @@ class _SignUpPageState extends State<SignUpPage> {
                       ),
                     ),
                     SpaceWidget(size: SpaceSize.l),
-                    TextFormField(
-                      validator: _controller.passwordEquals,
-                      controller: _controller.passwordTextController,
-                      decoration: const InputDecoration(
-                        border: OutlineInputBorder(),
-                        labelText: 'Senha',
-                        prefixIcon: Align(
-                          widthFactor: 1.0,
-                          heightFactor: 1.0,
-                          child: Icon(
-                            Icons.lock,
+                    Observer(builder: (_) {
+                      return TextFormField(
+                        validator: _controller.passwordEquals,
+                        controller: _controller.passwordTextController,
+                        obscureText: !_controller.passwordVisible,
+                        decoration: InputDecoration(
+                          border: const OutlineInputBorder(),
+                          labelText: 'Senha',
+                          suffixIcon: IconButton(
+                            onPressed: () =>
+                                _controller.togglePasswordVisible(),
+                            icon: Icon(
+                              _controller.passwordVisible
+                                  ? Icons.visibility
+                                  : Icons.visibility_off,
+                              color: Theme.of(context).colorScheme.primary,
+                            ),
+                          ),
+                          prefixIcon: const Align(
+                            widthFactor: 1.0,
+                            heightFactor: 1.0,
+                            child: Icon(
+                              Icons.lock,
+                            ),
                           ),
                         ),
-                      ),
-                    ),
+                      );
+                    }),
                     SpaceWidget(size: SpaceSize.l),
-                    TextFormField(
-                      validator: _controller.passwordEquals,
-                      controller: _controller.confirmPasswordTextController,
-                      decoration: const InputDecoration(
-                        border: OutlineInputBorder(),
-                        labelText: 'Confirmação de senha',
-                        prefixIcon: Align(
-                          widthFactor: 1.0,
-                          heightFactor: 1.0,
-                          child: Icon(
-                            Icons.lock,
+                    Observer(builder: (_) {
+                      return TextFormField(
+                        validator: _controller.passwordEquals,
+                        controller: _controller.confirmPasswordTextController,
+                        obscureText: !_controller.passwordVisible,
+                        decoration: InputDecoration(
+                          border: const OutlineInputBorder(),
+                          labelText: 'Confirmação de senha',
+                          suffixIcon: IconButton(
+                              onPressed: () =>
+                                  _controller.toggleConfirmPasswordVisible(),
+                              icon: Icon(
+                                _controller.passwordVisible
+                                    ? Icons.visibility
+                                    : Icons.visibility_off,
+                                color: Theme.of(context).colorScheme.primary,
+                              )),
+                          prefixIcon: const Align(
+                            widthFactor: 1.0,
+                            heightFactor: 1.0,
+                            child: Icon(
+                              Icons.lock,
+                            ),
                           ),
                         ),
-                      ),
-                    ),
+                      );
+                    }),
                     SpaceWidget(size: SpaceSize.xl),
                     Observer(
                       builder: (_) => ElevatedButton(
@@ -169,8 +197,8 @@ class _SignUpPageState extends State<SignUpPage> {
                                       fontWeight: FontWeight.w500,
                                     ),
                                     recognizer: TapGestureRecognizer()
-                                      ..onTap = () =>
-                                          Modular.to.pushReplacementNamed('/'),
+                                      ..onTap = () => Modular.to
+                                          .pushReplacementNamed('/auth/'),
                                   )
                                 ]),
                           ),
