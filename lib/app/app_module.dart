@@ -14,7 +14,7 @@ class AppModule extends Module {
   @override
   void routes(RouteManager r) {
     r.child('/splash', child: (context) => SplashScreen());
-    r.module('/auth', module: AuthModule());
-    r.module('/home', module: HomeModule(), guards: [AuthGuard()]);
+    r.module('/auth/', module: AuthModule());
+    r.module('/home/', module: HomeModule(), guards: [AuthGuard()]);
   }
 }

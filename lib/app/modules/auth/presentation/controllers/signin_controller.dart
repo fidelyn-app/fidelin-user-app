@@ -51,7 +51,7 @@ abstract class _SignInControllerBase with Store {
       );
       _response.fold((Exception e) {}, (UserEntity user) {
         _userStore.setUser(user);
-        Modular.to.navigate('/home');
+        Modular.to.navigate('/home/');
       });
       loading = false;
     }
