@@ -1,5 +1,7 @@
+import 'package:fidelin_user_app/app/modules/home/modules/cards/presentation/pages/cards_page.dart';
+import 'package:fidelin_user_app/app/modules/home/modules/profile/presentation/pages/profile_page.dart';
+import 'package:fidelin_user_app/app/modules/home/modules/qrcode/presentation/pages/qr_page.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_modular/flutter_modular.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -9,71 +11,120 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  late int _selectedPageIndex;
+  late List<Widget> _pages;
+  late PageController _pageController;
+
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
+    _selectedPageIndex = 0;
+    _pages = [
+      const CardsPage(),
+      const ProfilePage(),
+    ];
 
-    Modular.to.navigate('/home/page1');
+    _pageController = PageController(initialPage: _selectedPageIndex);
+  }
+
+  @override
+  void dispose() {
+    _pageController.dispose();
+
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    final leading = SizedBox(
-      width: MediaQuery.of(context).size.width * 0.3,
-      child: Column(
-        children: [
-          ListTile(
-            title: const Text('Page 1'),
-            onTap: () => Modular.to.navigate('/home/page1'),
-          ),
-          ListTile(
-            title: const Text('Page 2'),
-            onTap: () => Modular.to.navigate('/home/page2'),
-          ),
-          ListTile(
-            title: const Text('Page 3'),
-            onTap: () => Modular.to.navigate('/home/page3'),
-          ),
-        ],
-      ),
-    );
-
     return Scaffold(
-      appBar: AppBar(title: const Text('Home Page')),
-      body: Row(
-        children: [
-          leading,
-          Container(width: 2, color: Colors.black45),
-          const Expanded(child: RouterOutlet()),
-        ],
+      // appBar: AppBar(
+      //   title: Text(widget.title),
+      // ),
+      body: PageView(
+        onPageChanged: _scrollHandler,
+        //scrollBehavior: const ScrollBehavior().copyWith(overscroll: false),
+        physics: const ClampingScrollPhysics(),
+        controller: _pageController,
+        children: _pages,
       ),
+      bottomNavigationBar: bottomNavigationBar(),
     );
   }
-}
 
-class InternalPage extends StatefulWidget {
-  final String title;
-  final Color color;
-  const InternalPage({super.key, required this.title, required this.color});
-
-  @override
-  State<InternalPage> createState() => _InternalPageState();
-}
-
-class _InternalPageState extends State<InternalPage> {
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    print('INIT: ${widget.title}');
+  void _tapHandler(int index) {
+    setState(() {
+      _selectedPageIndex = index;
+      _pageController.animateToPage(index,
+          duration: const Duration(milliseconds: 200), curve: Curves.linear);
+    });
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return Material(
-      color: widget.color,
-      child: Center(child: Text(widget.title)),
+  void _scrollHandler(int index) {
+    setState(() {
+      _selectedPageIndex = index;
+    });
+  }
+
+  Widget bottomNavigationBar() {
+    return AnimatedBuilder(
+      animation: _pageController,
+      builder: (context, snapshot) => Container(
+        color: Colors.white,
+        height: 70,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            InkWell(
+              onTap: () => _tapHandler(0),
+              child: Container(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 25, vertical: 8),
+                child: Icon(
+                  Icons.home,
+                  color: _selectedPageIndex == 0
+                      ? Theme.of(context).colorScheme.primary
+                      : Colors.black45,
+                ),
+              ),
+            ),
+            InkWell(
+              onTap: () {
+                Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => const QrPage(),
+                ));
+              },
+              child: Container(
+                decoration: const BoxDecoration(
+                    gradient: LinearGradient(
+                      begin: Alignment.topRight,
+                      end: Alignment.bottomLeft,
+                      colors: [
+                        Color(0xFFFF00D6),
+                        Color(0xFFFF4D00),
+                      ],
+                    ),
+                    borderRadius: BorderRadius.all(Radius.circular(20))),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 25, vertical: 8),
+                child: const Icon(Icons.qr_code, color: Colors.white),
+              ),
+            ),
+            InkWell(
+              onTap: () => _tapHandler(1),
+              child: Container(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 25, vertical: 8),
+                child: Icon(
+                  Icons.person,
+                  color: _selectedPageIndex == 1
+                      ? Theme.of(context).colorScheme.primary
+                      : Colors.black45,
+                ),
+              ),
+            )
+          ],
+        ),
+      ),
     );
   }
 }
