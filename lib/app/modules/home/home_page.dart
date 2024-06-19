@@ -20,7 +20,7 @@ class _HomePageState extends State<HomePage> {
     super.initState();
     _selectedPageIndex = 0;
     _pages = [
-      const CardsPage(),
+      CardsPage(),
       const ProfilePage(),
     ];
 
@@ -43,7 +43,7 @@ class _HomePageState extends State<HomePage> {
       body: PageView(
         onPageChanged: _scrollHandler,
         //scrollBehavior: const ScrollBehavior().copyWith(overscroll: false),
-        physics: const ClampingScrollPhysics(),
+        physics: const NeverScrollableScrollPhysics(),
         controller: _pageController,
         children: _pages,
       ),
@@ -70,7 +70,7 @@ class _HomePageState extends State<HomePage> {
       animation: _pageController,
       builder: (context, snapshot) => Container(
         color: Colors.white,
-        height: 70,
+        height: 80,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
@@ -103,9 +103,9 @@ class _HomePageState extends State<HomePage> {
                         Color(0xFFFF4D00),
                       ],
                     ),
-                    borderRadius: BorderRadius.all(Radius.circular(20))),
+                    borderRadius: BorderRadius.all(Radius.circular(25))),
                 padding:
-                    const EdgeInsets.symmetric(horizontal: 25, vertical: 8),
+                    const EdgeInsets.symmetric(horizontal: 28, vertical: 12),
                 child: const Icon(Icons.qr_code, color: Colors.white),
               ),
             ),
