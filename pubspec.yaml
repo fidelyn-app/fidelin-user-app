@@ -41,12 +41,14 @@ dependencies:
   equatable: ^2.0.5
   http: ^1.2.1
   flutter_dotenv: ^5.1.0
-  qr_code_scanner: ^0.4.0
+  qr_code_scanner: ^1.0.1
   scroll_snap_list: ^0.9.1
   material_design_icons_flutter: ^7.0.7296
   json_annotation: ^4.9.0
   font_awesome_flutter: ^10.7.0
   url_launcher: ^6.3.0
+  qr_flutter: ^4.1.0
+  dotted_border: ^2.1.0
 
 dev_dependencies:
   flutter_test:

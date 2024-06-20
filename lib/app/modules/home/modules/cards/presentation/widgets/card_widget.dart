@@ -6,14 +6,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:qr_flutter/qr_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class CardWidgetPoint extends StatelessWidget {
   final bool selected;
+  final bool isLastPoint;
   final Color color;
 
-  const CardWidgetPoint(
-      {super.key, this.selected = false, this.color = Colors.black});
+  const CardWidgetPoint({
+    super.key,
+    this.selected = false,
+    this.color = Colors.black,
+    this.isLastPoint = false,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -21,16 +27,23 @@ class CardWidgetPoint extends StatelessWidget {
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(5.0),
+        border: Border.all(
+          color: color,
+          width: 2.0,
+          style: BorderStyle.solid,
+        ),
       ),
       child: selected
           ? Container(
-              margin: const EdgeInsets.all(4.0),
+              margin: const EdgeInsets.all(2.0),
               decoration: BoxDecoration(
                 color: color,
                 borderRadius: BorderRadius.circular(5.0),
               ),
             )
-          : null,
+          : isLastPoint
+              ? null
+              : null,
     );
   }
 }
@@ -66,6 +79,7 @@ class _CardWidgetState extends State<CardWidget> {
   @override
   Widget build(BuildContext context) {
     return Container(
+      margin: EdgeInsets.symmetric(vertical: 8.0),
       decoration: BoxDecoration(
         image: DecorationImage(
           fit: BoxFit.fill,
@@ -83,11 +97,11 @@ class _CardWidgetState extends State<CardWidget> {
           ),
         ],
       ),
-      width: widget.constraints.maxWidth / 1.20,
+      width: widget.constraints.maxWidth / 1.40,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          _header(userCard),
+          _header(userCard, context),
           _avatar(userCard),
           _gridPoints(userCard, context),
           _bottom(userCard)
@@ -97,33 +111,33 @@ class _CardWidgetState extends State<CardWidget> {
   }
 }
 
-Widget _header(UserCard userCard) {
+Widget _header(UserCard userCard, BuildContext context) {
   return Row(
     mainAxisAlignment: MainAxisAlignment.spaceBetween,
     children: [
-      IconButton(
-        icon: Icon(
-          MdiIcons.informationOutline,
-          color: Colors.white,
-        ),
-        onPressed: () {
-          // ...
-        },
-      ),
-      Text("${userCard.points.length}/${userCard.card.maxPoints}",
-          style: const TextStyle(
-              color: Colors.white,
-              fontSize: 16.0,
-              fontWeight: FontWeight.w600)),
       PopupMenuButton(
         icon: Icon(
           MdiIcons.dotsVertical,
           color: Colors.white,
+          size: 32,
         ),
         itemBuilder: (ctx) => [
           _buildPopupMenuItem('Excluir'),
         ],
-      )
+      ),
+      Text(
+        "${userCard.points.length}/${userCard.card.maxPoints}",
+        style: const TextStyle(
+            color: Colors.white, fontSize: 16.0, fontWeight: FontWeight.w600),
+      ),
+      IconButton(
+        icon: Icon(
+          MdiIcons.qrcode,
+          color: Colors.white,
+          size: 32,
+        ),
+        onPressed: () => _dialogQRCode(context, userCard.id),
+      ),
     ],
   );
 }
@@ -135,8 +149,11 @@ Widget _avatar(UserCard userCard) {
       children: [
         CircleAvatar(
           backgroundColor: Colors.white,
-          radius: 64, // Image radius
-          backgroundImage: NetworkImage('${userCard.card.store.avatarUrl}'),
+          radius: 52.0,
+          child: CircleAvatar(
+            backgroundImage: NetworkImage('${userCard.card.store.avatarUrl}'),
+            radius: 50.0,
+          ),
         ),
         const SizedBox(
           height: 16.0,
@@ -158,26 +175,38 @@ Widget _avatar(UserCard userCard) {
 }
 
 Widget _gridPoints(UserCard userCard, context) {
-  const number = 25;
+  const show = true;
 
-  return Expanded(
-    child: GridView.builder(
-      primary: false,
-      physics: const NeverScrollableScrollPhysics(),
-      padding: const EdgeInsets.all(20),
-      itemCount: number,
-      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount:
-            calculateCrossAxisCount(number), // Dynamically calculate columns
-        crossAxisSpacing: 8, // Adjust spacing between items
-        mainAxisSpacing: 6,
-      ),
-      itemBuilder: (BuildContext context, int index) => CardWidgetPoint(
-        selected: userCard.points.length > index,
-        color: userCard.card.color,
-      ),
-    ),
-  );
+  return show
+      ? Expanded(
+          child: GridView.builder(
+            primary: false,
+            physics: const NeverScrollableScrollPhysics(),
+            padding: const EdgeInsets.all(20),
+            itemCount: userCard.card.maxPoints,
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: calculateCrossAxisCount(userCard.card.maxPoints),
+              crossAxisSpacing: 8,
+              mainAxisSpacing: 6,
+            ),
+            itemBuilder: (BuildContext context, int index) => CardWidgetPoint(
+              selected: userCard.points.length > index,
+              color: userCard.card.color,
+              isLastPoint: userCard.card.maxPoints - 1 == index,
+            ),
+          ),
+        )
+      : Expanded(
+          child: Center(
+          child: Container(
+            color: Colors.white,
+            child: QrImageView(
+              data: userCard.id,
+              version: QrVersions.auto,
+              size: 250.0,
+            ),
+          ),
+        ));
 }
 
 Widget _bottom(UserCard userCard) {
@@ -291,4 +320,24 @@ int calculateCrossAxisCount(int numberOfItems) {
   } else {
     return 4;
   }
+}
+
+Future<void> _dialogQRCode(BuildContext context, String data) {
+  return showDialog<void>(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        content: Container(
+          width: 250,
+          height: 250,
+          color: Colors.white,
+          child: QrImageView(
+            data: data,
+            version: QrVersions.auto,
+            size: 250.0,
+          ),
+        ),
+      );
+    },
+  );
 }

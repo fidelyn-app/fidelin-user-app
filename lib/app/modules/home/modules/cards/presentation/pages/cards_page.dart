@@ -66,6 +66,9 @@ class _CardsPageState extends State<CardsPage>
                       ),
                     ),
                   ),
+                  SizedBox(
+                    height: 64.0,
+                  ),
                   _cardsController.isLoading
                       ? const Expanded(
                           child: Center(
@@ -79,7 +82,7 @@ class _CardsPageState extends State<CardsPage>
                                     return 1 - min(scale.abs() / 1000, 0.2);
                                   },
                                   onItemFocus: (_) => {},
-                                  itemSize: constraints.maxWidth / 1.20,
+                                  itemSize: constraints.maxWidth / 1.40,
                                   itemBuilder: (context, index) => CardWidget(
                                       constraints: constraints, index: index),
                                   itemCount: _cardsController.cards.length,
