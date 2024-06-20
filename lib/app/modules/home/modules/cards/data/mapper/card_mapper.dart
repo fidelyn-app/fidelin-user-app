@@ -1,6 +1,7 @@
 import 'package:fidelin_user_app/app/modules/home/modules/cards/data/dto/card_dto.dart';
 import 'package:fidelin_user_app/app/modules/home/modules/cards/data/mapper/store_mapper.dart';
 import 'package:fidelin_user_app/app/modules/home/modules/cards/domain/entities/card_entity.dart';
+import 'package:fidelin_user_app/utils/color_mapper.dart';
 
 class CardMapper {
   static Card toEntity(CardDTO dto) {
@@ -8,7 +9,7 @@ class CardMapper {
       id: dto.id,
       backgroundUrl: dto.backgroundUrl,
       maxPoints: dto.maxPoints,
-      color: dto.color,
+      color: ColorMapper.hexToColor(dto.color),
       description: dto.description,
       active: dto.active,
       storeId: dto.storeId,
@@ -24,7 +25,7 @@ class CardMapper {
       id: entity.id,
       backgroundUrl: entity.backgroundUrl,
       maxPoints: entity.maxPoints,
-      color: entity.color,
+      color: ColorMapper.colorToHex(entity.color),
       description: entity.description,
       active: entity.active,
       storeId: entity.storeId,

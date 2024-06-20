@@ -9,6 +9,7 @@ class Store {
   final String? phone;
   final bool active;
   final String stripeId;
+  final Contacts contacts;
   final DateTime createdAt;
   final DateTime updatedAt;
 
@@ -23,6 +24,7 @@ class Store {
     this.phone,
     required this.active,
     required this.stripeId,
+    required this.contacts,
     required this.createdAt,
     required this.updatedAt,
   });
@@ -46,4 +48,18 @@ class Store {
         )
         ''';
   }
+}
+
+class Contacts {
+  final String? instagram;
+  final String? phone;
+  final String? site;
+  final bool? whatsapp;
+
+  Contacts({
+    this.instagram,
+    this.phone,
+    this.site,
+    this.whatsapp,
+  });
 }

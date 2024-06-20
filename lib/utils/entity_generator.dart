@@ -7,6 +7,7 @@ import 'package:fidelin_user_app/app/modules/home/modules/cards/domain/entities/
 import 'package:fidelin_user_app/app/modules/home/modules/cards/domain/entities/point_entity.dart';
 import 'package:fidelin_user_app/app/modules/home/modules/cards/domain/entities/store_entity.dart';
 import 'package:fidelin_user_app/app/modules/home/modules/cards/domain/entities/user_card_entity.dart';
+import 'package:fidelin_user_app/utils/color_mapper.dart';
 
 class EntityGenerator {
   static UserCard generateUserCard() {
@@ -38,7 +39,7 @@ class EntityGenerator {
       id: faker.guid.guid(),
       backgroundUrl: 'https://picsum.photos/400/600',
       maxPoints: faker.randomGenerator.integer(32, min: 8),
-      color: _generateRandomHexColor(),
+      color: ColorMapper.hexToColor(_generateRandomHexColor()),
       description: faker.lorem.sentence(),
       active: faker.randomGenerator.boolean(),
       storeId: faker.guid.guid(),
@@ -69,10 +70,23 @@ class EntityGenerator {
       phone: faker.phoneNumber.toString(),
       active: faker.randomGenerator.boolean(),
       stripeId: faker.guid.guid(),
+      contacts: generateContacts(),
       createdAt: faker.date.dateTime(
           maxYear: DateTime.now().year, minYear: DateTime.now().year - 1),
       updatedAt: faker.date.dateTime(
           maxYear: DateTime.now().year, minYear: DateTime.now().year - 1),
+    );
+  }
+
+  static Contacts generateContacts() {
+    final faker = Faker();
+
+    // Generate random values for Contacts properties (some might be null)
+    return Contacts(
+      instagram: '@${faker.internet.userName()}',
+      phone: faker.phoneNumber.toString(),
+      site: 'http://${faker.internet.domainName()}',
+      whatsapp: faker.randomGenerator.boolean(),
     );
   }
 

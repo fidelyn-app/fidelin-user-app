@@ -40,7 +40,7 @@ abstract class _CardsControllerBase with Store {
 
     cards.addAll(fakerUserCards);
 
-    print(fakerUserCards[0].toString());
+    print(fakerUserCards[0].card.maxPoints);
 
     isLoading = false;
   }

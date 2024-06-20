@@ -1,10 +1,12 @@
+import 'dart:ui';
+
 import 'store_entity.dart';
 
 class Card {
   final String id;
   final String? backgroundUrl;
   final int maxPoints;
-  final String color;
+  final Color color;
   final String description;
   final bool active;
   final String storeId;

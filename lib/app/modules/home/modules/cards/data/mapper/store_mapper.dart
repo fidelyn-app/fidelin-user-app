@@ -16,6 +16,7 @@ class StoreMapper {
       stripeId: dto.stripeId,
       createdAt: dto.createdAt,
       updatedAt: dto.updatedAt,
+      contacts: Contacts(),
     );
   }
 
