@@ -10,7 +10,6 @@ import 'package:fidelin_user_app/app/modules/auth/presentation/controllers/signu
 import 'package:fidelin_user_app/app/modules/auth/presentation/pages/check_email_page.dart';
 import 'package:fidelin_user_app/app/modules/auth/presentation/pages/forgot_password_page.dart';
 import 'package:fidelin_user_app/app/modules/auth/presentation/pages/signup_page.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
 import 'presentation/pages/signin_page.dart';
@@ -19,7 +18,7 @@ class AuthModule extends Module {
   @override
   void binds(Injector i) {
     i.add<AuthDataSource>(
-        () => AuthDataSourceImpl(dotenv.env['BASE_URL_STG']!));
+        () => AuthDataSourceImpl("https://fidelin-staging.up.railway.app"));
 
     i.add<AuthRepository>(AuthRepositoryImpl.new);
 

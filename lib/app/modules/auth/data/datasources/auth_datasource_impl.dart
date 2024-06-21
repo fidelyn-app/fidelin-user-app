@@ -21,7 +21,8 @@ class AuthDataSourceImpl implements AuthDataSource {
   @override
   Future<void> requestForgotPassword({required String email}) async {
     try {
-      final url = Uri.parse('$_baseUrl/forgot-password');
+      final url =
+          Uri.parse('https://fidelin-staging.up.railway.app/forgot-password');
       final response = await http.post(url, body: {'email': email});
       if (response.statusCode == 200) {
         print('Forgot password request sent successfully.');
@@ -38,7 +39,8 @@ class AuthDataSourceImpl implements AuthDataSource {
   Future<UserDTO> signInWithEmail(
       {required String email, required String password}) async {
     try {
-      final url = Uri.parse('$_baseUrl/user/signin');
+      final url =
+          Uri.parse('https://fidelin-staging.up.railway.app/user/signin');
       final response =
           await http.post(url, body: {'email': email, 'password': password});
       if (response.statusCode == 200) {
@@ -78,7 +80,8 @@ class AuthDataSourceImpl implements AuthDataSource {
   @override
   Future<void> signUpWithEmail(CreateUserDTO user) async {
     try {
-      final url = Uri.parse('$_baseUrl/user/signup');
+      final url =
+          Uri.parse('https://fidelin-staging.up.railway.app/user/signup');
       final response = await http.post(url, body: user.toJSON());
       if (response.statusCode == 201) {
         print('Signed up successfully.');
