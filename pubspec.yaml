@@ -24,6 +24,22 @@ dependencies:
   url_launcher: ^6.3.0
   qr_flutter: ^4.1.0
   flutter_barcode_scanner: ^2.0.0
+  flutter_launcher_icons: ^0.13.1
+  flutter_native_splash: ^2.4.0
+
+flutter_native_splash:
+  color: "#F22F52"
+  image: "assets/app/icon.png"
+  android: true
+  ios: true
+
+flutter_launcher_icons:
+  image_path: "assets/app/icon.png"
+  ios: true
+  remove_alpha_ios: true
+  android: "launcher_icon"
+  adaptive_icon_background: "#FFFFFF"
+  adaptive_icon_foreground: "assets/app/icon.png"
 
 dev_dependencies:
   flutter_test:
