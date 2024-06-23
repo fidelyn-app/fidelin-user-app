@@ -26,12 +26,13 @@ class CardsDataSourceImpl implements CardsDataSource {
       });
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body) as List<dynamic>;
+        final List<UserCardDTO> cards = [];
         for (var item in data) {
           final card = UserCardDTO.fromJson(item as Map<String, dynamic>);
-          print(card);
+          cards.add(card);
         }
 
-        return [];
+        return cards;
       } else {
         final data = jsonDecode(response.body) as Map<String, dynamic>;
 
@@ -42,7 +43,7 @@ class CardsDataSourceImpl implements CardsDataSource {
         );
       }
     } on Failure catch (error) {
-      throw error;
+      rethrow;
     }
   }
 }

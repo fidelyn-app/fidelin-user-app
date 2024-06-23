@@ -19,7 +19,7 @@ class AuthRepositoryImpl implements AuthRepository {
           await _dataSource.signInWithEmail(email: email, password: password);
       UserEntity user = UserMapper.mapDTOtoEntity(result);
       return right(user);
-    } on Exception catch (e) {
+    } on Exception catch (_) {
       return left(Exception("Erro Inesperado"));
     }
   }
@@ -29,7 +29,7 @@ class AuthRepositoryImpl implements AuthRepository {
     try {
       await _dataSource.signUpWithEmail(user);
       return right(unit);
-    } on Exception catch (e) {
+    } on Exception catch (_) {
       return left(Exception("Erro Inesperado"));
     }
   }
@@ -40,7 +40,7 @@ class AuthRepositoryImpl implements AuthRepository {
     try {
       await _dataSource.requestForgotPassword(email: email);
       return right(unit);
-    } on Exception catch (e) {
+    } on Exception catch (_) {
       return left(Exception("Erro Inesperado"));
     }
   }

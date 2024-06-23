@@ -1,7 +1,6 @@
 import 'package:dartz/dartz.dart';
 import 'package:fidelin_user_app/app/modules/home/modules/cards/domain/entities/user_card_entity.dart';
 import 'package:fidelin_user_app/app/modules/home/modules/cards/domain/usecases/fetch_cards_usecase.dart';
-import 'package:fidelin_user_app/utils/entity_generator.dart';
 import 'package:mobx/mobx.dart';
 
 part 'cards_controller.g.dart';
@@ -32,17 +31,17 @@ abstract class _CardsControllerBase with Store {
         //print("error");
       },
       (List<UserCard> listOfCards) {
-        // cards.clear();
-        // cards.addAll(listOfCards);
+        cards.clear();
+        cards.addAll(listOfCards);
       },
     );
 
-    List<UserCard> fakerUserCards =
-        List.generate(3, (i) => EntityGenerator.generateUserCard());
+    // List<UserCard> fakerUserCards =
+    //     List.generate(3, (i) => EntityGenerator.generateUserCard());
 
-    cards.addAll(fakerUserCards);
+    // cards.addAll(fakerUserCards);
 
-    print(fakerUserCards[0].card.maxPoints);
+    // print(fakerUserCards[0].card.maxPoints);
 
     isLoading = false;
   }

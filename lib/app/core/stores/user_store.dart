@@ -33,6 +33,9 @@ abstract class _UserStoreBase with Store {
   Future<void> removeUser() async {
     user = null;
     _token = null;
+
+    Modular.get<SharedLocalStorageService>().delete('fidelin/user');
+    Modular.get<SharedLocalStorageService>().delete('fidelin/token');
   }
 
   @action
@@ -48,7 +51,7 @@ abstract class _UserStoreBase with Store {
 
     UserDTO.fromJSON(userJSON!);
 
-    user = UserMapper.mapDTOtoEntity(UserDTO.fromJSON(userJSON!));
+    user = UserMapper.mapDTOtoEntity(UserDTO.fromJSON(userJSON));
     _token = tokenJSON;
 
     return true;

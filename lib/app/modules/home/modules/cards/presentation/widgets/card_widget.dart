@@ -2,57 +2,13 @@ import 'dart:math';
 
 import 'package:fidelin_user_app/app/modules/home/modules/cards/domain/entities/user_card_entity.dart';
 import 'package:fidelin_user_app/app/modules/home/modules/cards/presentation/controllers/cards_controller.dart';
+import 'package:fidelin_user_app/app/modules/home/modules/cards/presentation/widgets/point_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
-
-class CardWidgetPoint extends StatelessWidget {
-  final bool selected;
-  final bool isLastPoint;
-  final Color color;
-
-  const CardWidgetPoint({
-    super.key,
-    this.selected = false,
-    this.color = Colors.black,
-    this.isLastPoint = false,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(5.0),
-        border: Border.all(
-          color: color,
-          width: 2.0,
-          style: BorderStyle.solid,
-        ),
-      ),
-      child: selected
-          ? Container(
-              margin: const EdgeInsets.all(2.0),
-              decoration: BoxDecoration(
-                color: color,
-                borderRadius: BorderRadius.circular(5.0),
-              ),
-            )
-          : isLastPoint
-              ? null
-              : null,
-    );
-  }
-}
-
-// Future<void> _launchUrl(Uri url) async {
-//   if (!await launchUrl(url)) {
-//     throw Exception('Could not launch $url');
-//   }
-// }
 
 class CardWidget extends StatefulWidget {
   final BoxConstraints constraints;
@@ -80,23 +36,36 @@ class _CardWidgetState extends State<CardWidget> {
   Widget build(BuildContext context) {
     return Container(
       margin: EdgeInsets.symmetric(vertical: 8.0),
-      decoration: BoxDecoration(
-        image: DecorationImage(
-          fit: BoxFit.fill,
-          image: NetworkImage(
-            userCard.card.backgroundUrl!,
-          ),
-        ),
-        borderRadius: BorderRadius.circular(20.0),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey.withOpacity(0.5),
-            spreadRadius: 5,
-            blurRadius: 7,
-            offset: const Offset(0, 3), // changes position of shadow
-          ),
-        ],
-      ),
+      decoration: userCard.card.backgroundUrl != null
+          ? BoxDecoration(
+              image: DecorationImage(
+                fit: BoxFit.fill,
+                image: NetworkImage(
+                  userCard.card.backgroundUrl!,
+                ),
+              ),
+              borderRadius: BorderRadius.circular(20.0),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.grey.withOpacity(0.5),
+                  spreadRadius: 5,
+                  blurRadius: 7,
+                  offset: const Offset(0, 3), // changes position of shadow
+                ),
+              ],
+            )
+          : BoxDecoration(
+              color: userCard.card.color,
+              borderRadius: BorderRadius.circular(20.0),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.grey.withOpacity(0.5),
+                  spreadRadius: 5,
+                  blurRadius: 7,
+                  offset: const Offset(0, 3), // changes position of shadow
+                ),
+              ],
+            ),
       width: widget.constraints.maxWidth / 1.40,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -150,10 +119,21 @@ Widget _avatar(UserCard userCard) {
         CircleAvatar(
           backgroundColor: Colors.white,
           radius: 52.0,
-          child: CircleAvatar(
-            backgroundImage: NetworkImage('${userCard.card.store.avatarUrl}'),
-            radius: 50.0,
-          ),
+          child: userCard.card.store.avatarUrl != null
+              ? CircleAvatar(
+                  backgroundImage:
+                      NetworkImage('${userCard.card.store.avatarUrl}'),
+                  radius: 50.0,
+                )
+              : const CircleAvatar(
+                  backgroundColor: Colors.white,
+                  radius: 50,
+                  child: Icon(
+                    Icons.person,
+                    size: 64,
+                    color: Colors.black26,
+                  ),
+                ),
         ),
         const SizedBox(
           height: 16.0,
@@ -189,10 +169,11 @@ Widget _gridPoints(UserCard userCard, context) {
               crossAxisSpacing: 8,
               mainAxisSpacing: 6,
             ),
-            itemBuilder: (BuildContext context, int index) => CardWidgetPoint(
+            itemBuilder: (BuildContext context, int index) => PointWidget(
               selected: userCard.points.length > index,
               color: userCard.card.color,
               isLastPoint: userCard.card.maxPoints - 1 == index,
+              index: index + 1,
             ),
           ),
         )

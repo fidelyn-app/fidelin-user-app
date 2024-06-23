@@ -9,7 +9,7 @@ class CardDTO {
   final String id;
   final String? backgroundUrl; // Allow null for optional fields
   final int maxPoints;
-  final String color;
+  final String? color;
   final String description;
   final bool active;
   final String storeId;
@@ -25,7 +25,7 @@ class CardDTO {
     required this.id,
     this.backgroundUrl,
     required this.maxPoints,
-    required this.color,
+    this.color,
     required this.description,
     required this.active,
     required this.storeId,
@@ -37,13 +37,13 @@ class CardDTO {
 
   // Custom deserialization/serialization for nested objects
   static TimeToExpireDTO _timeToExpireFromJson(Map<String, dynamic> json) =>
-      TimeToExpireDTO.fromJson(json['timeToExpire']);
+      TimeToExpireDTO.fromJson(json);
   static Map<String, dynamic> _timeToExpireToJson(
           TimeToExpireDTO timeToExpire) =>
       timeToExpire.toJson();
 
   static StoreDTO _storeFromJson(Map<String, dynamic> json) =>
-      StoreDTO.fromJson(json['store']);
+      StoreDTO.fromJson(json);
   static Map<String, dynamic> _storeToJson(StoreDTO store) => store.toJson();
 
   factory CardDTO.fromJson(Map<String, dynamic> json) =>

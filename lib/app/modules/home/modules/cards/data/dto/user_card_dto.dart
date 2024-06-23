@@ -31,9 +31,8 @@ class UserCardDTO {
     required this.points,
   });
 
-  // Custom deserialization/serialization for nested objects
   static CardDTO _cardFromJson(Map<String, dynamic> json) =>
-      CardDTO.fromJson(json['card']);
+      CardDTO.fromJson(json);
   static Map<String, dynamic> _cardToJson(CardDTO card) => card.toJson();
 
   static List<PointDTO> _pointsFromJson(List<dynamic> json) =>
