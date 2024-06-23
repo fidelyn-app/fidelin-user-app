@@ -6,6 +6,7 @@ import 'package:faker/faker.dart';
 import 'package:fidelin_user_app/app/modules/home/modules/cards/domain/entities/card_entity.dart';
 import 'package:fidelin_user_app/app/modules/home/modules/cards/domain/entities/point_entity.dart';
 import 'package:fidelin_user_app/app/modules/home/modules/cards/domain/entities/store_entity.dart';
+import 'package:fidelin_user_app/app/modules/home/modules/cards/domain/entities/style_entity.dart';
 import 'package:fidelin_user_app/app/modules/home/modules/cards/domain/entities/user_card_entity.dart';
 import 'package:fidelin_user_app/utils/color_mapper.dart';
 
@@ -31,25 +32,38 @@ class EntityGenerator {
     );
   }
 
+  static Style generateStyle() {
+    return Style(
+      id: faker.guid.guid(),
+      pointBorderRadius: 2.0,
+      pointBorderSize: 2.0,
+      pointColor: ColorMapper.hexToColor(_generateRandomHexColor()),
+      pointColumnSize: faker.randomGenerator.integer(6, min: 4),
+      backgroundUrl: 'https://picsum.photos/400/600',
+      pointBackgroundUrl: 'https://picsum.photos/400/600',
+      pointShowNumbers: faker.randomGenerator.boolean(),
+      subtitle: faker.company.person.lastName(),
+      title: faker.company.person.firstName(),
+    );
+  }
+
   static Card generateCard() {
     final faker = Faker();
 
     // Generate random values for Card properties
     return Card(
       id: faker.guid.guid(),
-      backgroundUrl: 'https://picsum.photos/400/600',
       maxPoints: faker.randomGenerator.integer(32, min: 8),
-      color: ColorMapper.hexToColor(_generateRandomHexColor()),
       description: faker.lorem.sentence(),
       active: faker.randomGenerator.boolean(),
       storeId: faker.guid.guid(),
-      timeToExpire: TimeToExpire(
-          months: faker.randomGenerator.integer(24)), // Up to 2 years
+      timeToExpire: TimeToExpire(months: faker.randomGenerator.integer(24)),
       createdAt: faker.date.dateTime(
           maxYear: DateTime.now().year, minYear: DateTime.now().year - 1),
       updatedAt: faker.date.dateTime(
           maxYear: DateTime.now().year, minYear: DateTime.now().year - 1),
-      store: generateStore(), // Assuming you have a similar function for Store
+      store: generateStore(),
+      style: generateStyle(),
     );
   }
 

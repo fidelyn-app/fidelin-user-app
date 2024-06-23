@@ -1,12 +1,9 @@
-import 'dart:ui';
-
 import 'store_entity.dart';
+import 'style_entity.dart';
 
 class Card {
   final String id;
-  final String? backgroundUrl;
   final int maxPoints;
-  final Color color;
   final String description;
   final bool active;
   final String storeId;
@@ -15,12 +12,11 @@ class Card {
   final DateTime updatedAt;
 
   final Store store;
+  final Style style;
 
   Card({
     required this.id,
-    this.backgroundUrl,
     required this.maxPoints,
-    required this.color,
     required this.description,
     required this.active,
     required this.storeId,
@@ -28,6 +24,7 @@ class Card {
     required this.createdAt,
     required this.updatedAt,
     required this.store,
+    required this.style,
   });
 
   @override
@@ -35,9 +32,7 @@ class Card {
     return '''
       Card(
         id: $id,
-        backgroundUrl: $backgroundUrl,
         maxPoints: $maxPoints,
-        color: $color,
         description: $description,
         active: $active,
         storeId: $storeId,
@@ -45,15 +40,26 @@ class Card {
         createdAt: $createdAt,
         updatedAt: $updatedAt,
         store: ${store.toString()}
+        style: ${style.toString()}
       )
       ''';
   }
 }
 
 class TimeToExpire {
-  final int months;
+  final int? years;
+  final int? months;
+  final int? days;
+  final int? hours;
+  final int? minutes;
+  final int? seconds;
 
   TimeToExpire({
-    required this.months,
+    this.years,
+    this.months,
+    this.days,
+    this.hours,
+    this.minutes,
+    this.seconds,
   });
 }

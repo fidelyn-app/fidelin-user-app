@@ -28,7 +28,7 @@ abstract class _CardsControllerBase with Store {
         await _fetchCardsUseCase.call();
     _response.fold(
       (Exception e) {
-        //print("error");
+        print("ERROR");
       },
       (List<UserCard> listOfCards) {
         cards.clear();

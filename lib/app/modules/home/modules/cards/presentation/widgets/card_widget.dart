@@ -36,12 +36,12 @@ class _CardWidgetState extends State<CardWidget> {
   Widget build(BuildContext context) {
     return Container(
       margin: EdgeInsets.symmetric(vertical: 8.0),
-      decoration: userCard.card.backgroundUrl != null
+      decoration: userCard.card.style.backgroundUrl != null
           ? BoxDecoration(
               image: DecorationImage(
                 fit: BoxFit.fill,
                 image: NetworkImage(
-                  userCard.card.backgroundUrl!,
+                  userCard.card.style.backgroundUrl!,
                 ),
               ),
               borderRadius: BorderRadius.circular(20.0),
@@ -55,7 +55,7 @@ class _CardWidgetState extends State<CardWidget> {
               ],
             )
           : BoxDecoration(
-              color: userCard.card.color,
+              color: userCard.card.style.pointColor,
               borderRadius: BorderRadius.circular(20.0),
               boxShadow: [
                 BoxShadow(
@@ -171,7 +171,7 @@ Widget _gridPoints(UserCard userCard, context) {
             ),
             itemBuilder: (BuildContext context, int index) => PointWidget(
               selected: userCard.points.length > index,
-              color: userCard.card.color,
+              color: userCard.card.style.pointColor,
               isLastPoint: userCard.card.maxPoints - 1 == index,
               index: index + 1,
             ),

@@ -88,7 +88,8 @@ class _ProfilePageState extends State<ProfilePage>
                             title: const Text('Sair'),
                             onTap: () {
                               _userStore.removeUser();
-                              Modular.to.pushReplacementNamed('/auth/');
+                              Modular.to.pushNamedAndRemoveUntil(
+                                  "/auth/", (_) => false);
                             },
                           ),
                         ),

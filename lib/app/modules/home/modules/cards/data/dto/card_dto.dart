@@ -1,3 +1,4 @@
+import 'package:fidelin_user_app/app/modules/home/modules/cards/data/dto/style_dto.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 import 'store_dto.dart';
@@ -21,6 +22,9 @@ class CardDTO {
   @JsonKey(fromJson: _storeFromJson, toJson: _storeToJson)
   final StoreDTO store;
 
+  @JsonKey(fromJson: _styleFromJson, toJson: _styleToJson)
+  final StyleDTO style;
+
   CardDTO({
     required this.id,
     this.backgroundUrl,
@@ -33,6 +37,7 @@ class CardDTO {
     required this.createdAt,
     required this.updatedAt,
     required this.store,
+    required this.style,
   });
 
   // Custom deserialization/serialization for nested objects
@@ -46,6 +51,10 @@ class CardDTO {
       StoreDTO.fromJson(json);
   static Map<String, dynamic> _storeToJson(StoreDTO store) => store.toJson();
 
+  static StyleDTO _styleFromJson(Map<String, dynamic> json) =>
+      StyleDTO.fromJson(json);
+  static Map<String, dynamic> _styleToJson(StyleDTO style) => style.toJson();
+
   factory CardDTO.fromJson(Map<String, dynamic> json) =>
       _$CardDTOFromJson(json);
 
@@ -54,10 +63,20 @@ class CardDTO {
 
 @JsonSerializable()
 class TimeToExpireDTO {
-  final int months;
+  final int? years;
+  final int? months;
+  final int? days;
+  final int? hours;
+  final int? minutes;
+  final int? seconds;
 
   TimeToExpireDTO({
-    required this.months,
+    this.years,
+    this.months,
+    this.days,
+    this.hours,
+    this.minutes,
+    this.seconds,
   });
 
   factory TimeToExpireDTO.fromJson(Map<String, dynamic> json) =>
