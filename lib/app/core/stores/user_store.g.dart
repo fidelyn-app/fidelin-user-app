@@ -31,6 +31,22 @@ mixin _$UserStore on _UserStoreBase, Store {
     });
   }
 
+  late final _$_tokenAtom =
+      Atom(name: '_UserStoreBase._token', context: context);
+
+  @override
+  String? get _token {
+    _$_tokenAtom.reportRead();
+    return super._token;
+  }
+
+  @override
+  set _token(String? value) {
+    _$_tokenAtom.reportWrite(value, super._token, () {
+      super._token = value;
+    });
+  }
+
   late final _$setUserAsyncAction =
       AsyncAction('_UserStoreBase.setUser', context: context);
 
@@ -53,6 +69,20 @@ mixin _$UserStore on _UserStoreBase, Store {
   @override
   Future<bool> check() {
     return _$checkAsyncAction.run(() => super.check());
+  }
+
+  late final _$_UserStoreBaseActionController =
+      ActionController(name: '_UserStoreBase', context: context);
+
+  @override
+  void setToken(String newToken) {
+    final _$actionInfo = _$_UserStoreBaseActionController.startAction(
+        name: '_UserStoreBase.setToken');
+    try {
+      return super.setToken(newToken);
+    } finally {
+      _$_UserStoreBaseActionController.endAction(_$actionInfo);
+    }
   }
 
   @override

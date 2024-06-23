@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:fidelin_user_app/app/core/errors/Failure.dart';
-import 'package:fidelin_user_app/app/core/stores/token_store.dart';
 import 'package:fidelin_user_app/app/core/stores/user_store.dart';
 import 'package:fidelin_user_app/app/modules/auth/data/dto/create_user_dto.dart';
 import 'package:fidelin_user_app/app/modules/auth/data/dto/user_dto.dart';
@@ -14,13 +13,12 @@ import 'auth_datasource.dart';
 class AuthDataSourceImpl implements AuthDataSource {
   final String _baseUrl;
 
-  AuthDataSourceImpl(this._baseUrl); // Inject the base URL during construction
+  AuthDataSourceImpl(this._baseUrl);
 
   @override
   Future<void> requestForgotPassword({required String email}) async {
     try {
-      final url =
-          Uri.parse('https://fidelin-staging.up.railway.app/forgot-password');
+      final url = Uri.parse('$_baseUrl/forgot-password');
       final response = await http.post(url, body: {'email': email});
       if (response.statusCode == 200) {
         print('Forgot password request sent successfully.');
@@ -43,8 +41,8 @@ class AuthDataSourceImpl implements AuthDataSource {
           await http.post(url, body: {'email': email, 'password': password});
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body) as Map<String, dynamic>;
-        final user = UserDTO.fromJSON(data['user']);
-        Modular.get<TokenStore>().setToken(data['token']);
+        final user = UserDTO.fromMap(data['user']);
+        Modular.get<UserStore>().setToken(data['token']);
         Modular.get<UserStore>().setUser(UserMapper.mapDTOtoEntity(user));
         return user;
       } else {
