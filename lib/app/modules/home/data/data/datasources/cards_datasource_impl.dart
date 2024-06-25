@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:fidelin_user_app/app/core/errors/Failure.dart';
 import 'package:fidelin_user_app/app/core/stores/user_store.dart';
-import 'package:fidelin_user_app/app/modules/home/modules/cards/data/dto/user_card_dto.dart';
+import 'package:fidelin_user_app/app/modules/home/data/data/dto/user_card_dto.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:http/http.dart' as http;
 

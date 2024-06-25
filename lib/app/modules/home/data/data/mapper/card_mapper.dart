@@ -1,7 +1,7 @@
-import 'package:fidelin_user_app/app/modules/home/modules/cards/data/dto/card_dto.dart';
-import 'package:fidelin_user_app/app/modules/home/modules/cards/data/mapper/store_mapper.dart';
-import 'package:fidelin_user_app/app/modules/home/modules/cards/data/mapper/style_mapper.dart';
-import 'package:fidelin_user_app/app/modules/home/modules/cards/domain/entities/card_entity.dart';
+import 'package:fidelin_user_app/app/modules/home/data/data/dto/card_dto.dart';
+import 'package:fidelin_user_app/app/modules/home/data/data/mapper/store_mapper.dart';
+import 'package:fidelin_user_app/app/modules/home/data/data/mapper/style_mapper.dart';
+import 'package:fidelin_user_app/app/modules/home/domain/entities/card_entity.dart';
 
 class CardMapper {
   static Card toEntity(CardDTO dto) {

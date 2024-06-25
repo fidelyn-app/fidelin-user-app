@@ -1,5 +1,5 @@
-import 'package:fidelin_user_app/app/modules/home/modules/cards/data/dto/style_dto.dart';
-import 'package:fidelin_user_app/app/modules/home/modules/cards/domain/entities/style_entity.dart';
+import 'package:fidelin_user_app/app/modules/home/data/data/dto/style_dto.dart';
+import 'package:fidelin_user_app/app/modules/home/domain/entities/style_entity.dart';
 import 'package:fidelin_user_app/utils/color_mapper.dart';
 
 class StyleMapper {

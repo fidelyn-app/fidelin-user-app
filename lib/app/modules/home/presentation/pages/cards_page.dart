@@ -1,8 +1,8 @@
 import 'dart:math';
 
 import 'package:fidelin_user_app/app/core/stores/user_store.dart';
-import 'package:fidelin_user_app/app/modules/home/modules/cards/presentation/controllers/cards_controller.dart';
-import 'package:fidelin_user_app/app/modules/home/modules/cards/presentation/widgets/card_widget.dart';
+import 'package:fidelin_user_app/app/modules/home/presentation/controllers/cards_controller.dart';
+import 'package:fidelin_user_app/app/modules/home/presentation/widgets/card_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';

@@ -1,5 +1,5 @@
-import 'package:fidelin_user_app/app/modules/home/modules/cards/domain/entities/user_card_entity.dart';
-import 'package:fidelin_user_app/app/modules/home/modules/cards/domain/usecases/fetch_cards_usecase.dart';
+import 'package:fidelin_user_app/app/modules/home/domain/entities/user_card_entity.dart';
+import 'package:fidelin_user_app/app/modules/home/domain/usecases/fetch_cards_usecase.dart';
 import 'package:fidelin_user_app/utils/entity_generator.dart';
 import 'package:mobx/mobx.dart';
 
