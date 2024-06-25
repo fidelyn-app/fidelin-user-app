@@ -4,8 +4,7 @@ import 'package:fidelin_user_app/app/modules/home/data/data/repositories/cards_r
 import 'package:fidelin_user_app/app/modules/home/domain/repositories/cards_repository.dart';
 import 'package:fidelin_user_app/app/modules/home/domain/usecases/fetch_cards_usecase.dart';
 import 'package:fidelin_user_app/app/modules/home/home_page.dart';
-import 'package:fidelin_user_app/app/modules/home/presentation/controllers/cards_controller.dart';
-import 'package:fidelin_user_app/app/modules/home/presentation/controllers/qrcode_controller.dart';
+import 'package:fidelin_user_app/app/modules/home/presentation/controllers/home_controller.dart';
 import 'package:fidelin_user_app/app/modules/home/presentation/pages/cards_page.dart';
 import 'package:fidelin_user_app/app/modules/home/presentation/pages/profile_page.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -21,8 +20,7 @@ class HomeModule extends Module {
 
     i.add<FetchCardsUseCase>(FetchCardsUseCaseImpl.new);
 
-    i.addSingleton(CardsController.new);
-    i.addSingleton(QrCodeController.new);
+    i.addSingleton(HomeController.new);
   }
 
   @override

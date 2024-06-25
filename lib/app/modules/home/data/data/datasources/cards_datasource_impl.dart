@@ -46,4 +46,16 @@ class CardsDataSourceImpl implements CardsDataSource {
       rethrow;
     }
   }
+
+  @override
+  Future<void> addCard({required String cardId}) {
+    // TODO: implement addCard
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<void> addPoint({required String pointId}) {
+    // TODO: implement addPoint
+    throw UnimplementedError();
+  }
 }

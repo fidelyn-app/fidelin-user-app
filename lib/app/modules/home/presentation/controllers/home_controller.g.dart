@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'qrcode_controller.dart';
+part of 'home_controller.dart';
 
 // **************************************************************************
 // StoreGenerator
@@ -8,9 +8,25 @@ part of 'qrcode_controller.dart';
 
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic, no_leading_underscores_for_local_identifiers
 
-mixin _$QrCodeController on _QrCodeControllerBase, Store {
+mixin _$HomeController on _HomeControllerBase, Store {
+  late final _$cardsAtom =
+      Atom(name: '_HomeControllerBase.cards', context: context);
+
+  @override
+  ObservableList<UserCard> get cards {
+    _$cardsAtom.reportRead();
+    return super.cards;
+  }
+
+  @override
+  set cards(ObservableList<UserCard> value) {
+    _$cardsAtom.reportWrite(value, super.cards, () {
+      super.cards = value;
+    });
+  }
+
   late final _$isLoadingAtom =
-      Atom(name: '_QrCodeControllerBase.isLoading', context: context);
+      Atom(name: '_HomeControllerBase.isLoading', context: context);
 
   @override
   bool get isLoading {
@@ -25,8 +41,16 @@ mixin _$QrCodeController on _QrCodeControllerBase, Store {
     });
   }
 
+  late final _$fetchUserCardsAsyncAction =
+      AsyncAction('_HomeControllerBase.fetchUserCards', context: context);
+
+  @override
+  Future<void> fetchUserCards() {
+    return _$fetchUserCardsAsyncAction.run(() => super.fetchUserCards());
+  }
+
   late final _$addPointAsyncAction =
-      AsyncAction('_QrCodeControllerBase.addPoint', context: context);
+      AsyncAction('_HomeControllerBase.addPoint', context: context);
 
   @override
   Future<void> addPoint(String id) {
@@ -34,7 +58,7 @@ mixin _$QrCodeController on _QrCodeControllerBase, Store {
   }
 
   late final _$addCardAsyncAction =
-      AsyncAction('_QrCodeControllerBase.addCard', context: context);
+      AsyncAction('_HomeControllerBase.addCard', context: context);
 
   @override
   Future<void> addCard(String id) {
@@ -44,6 +68,7 @@ mixin _$QrCodeController on _QrCodeControllerBase, Store {
   @override
   String toString() {
     return '''
+cards: ${cards},
 isLoading: ${isLoading}
     ''';
   }

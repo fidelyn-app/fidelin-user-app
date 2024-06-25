@@ -1,8 +1,10 @@
+import 'package:fidelin_user_app/app/modules/home/presentation/controllers/home_controller.dart';
 import 'package:fidelin_user_app/app/modules/home/presentation/pages/cards_page.dart';
 import 'package:fidelin_user_app/app/modules/home/presentation/pages/profile_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
+import 'package:flutter_modular/flutter_modular.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -15,7 +17,8 @@ class _HomePageState extends State<HomePage> {
   late int _selectedPageIndex;
   late List<Widget> _pages;
   late PageController _pageController;
-  String _scanBarcode = 'Unknown';
+
+  final HomeController _qrController = Modular.get<HomeController>();
 
   @override
   void initState() {
@@ -55,6 +58,21 @@ class _HomePageState extends State<HomePage> {
     try {
       barcodeScanRes = await FlutterBarcodeScanner.scanBarcode(
           '#ff6666', 'Cancel', true, ScanMode.QR);
+
+      final command = barcodeScanRes.split('/')[0];
+      final value = barcodeScanRes.split('/')[1];
+
+      switch (command) {
+        case 'ADD_CARD':
+          _qrController.addCard(value);
+          break;
+        case 'ADD_POINT':
+          _qrController.addPoint(value);
+          break;
+        default:
+          break;
+      }
+
       print(barcodeScanRes);
     } on PlatformException {
       barcodeScanRes = 'Failed to get platform version.';
@@ -64,10 +82,6 @@ class _HomePageState extends State<HomePage> {
     // message was in flight, we want to discard the reply rather than calling
     // setState to update our non-existent appearance.
     if (!mounted) return;
-
-    setState(() {
-      _scanBarcode = barcodeScanRes;
-    });
   }
 
   void _tapHandler(int index) {

@@ -1,7 +1,7 @@
 import 'dart:math' as math;
 
 import 'package:fidelin_user_app/app/modules/home/domain/entities/user_card_entity.dart';
-import 'package:fidelin_user_app/app/modules/home/presentation/controllers/cards_controller.dart';
+import 'package:fidelin_user_app/app/modules/home/presentation/controllers/home_controller.dart';
 import 'package:fidelin_user_app/app/modules/home/presentation/widgets/point_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
@@ -21,7 +21,7 @@ class CardWidget extends StatefulWidget {
 }
 
 class _CardWidgetState extends State<CardWidget> {
-  final CardsController _cardsController = Modular.get<CardsController>();
+  final HomeController _homeController = Modular.get<HomeController>();
 
   late UserCard userCard;
 
@@ -29,12 +29,12 @@ class _CardWidgetState extends State<CardWidget> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    userCard = _cardsController.cards[widget.index];
+    userCard = _homeController.cards[widget.index];
   }
 
   @override
   Widget build(BuildContext context) {
-    final double cardWidget = widget.constraints.maxWidth / 1.40;
+    final double cardWidget = widget.constraints.maxWidth / 1.30;
 
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 8.0),
@@ -287,6 +287,10 @@ Future<void> _launchUrl(Uri url) async {
 double calculateMaxCrossAxisExtent(
     double screenWidth, double screenHeight, int itemCount,
     {double itemSpacing = 1.0}) {
+  if (itemCount <= 16) {
+    return screenWidth / 4;
+  }
+
   // Calculate the available area per square
   final totalArea = (screenWidth - 40) * (screenHeight - 20);
 
