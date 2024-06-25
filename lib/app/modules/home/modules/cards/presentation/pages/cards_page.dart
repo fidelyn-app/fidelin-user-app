@@ -35,14 +35,14 @@ class _CardsPageState extends State<CardsPage>
             ConstrainedBox(
           constraints: BoxConstraints(minHeight: constraints.maxHeight),
           child: SafeArea(
+            top: true,
             child: Observer(
               builder: (_) => Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: <Widget>[
-                  Container(
-                    // color: Colors.red,
-                    height: constraints.maxHeight * 0.20,
+                  SizedBox(
+                    height: constraints.maxHeight * 0.25,
                     child: Padding(
                       padding: const EdgeInsets.symmetric(
                           horizontal: 28.0, vertical: 16.0),
@@ -66,9 +66,6 @@ class _CardsPageState extends State<CardsPage>
                       ),
                     ),
                   ),
-                  SizedBox(
-                    height: 64.0,
-                  ),
                   _cardsController.isLoading
                       ? const Expanded(
                           child: Center(
@@ -79,10 +76,13 @@ class _CardsPageState extends State<CardsPage>
                           child: _cardsController.cards.isNotEmpty
                               ? ScrollSnapList(
                                   dynamicSizeEquation: (double scale) {
-                                    return 1 - min(scale.abs() / 1000, 0.2);
+                                    return 1 -
+                                        min(scale.abs() / 1000,
+                                            0.2); // Distancia entre os itens
                                   },
                                   onItemFocus: (_) => {},
-                                  itemSize: constraints.maxWidth / 1.40,
+                                  itemSize: constraints.maxWidth /
+                                      1.40, // Cada Cartão tem 40% de distancia da margem
                                   itemBuilder: (context, index) => CardWidget(
                                       constraints: constraints, index: index),
                                   itemCount: _cardsController.cards.length,

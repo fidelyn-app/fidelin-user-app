@@ -1,4 +1,4 @@
-import 'dart:math';
+import 'dart:math' as math;
 
 import 'package:fidelin_user_app/app/modules/home/modules/cards/domain/entities/user_card_entity.dart';
 import 'package:fidelin_user_app/app/modules/home/modules/cards/presentation/controllers/cards_controller.dart';
@@ -34,8 +34,10 @@ class _CardWidgetState extends State<CardWidget> {
 
   @override
   Widget build(BuildContext context) {
+    final double cardWidget = widget.constraints.maxWidth / 1.40;
+
     return Container(
-      margin: EdgeInsets.symmetric(vertical: 8.0),
+      margin: const EdgeInsets.symmetric(vertical: 8.0),
       decoration: userCard.card.style.backgroundUrl != null
           ? BoxDecoration(
               image: DecorationImage(
@@ -55,7 +57,7 @@ class _CardWidgetState extends State<CardWidget> {
               ],
             )
           : BoxDecoration(
-              color: userCard.card.style.pointColor,
+              color: userCard.card.style.backgroundColor,
               borderRadius: BorderRadius.circular(20.0),
               boxShadow: [
                 BoxShadow(
@@ -66,7 +68,8 @@ class _CardWidgetState extends State<CardWidget> {
                 ),
               ],
             ),
-      width: widget.constraints.maxWidth / 1.40,
+      width:
+          cardWidget, // Tem que ser igual ao tamanho do afastamento das bordas
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
@@ -105,7 +108,7 @@ Widget _header(UserCard userCard, BuildContext context) {
           color: Colors.white,
           size: 32,
         ),
-        onPressed: () => _dialogQRCode(context, userCard.id),
+        onPressed: () => _dialogQRCode(context, userCard),
       ),
     ],
   );
@@ -136,58 +139,64 @@ Widget _avatar(UserCard userCard) {
                 ),
         ),
         const SizedBox(
-          height: 16.0,
+          height: 8.0,
         ),
         FittedBox(
           fit: BoxFit.scaleDown,
           child: Text(
-            userCard.card.store.businessName,
+            userCard.card.style.title ?? userCard.card.store.businessName,
             style: const TextStyle(
               fontSize: 32,
               color: Colors.white,
               fontWeight: FontWeight.w600,
             ),
           ),
-        )
+        ),
+        userCard.card.style.subtitle != null
+            ? Text(
+                userCard.card.style.subtitle ??
+                    userCard.card.store.businessName,
+                style: const TextStyle(
+                  fontSize: 12,
+                  color: Colors.white,
+                  fontWeight: FontWeight.w600,
+                ),
+              )
+            : const SizedBox(),
       ],
     ),
   );
 }
 
 Widget _gridPoints(UserCard userCard, context) {
-  const show = true;
+  //Quantidade de items, tamanho do container
 
-  return show
-      ? Expanded(
-          child: GridView.builder(
-            primary: false,
-            physics: const NeverScrollableScrollPhysics(),
-            padding: const EdgeInsets.all(20),
-            itemCount: userCard.card.maxPoints,
-            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: calculateCrossAxisCount(userCard.card.maxPoints),
-              crossAxisSpacing: 8,
-              mainAxisSpacing: 6,
-            ),
-            itemBuilder: (BuildContext context, int index) => PointWidget(
-              selected: userCard.points.length > index,
-              color: userCard.card.style.pointColor,
-              isLastPoint: userCard.card.maxPoints - 1 == index,
-              index: index + 1,
-            ),
+  return Expanded(
+    child: LayoutBuilder(
+      builder: (BuildContext context, BoxConstraints constraints) =>
+          GridView.builder(
+        primary: false,
+        shrinkWrap: true,
+        physics: const NeverScrollableScrollPhysics(),
+        padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10),
+        itemCount: userCard.card.maxPoints,
+        gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+          maxCrossAxisExtent: calculateMaxCrossAxisExtent(
+            constraints.maxWidth,
+            constraints.minHeight,
+            userCard.card.maxPoints,
+            itemSpacing: 12,
           ),
-        )
-      : Expanded(
-          child: Center(
-          child: Container(
-            color: Colors.white,
-            child: QrImageView(
-              data: userCard.id,
-              version: QrVersions.auto,
-              size: 250.0,
-            ),
-          ),
-        ));
+        ),
+        itemBuilder: (BuildContext context, int index) => PointWidget(
+          selected: userCard.points.length > index,
+          color: userCard.card.style.pointColor,
+          isLastPoint: userCard.card.maxPoints - 1 == index,
+          index: index + 1,
+        ),
+      ),
+    ),
+  );
 }
 
 Widget _bottom(UserCard userCard) {
@@ -269,53 +278,53 @@ PopupMenuItem _buildPopupMenuItem(String title) {
   );
 }
 
-double calculateMaxCrossAxisExtent(BuildContext context) {
-  // Use MediaQuery to get screen width
-  final screenWidth = MediaQuery.of(context).size.width;
-
-  // Calculate minimum width based on desired layout (e.g., 200 for 2 columns)
-  final minItemWidth = 200.0; // Adjust as needed
-
-  // Calculate maximum number of columns that fit comfortably
-  final maxColumns = (screenWidth / minItemWidth).floor();
-
-  // Calculate ideal cross axis extent based on max columns and spacing
-  final idealExtent = (screenWidth - (maxColumns - 1) * 10) / maxColumns;
-
-  // Handle potential edge cases (very small screens)
-  return idealExtent > minItemWidth ? idealExtent : minItemWidth;
-}
-
 Future<void> _launchUrl(Uri url) async {
   if (!await launchUrl(url)) {
     throw Exception('Could not launch $url');
   }
 }
 
-int calculateCrossAxisCount(int numberOfItems) {
-  double squareRoot = sqrt(numberOfItems);
-  int roundedSquareRoot = squareRoot.ceil();
+double calculateMaxCrossAxisExtent(
+    double screenWidth, double screenHeight, int itemCount,
+    {double itemSpacing = 1.0}) {
+  // Calculate the available area per square
+  final totalArea = (screenWidth - 40) * (screenHeight - 20);
 
-  if (roundedSquareRoot > 4) {
-    return squareRoot.ceil();
-  } else {
-    return 4;
-  }
+  final areaPerSquare = totalArea / itemCount;
+
+  // Calculate the ideal side length based on the available area and aspect ratio
+  final idealSideLength = math.sqrt(areaPerSquare / 1).floor();
+
+  // Round down to the nearest integer to ensure all squares fit within the total area
+
+  return idealSideLength.toDouble();
 }
 
-Future<void> _dialogQRCode(BuildContext context, String data) {
+Future<void> _dialogQRCode(BuildContext context, UserCard userCard) {
   return showDialog<void>(
     context: context,
     builder: (BuildContext context) {
       return AlertDialog(
         content: Container(
           width: 250,
-          height: 250,
-          color: Colors.white,
-          child: QrImageView(
-            data: data,
-            version: QrVersions.auto,
-            size: 250.0,
+          color: Colors.transparent,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              QrImageView(
+                data: userCard.id,
+                version: QrVersions.auto,
+                size: 250.0,
+              ),
+              const SizedBox(
+                height: 10.0,
+              ),
+              Text(
+                userCard.card.description,
+                style: TextStyle(),
+                textAlign: TextAlign.center,
+              ),
+            ],
           ),
         ),
       );

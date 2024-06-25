@@ -39,12 +39,8 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // appBar: AppBar(
-      //   title: Text(widget.title),
-      // ),
       body: PageView(
         onPageChanged: _scrollHandler,
-        //scrollBehavior: const ScrollBehavior().copyWith(overscroll: false),
         physics: const NeverScrollableScrollPhysics(),
         controller: _pageController,
         children: _pages,

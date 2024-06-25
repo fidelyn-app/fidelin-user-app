@@ -1,6 +1,6 @@
-import 'package:dartz/dartz.dart';
 import 'package:fidelin_user_app/app/modules/home/modules/cards/domain/entities/user_card_entity.dart';
 import 'package:fidelin_user_app/app/modules/home/modules/cards/domain/usecases/fetch_cards_usecase.dart';
+import 'package:fidelin_user_app/utils/entity_generator.dart';
 import 'package:mobx/mobx.dart';
 
 part 'cards_controller.g.dart';
@@ -24,24 +24,26 @@ abstract class _CardsControllerBase with Store {
   Future<void> fetchUserCards() async {
     isLoading = true;
 
-    final Either<Exception, List<UserCard>> _response =
-        await _fetchCardsUseCase.call();
-    _response.fold(
-      (Exception e) {
-        print("ERROR");
-      },
-      (List<UserCard> listOfCards) {
-        cards.clear();
-        cards.addAll(listOfCards);
-      },
-    );
+    // final Either<Exception, List<UserCard>> _response =
+    //     await _fetchCardsUseCase.call();
+    // _response.fold(
+    //   (Exception e) {
+    //     print("ERROR");
+    //   },
+    //   (List<UserCard> listOfCards) {
+    //     cards.clear();
+    //     cards.addAll(listOfCards);
+    //   },
+    // );
 
-    // List<UserCard> fakerUserCards =
-    //     List.generate(3, (i) => EntityGenerator.generateUserCard());
+    List<UserCard> fakerUserCards =
+        List.generate(3, (i) => EntityGenerator.generateUserCard());
 
-    // cards.addAll(fakerUserCards);
+    final card = EntityGenerator.generateUserCard();
 
-    // print(fakerUserCards[0].card.maxPoints);
+    cards.addAll(fakerUserCards);
+
+    print(fakerUserCards[0].card.maxPoints);
 
     isLoading = false;
   }

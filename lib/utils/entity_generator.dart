@@ -38,6 +38,7 @@ class EntityGenerator {
       pointBorderRadius: 2.0,
       pointBorderSize: 2.0,
       pointColor: ColorMapper.hexToColor(_generateRandomHexColor()),
+      backgroundColor: ColorMapper.hexToColor(_generateRandomHexColor()),
       pointColumnSize: faker.randomGenerator.integer(6, min: 4),
       backgroundUrl: 'https://picsum.photos/400/600',
       pointBackgroundUrl: 'https://picsum.photos/400/600',

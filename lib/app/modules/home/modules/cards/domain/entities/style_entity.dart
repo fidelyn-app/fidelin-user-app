@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 class Style {
   final String id;
   final Color pointColor;
+  final Color backgroundColor;
   final bool pointShowNumbers;
   final double pointBorderRadius;
   final double pointBorderSize;
@@ -15,6 +16,7 @@ class Style {
   Style({
     required this.id,
     required this.pointColor,
+    required this.backgroundColor,
     this.pointShowNumbers = false,
     required this.pointBorderRadius,
     required this.pointBorderSize,
@@ -36,7 +38,8 @@ class Style {
       pointBorderSize: $pointBorderSize,
       pointColumnSize: $pointColumnSize, 
       pointBackgroundUrl: $pointBackgroundUrl, 
-      backgroundUrl: $backgroundUrl, 
+      backgroundUrl: $backgroundUrl,
+      backgroundColor: $backgroundColor,
       title: $title, 
       subtitle: $subtitle
     )

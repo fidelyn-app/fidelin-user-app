@@ -17,12 +17,13 @@ class PointWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      margin: EdgeInsets.all(2.0),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(5.0),
         border: Border.all(
           color: color,
-          width: !isLastPoint ? 2.0 : 8.0,
+          width: !isLastPoint ? 2.0 : 2.0,
           style: BorderStyle.solid,
         ),
       ),

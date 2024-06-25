@@ -13,6 +13,7 @@ StyleDTO _$StyleDTOFromJson(Map<String, dynamic> json) => StyleDTO(
       pointBorderSize: json['pointBorderSize'] as String,
       pointColumnSize: (json['pointColumnSize'] as num).toInt(),
       pointBorderRadius: json['pointBorderRadius'] as String,
+      backgroundColor: json['backgroundColor'] as String,
       pointBackgroundUrl: json['pointBackgroundUrl'] as String?,
       backgroundUrl: json['backgroundUrl'] as String?,
       title: json['title'] as String?,
@@ -28,6 +29,7 @@ Map<String, dynamic> _$StyleDTOToJson(StyleDTO instance) => <String, dynamic>{
       'pointBorderRadius': instance.pointBorderRadius,
       'pointBackgroundUrl': instance.pointBackgroundUrl,
       'backgroundUrl': instance.backgroundUrl,
+      'backgroundColor': instance.backgroundColor,
       'title': instance.title,
       'subtitle': instance.subtitle,
     };

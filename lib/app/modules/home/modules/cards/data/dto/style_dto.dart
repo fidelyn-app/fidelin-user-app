@@ -12,6 +12,7 @@ class StyleDTO {
   final String pointBorderRadius;
   final String? pointBackgroundUrl;
   final String? backgroundUrl;
+  final String backgroundColor;
   final String? title;
   final String? subtitle;
 
@@ -22,6 +23,7 @@ class StyleDTO {
     required this.pointBorderSize,
     required this.pointColumnSize,
     required this.pointBorderRadius,
+    required this.backgroundColor,
     this.pointBackgroundUrl,
     this.backgroundUrl,
     this.title,

@@ -13,6 +13,7 @@ class StyleMapper {
       pointColumnSize: dto.pointColumnSize,
       pointBackgroundUrl: dto.pointBackgroundUrl,
       backgroundUrl: dto.backgroundUrl,
+      backgroundColor: ColorMapper.hexToColor(dto.backgroundColor),
       title: dto.title,
       subtitle: dto.subtitle,
     );
@@ -28,6 +29,7 @@ class StyleMapper {
       pointColumnSize: entity.pointColumnSize,
       pointBackgroundUrl: entity.pointBackgroundUrl,
       backgroundUrl: entity.backgroundUrl,
+      backgroundColor: ColorMapper.colorToHex(entity.backgroundColor),
       title: entity.title,
       subtitle: entity.subtitle,
     );
