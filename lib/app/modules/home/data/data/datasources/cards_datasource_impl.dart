@@ -48,14 +48,53 @@ class CardsDataSourceImpl implements CardsDataSource {
   }
 
   @override
-  Future<void> addCard({required String cardId}) {
-    // TODO: implement addCard
-    throw UnimplementedError();
+  Future<void> addCard({required String cardId}) async {
+    try {
+      String token = Modular.get<UserStore>().getToken();
+
+      final url = Uri.parse('$_baseUrl/user/cards/$cardId');
+      final response = await http.post(url, headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Authorization': 'Bearer $token',
+      });
+      if (response.statusCode != 201) {
+        final data = jsonDecode(response.body) as Map<String, dynamic>;
+
+        throw Failure(
+          error: data['error'] ?? '',
+          message: data['message'] ?? '',
+          statusCode: response.statusCode,
+        );
+      }
+    } on Failure catch (_) {
+      rethrow;
+    }
   }
 
   @override
-  Future<void> addPoint({required String pointId}) {
-    // TODO: implement addPoint
-    throw UnimplementedError();
+  Future<void> addPoint(
+      {required String cardId, required String pointId}) async {
+    try {
+      String token = Modular.get<UserStore>().getToken();
+
+      final url = Uri.parse('$_baseUrl/user/cards/$cardId/point/$pointId');
+      final response = await http.post(url, headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Authorization': 'Bearer $token',
+      });
+      if (response.statusCode != 201) {
+        final data = jsonDecode(response.body) as Map<String, dynamic>;
+
+        throw Failure(
+          error: data['error'] ?? '',
+          message: data['message'] ?? '',
+          statusCode: response.statusCode,
+        );
+      }
+    } on Failure catch (_) {
+      rethrow;
+    }
   }
 }

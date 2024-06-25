@@ -53,16 +53,16 @@ mixin _$HomeController on _HomeControllerBase, Store {
       AsyncAction('_HomeControllerBase.addPoint', context: context);
 
   @override
-  Future<void> addPoint(String id) {
-    return _$addPointAsyncAction.run(() => super.addPoint(id));
+  Future<void> addPoint(String pointId) {
+    return _$addPointAsyncAction.run(() => super.addPoint(pointId));
   }
 
   late final _$addCardAsyncAction =
       AsyncAction('_HomeControllerBase.addCard', context: context);
 
   @override
-  Future<void> addCard(String id) {
-    return _$addCardAsyncAction.run(() => super.addCard(id));
+  Future<void> addCard(String cardId) {
+    return _$addCardAsyncAction.run(() => super.addCard(cardId));
   }
 
   @override

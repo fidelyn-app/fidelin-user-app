@@ -64,10 +64,10 @@ class _HomePageState extends State<HomePage> {
 
       switch (command) {
         case 'ADD_CARD':
-          _qrController.addCard(value);
+          _qrController.addCard('7d7d1c5a-2766-428c-a87b-016831becc26');
           break;
         case 'ADD_POINT':
-          _qrController.addPoint(value);
+          _qrController.addPoint("03e65819-28ab-4d3c-8cbf-4203ea526ae8");
           break;
         default:
           break;
