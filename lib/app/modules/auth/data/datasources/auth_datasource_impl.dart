@@ -17,17 +17,17 @@ class AuthDataSourceImpl implements AuthDataSource {
 
   @override
   Future<void> requestForgotPassword({required String email}) async {
-    try {
-      final url = Uri.parse('$_baseUrl/forgot-password');
-      final response = await http.post(url, body: {'email': email});
-      if (response.statusCode == 200) {
-        print('Forgot password request sent successfully.');
-      } else {
-        throw Exception(
-            'Failed to request forgot password: ${response.statusCode}');
-      }
-    } on Exception catch (error) {
-      print('Error requesting forgot password: ${error.toString()}');
+    final url = Uri.parse('$_baseUrl/user/forgot-password');
+    final response = await http.post(url, body: {'email': email});
+    final data = jsonDecode(response.body) as Map<String, dynamic>;
+    if (response.statusCode == 200) {
+      print('Forgot password request sent successfully.');
+    } else {
+      throw Failure(
+        error: data['error'] ?? '',
+        message: data['message'] ?? '',
+        statusCode: response.statusCode,
+      );
     }
   }
 
@@ -35,8 +35,7 @@ class AuthDataSourceImpl implements AuthDataSource {
   Future<UserDTO> signInWithEmail(
       {required String email, required String password}) async {
     try {
-      final url =
-          Uri.parse('https://fidelin-staging.up.railway.app/user/signin');
+      final url = Uri.parse('$_baseUrl/user/signin');
       final response =
           await http.post(url, body: {'email': email, 'password': password});
       if (response.statusCode == 200) {
@@ -54,9 +53,9 @@ class AuthDataSourceImpl implements AuthDataSource {
           statusCode: response.statusCode,
         );
       }
-    } on Failure catch (error) {
-      print('Error signing in: ${error.toString()}');
-      throw error;
+    } catch (error) {
+      print(error.toString());
+      rethrow;
     }
   }
 
@@ -72,15 +71,42 @@ class AuthDataSourceImpl implements AuthDataSource {
       }
     } on Exception catch (error) {
       print('Error signing out: ${error.toString()}');
+      throw error;
     }
   }
 
   @override
   Future<void> signUpWithEmail(CreateUserDTO user) async {
     try {
-      final url =
-          Uri.parse('https://fidelin-staging.up.railway.app/user/signup');
+      final url = Uri.parse('$_baseUrl/user/signup');
       final response = await http.post(url, body: user.toJSON());
+      print(response);
+      if (response.statusCode == 201) {
+        print('Signed up successfully.');
+      } else {
+        final data = jsonDecode(response.body) as Map<String, dynamic>;
+
+        throw Failure(
+          error: data['error'],
+          message: data['message'],
+          statusCode: response.statusCode,
+        );
+      }
+    } on Failure catch (error) {
+      print('Error signing up: ${error.toString()}');
+      throw error;
+    }
+  }
+
+  @override
+  Future<void> updatePassword(
+      {required String email,
+      required String code,
+      required String password}) async {
+    try {
+      final url = Uri.parse('$_baseUrl/user/signup');
+      final response = await http.post(url, body: '');
+      print(response);
       if (response.statusCode == 201) {
         print('Signed up successfully.');
       } else {

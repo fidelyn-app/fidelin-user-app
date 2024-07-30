@@ -9,5 +9,8 @@ void main() async {
 
   Modular.setInitialRoute('/splash');
 
-  runApp(ModularApp(module: AppModule(), child: const AppWidget()));
+  runApp(ModularApp(
+    module: AppModule(),
+    child: const AppWidget(),
+  ));
 }

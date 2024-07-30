@@ -1,8 +1,9 @@
 import 'package:dartz/dartz.dart';
+import 'package:fidelin_user_app/app/core/errors/Failure.dart';
 import 'package:fidelin_user_app/app/modules/auth/domain/repositories/auth_repository.dart';
 
 abstract class ForgotPasswordUseCase {
-  Future<Either<Exception, Unit>> call({required String email});
+  Future<Either<Failure, Unit>> call({required String email});
 }
 
 class ForgotPasswordUseCaseImpl implements ForgotPasswordUseCase {
@@ -12,7 +13,7 @@ class ForgotPasswordUseCaseImpl implements ForgotPasswordUseCase {
       : _repository = repository;
 
   @override
-  Future<Either<Exception, Unit>> call({required String email}) {
+  Future<Either<Failure, Unit>> call({required String email}) {
     return _repository.forgotPassword(email: email);
   }
 }

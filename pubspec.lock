@@ -41,6 +41,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.5.0"
+  asuka:
+    dependency: "direct main"
+    description:
+      name: asuka
+      sha256: "819ed85be58b26ef3a71d304ac49400fab3463401325e5943fba4ed183889cc2"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.2.1"
   async:
     dependency: transitive
     description:
@@ -488,6 +496,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.0.0"
+  logger:
+    dependency: "direct main"
+    description:
+      name: logger
+      sha256: "697d067c60c20999686a0add96cf6aba723b3aa1f83ecf806a8097231529ec32"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.4.0"
   logging:
     dependency: transitive
     description:

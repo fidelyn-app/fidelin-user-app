@@ -1,8 +1,10 @@
 // import 'package:customer/app/modules/auth/domain/entities/user_entity.dart';
 // import 'package:customer/app/modules/auth/domain/usecases/signin_with_email_usecase.dart';
 // import 'package:customer/shared/stores/user_store.dart';
+import 'package:asuka/asuka.dart';
 import 'package:dartz/dartz.dart';
 import 'package:fidelin_user_app/app/core/domain/entities/user_entity.dart';
+import 'package:fidelin_user_app/app/core/errors/Failure.dart';
 import 'package:fidelin_user_app/app/core/stores/user_store.dart';
 import 'package:fidelin_user_app/app/modules/auth/domain/usecases/signin_with_email_usecase.dart';
 import 'package:flutter/material.dart';
@@ -44,12 +46,14 @@ abstract class _SignInControllerBase with Store {
     if (formField.currentState!.validate()) {
       loading = true;
 
-      final Either<Exception, UserEntity> _response =
+      final Either<Failure, UserEntity> _response =
           await _signInWithEmailUseCase.call(
         email: emailTextController.text,
         password: passwordTextController.text,
       );
-      _response.fold((Exception e) {}, (UserEntity user) {
+      _response.fold((Failure e) {
+        AsukaSnackbar.alert(e.message).show();
+      }, (UserEntity user) {
         _userStore.setUser(user);
         Modular.to.navigate('/home/');
       });

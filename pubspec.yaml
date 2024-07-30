@@ -27,6 +27,8 @@ dependencies:
   flutter_launcher_icons: ^0.13.1
   flutter_native_splash: ^2.4.0
   shared_preferences: ^2.2.3
+  asuka: ^2.2.1
+  logger: ^2.4.0
 
 flutter_native_splash:
   color: "#F22F52"

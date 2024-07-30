@@ -16,6 +16,5 @@ class Failure extends Equatable implements Exception {
       'Failure(message: $message, error: $error, statusCode: $statusCode)';
 
   @override
-  // TODO: implement props
   List<Object?> get props => throw UnimplementedError();
 }

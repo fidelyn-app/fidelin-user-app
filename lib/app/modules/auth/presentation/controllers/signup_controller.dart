@@ -1,4 +1,6 @@
+import 'package:asuka/snackbars/asuka_snack_bar.dart';
 import 'package:dartz/dartz.dart';
+import 'package:fidelin_user_app/app/core/errors/Failure.dart';
 import 'package:fidelin_user_app/app/modules/auth/data/dto/create_user_dto.dart';
 import 'package:fidelin_user_app/app/modules/auth/domain/usecases/signup_with_email_usercase.dart';
 import 'package:flutter/material.dart';
@@ -56,9 +58,11 @@ abstract class _SignUpControllerBase with Store {
         password: passwordTextController.text,
       );
 
-      final Either<Exception, Unit> response =
+      final Either<Failure, Unit> response =
           await _signUpWithEmailUseCase.call(user);
-      response.fold((Exception e) {}, (_) {
+      response.fold((Failure e) {
+        AsukaSnackbar.alert(e.message).show();
+      }, (_) {
         Modular.to.pop();
       });
     }

@@ -1,3 +1,4 @@
+import 'package:fidelin_user_app/app/core/utils/text_validators.dart';
 import 'package:fidelin_user_app/app/core/widgets/spacer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
@@ -15,12 +16,6 @@ class ForgotPasswordPage extends StatefulWidget {
 class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
   final ForgotPasswordController _controller =
       Modular.get<ForgotPasswordController>();
-
-  void _handleForgotPasswordRequest(String email) {
-    _controller.requestForgotPassword(email: email).then((bool? value) {
-      Modular.to.pushNamed('/auth/check-email');
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -69,15 +64,20 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                     const SizedBox(
                       height: 32.0,
                     ),
-                    const TextField(
-                      decoration: InputDecoration(
-                        border: OutlineInputBorder(),
-                        labelText: 'E-mail',
-                        prefixIcon: Align(
-                          widthFactor: 1.0,
-                          heightFactor: 1.0,
-                          child: Icon(
-                            Icons.mail,
+                    Form(
+                      key: _controller.formField,
+                      child: TextFormField(
+                        validator: Validators.email,
+                        controller: _controller.emailTextController,
+                        decoration: const InputDecoration(
+                          border: OutlineInputBorder(),
+                          labelText: 'E-mail',
+                          prefixIcon: Align(
+                            widthFactor: 1.0,
+                            heightFactor: 1.0,
+                            child: Icon(
+                              Icons.mail,
+                            ),
                           ),
                         ),
                       ),
@@ -85,9 +85,8 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                     SpaceWidget(size: SpaceSize.l),
                     Observer(
                       builder: (_) => ElevatedButton(
-                        onPressed: () => _handleForgotPasswordRequest(
-                            "jonatha_rihan@hotmail.com"),
-                        child: _controller.loading
+                        onPressed: () => _controller.requestForgotPassword(),
+                        child: _controller.isLoading
                             ? SizedBox(
                                 height: 25.0,
                                 width: 25.0,
