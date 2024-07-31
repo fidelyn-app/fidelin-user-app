@@ -19,7 +19,7 @@ import 'presentation/pages/signin_page.dart';
 class AuthModule extends Module {
   @override
   void binds(Injector i) {
-    i.add<AuthDataSource>(() => AuthDataSourceImpl("http://localhost:3000"));
+    i.add<AuthDataSource>(AuthDataSourceImpl.new);
 
     i.add<AuthRepository>(AuthRepositoryImpl.new);
 

@@ -63,6 +63,7 @@ abstract class _SignUpControllerBase with Store {
       response.fold((Failure e) {
         AsukaSnackbar.alert(e.message).show();
       }, (_) {
+        AsukaSnackbar.success("Usuário cadastrado!").show();
         Modular.to.pop();
       });
     }

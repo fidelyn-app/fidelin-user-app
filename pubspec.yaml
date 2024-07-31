@@ -29,6 +29,7 @@ dependencies:
   shared_preferences: ^2.2.3
   asuka: ^2.2.1
   logger: ^2.4.0
+  package_info_plus: ^8.0.1
 
 flutter_native_splash:
   color: "#F22F52"
