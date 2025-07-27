@@ -9,9 +9,7 @@ import 'package:http/http.dart' as http;
 import 'cards_datasource.dart';
 
 class CardsDataSourceImpl implements CardsDataSource {
-  final String _baseUrl;
-
-  CardsDataSourceImpl(this._baseUrl);
+  final String _baseUrl = "http://192.168.100.9:3000";
 
   @override
   Future<List<UserCardDTO>> fetchCards() async {
@@ -19,11 +17,14 @@ class CardsDataSourceImpl implements CardsDataSource {
       String token = Modular.get<UserStore>().getToken();
 
       final url = Uri.parse('$_baseUrl/user/cards');
-      final response = await http.get(url, headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json',
-        'Authorization': 'Bearer $token',
-      });
+      final response = await http.get(
+        url,
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+          'Authorization': 'Bearer $token',
+        },
+      );
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body) as List<dynamic>;
         final List<UserCardDTO> cards = [];
@@ -53,11 +54,14 @@ class CardsDataSourceImpl implements CardsDataSource {
       String token = Modular.get<UserStore>().getToken();
 
       final url = Uri.parse('$_baseUrl/user/cards/$cardId');
-      final response = await http.post(url, headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json',
-        'Authorization': 'Bearer $token',
-      });
+      final response = await http.post(
+        url,
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+          'Authorization': 'Bearer $token',
+        },
+      );
       if (response.statusCode != 201) {
         final data = jsonDecode(response.body) as Map<String, dynamic>;
 
@@ -73,17 +77,22 @@ class CardsDataSourceImpl implements CardsDataSource {
   }
 
   @override
-  Future<void> addPoint(
-      {required String cardId, required String pointId}) async {
+  Future<void> addPoint({
+    required String cardId,
+    required String pointId,
+  }) async {
     try {
       String token = Modular.get<UserStore>().getToken();
 
       final url = Uri.parse('$_baseUrl/user/cards/$cardId/point/$pointId');
-      final response = await http.post(url, headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json',
-        'Authorization': 'Bearer $token',
-      });
+      final response = await http.post(
+        url,
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+          'Authorization': 'Bearer $token',
+        },
+      );
       if (response.statusCode != 201) {
         final data = jsonDecode(response.body) as Map<String, dynamic>;
 

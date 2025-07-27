@@ -1,4 +1,4 @@
-package com.example.fidelin_user_app
+package com.example.fidelin_app
 
 import io.flutter.embedding.android.FlutterActivity
 

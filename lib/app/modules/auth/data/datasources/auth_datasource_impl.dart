@@ -12,7 +12,7 @@ import 'package:http/http.dart' as http;
 import 'auth_datasource.dart';
 
 class AuthDataSourceImpl implements AuthDataSource {
-  final String _baseUrl = "http://localhost:3000";
+  final String _baseUrl = "http://192.168.100.9:3000";
 
   final http.Client _httpClient = Modular.get<HttpClient>();
 
@@ -20,66 +20,86 @@ class AuthDataSourceImpl implements AuthDataSource {
 
   @override
   Future<void> requestForgotPassword({required String email}) async {
-    final url = Uri.parse('$_baseUrl/user/forgot-password');
-    final response = await _httpClient.post(url, body: {'email': email});
-    final data = jsonDecode(response.body) as Map<String, dynamic>;
-    if (response.statusCode == 200) {
-      print('Forgot password request sent successfully.');
-    } else {
-      throw Failure(
-        error: data['error'] ?? '',
-        message: data['message'] ?? '',
-        statusCode: response.statusCode,
-      );
+    try {
+      final url = Uri.parse('$_baseUrl/user/forgot-password');
+      final response = await _httpClient.post(url, body: {'email': email});
+      final data = jsonDecode(response.body) as Map<String, dynamic>;
+      if (response.statusCode == 200) {
+        print('Forgot password request sent successfully.');
+      } else {
+        throw Failure(
+          error: data['error'] ?? '',
+          message: data['message'] ?? '',
+          statusCode: response.statusCode,
+        );
+      }
+    } catch (e) {
+      throw Exception('Failed to send forgot password request: $e');
     }
   }
 
   @override
-  Future<UserDTO> signInWithEmail(
-      {required String email, required String password}) async {
-    final url = Uri.parse('$_baseUrl/user/signin');
-    final response = await _httpClient
-        .post(url, body: {'email': email, 'password': password});
-    if (response.statusCode == 200) {
-      final data = jsonDecode(response.body) as Map<String, dynamic>;
-      final user = UserDTO.fromMap(data['user']);
-      Modular.get<UserStore>().setToken(data['token']);
-      Modular.get<UserStore>().setUser(UserMapper.mapDTOtoEntity(user));
-      return user;
-    } else {
-      final data = jsonDecode(response.body) as Map<String, dynamic>;
-
-      throw Failure(
-        error: data['error'] ?? '',
-        message: data['message'] ?? '',
-        statusCode: response.statusCode,
+  Future<UserDTO> signInWithEmail({
+    required String email,
+    required String password,
+  }) async {
+    try {
+      final url = Uri.parse('$_baseUrl/user/signin');
+      final response = await _httpClient.post(
+        url,
+        body: {'email': email, 'password': password},
       );
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body) as Map<String, dynamic>;
+        final user = UserDTO.fromMap(data['user']);
+        Modular.get<UserStore>().setToken(data['token']);
+        Modular.get<UserStore>().setUser(UserMapper.mapDTOtoEntity(user));
+        return user;
+      } else {
+        final data = jsonDecode(response.body) as Map<String, dynamic>;
+
+        throw Failure(
+          error: data['error'] ?? '',
+          message: data['message'] ?? '',
+          statusCode: response.statusCode,
+        );
+      }
+    } catch (e) {
+      throw Failure(message: '', statusCode: 500);
     }
   }
 
   @override
   Future<void> signOut() async {
-    final url = Uri.parse('$_baseUrl/logout');
-    final response = await _httpClient.post(url);
-    if (response.statusCode == 200) {
-    } else {
-      throw Exception('Failed to sign out: ${response.statusCode}');
+    try {
+      final url = Uri.parse('$_baseUrl/logout');
+      final response = await _httpClient.post(url);
+      if (response.statusCode == 200) {
+      } else {
+        throw Exception('Failed to sign out: ${response.statusCode}');
+      }
+    } catch (e) {
+      throw Exception('Failed to sign out: $e');
     }
   }
 
   @override
   Future<void> signUpWithEmail(CreateUserDTO user) async {
-    final url = Uri.parse('$_baseUrl/user/signup');
-    final response = await _httpClient.post(url, body: user.toJSON());
-    if (response.statusCode == 201) {
-    } else {
-      final data = jsonDecode(response.body) as Map<String, dynamic>;
+    try {
+      final url = Uri.parse('$_baseUrl/user/signup');
+      final response = await _httpClient.post(url, body: user.toJSON());
+      if (response.statusCode == 201) {
+      } else {
+        final data = jsonDecode(response.body) as Map<String, dynamic>;
 
-      throw Failure(
-        error: data['error'],
-        message: data['message'],
-        statusCode: response.statusCode,
-      );
+        throw Failure(
+          error: data['error'],
+          message: data['message'],
+          statusCode: response.statusCode,
+        );
+      }
+    } catch (e) {
+      throw Exception('Failed to sign up: $e');
     }
   }
 
@@ -89,17 +109,21 @@ class AuthDataSourceImpl implements AuthDataSource {
     required String code,
     required String password,
   }) async {
-    final url = Uri.parse('$_baseUrl/user/signup');
-    final response = await _httpClient.post(url, body: '');
-    if (response.statusCode == 201) {
-    } else {
-      final data = jsonDecode(response.body) as Map<String, dynamic>;
+    try {
+      final url = Uri.parse('$_baseUrl/user/signup');
+      final response = await _httpClient.post(url, body: '');
+      if (response.statusCode == 201) {
+      } else {
+        final data = jsonDecode(response.body) as Map<String, dynamic>;
 
-      throw Failure(
-        error: data['error'],
-        message: data['message'],
-        statusCode: response.statusCode,
-      );
+        throw Failure(
+          error: data['error'],
+          message: data['message'],
+          statusCode: response.statusCode,
+        );
+      }
+    } catch (e) {
+      throw Exception('Failed to sign up: $e');
     }
   }
 }
