@@ -11,7 +11,10 @@ class CardMapper {
       description: dto.description,
       active: dto.active,
       storeId: dto.storeId,
-      timeToExpire: TimeToExpireMapper.toEntity(dto.timeToExpire),
+      timeToExpire:
+          dto.timeToExpire == null
+              ? null
+              : TimeToExpireMapper.toEntity(dto.timeToExpire!),
       createdAt: dto.createdAt,
       updatedAt: dto.updatedAt,
       store: StoreMapper.toEntity(dto.store),
@@ -26,7 +29,10 @@ class CardMapper {
       description: entity.description,
       active: entity.active,
       storeId: entity.storeId,
-      timeToExpire: TimeToExpireMapper.toDto(entity.timeToExpire),
+      timeToExpire:
+          entity.timeToExpire == null
+              ? null
+              : TimeToExpireMapper.toDto(entity.timeToExpire!),
       createdAt: entity.createdAt,
       updatedAt: entity.updatedAt,
       store: StoreMapper.toDto(entity.store),

@@ -54,6 +54,7 @@ dependencies:
   package_info_plus: ^8.3.0
   qr_flutter: ^4.1.0
   mobile_scanner: ^7.0.1
+  flutter_otp_text_field: ^1.5.1+1
 
 dev_dependencies:
   flutter_test:

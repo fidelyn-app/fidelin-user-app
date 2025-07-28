@@ -7,7 +7,7 @@ class Card {
   final String description;
   final bool active;
   final String storeId;
-  final TimeToExpire timeToExpire;
+  final TimeToExpire? timeToExpire;
   final DateTime createdAt;
   final DateTime updatedAt;
 

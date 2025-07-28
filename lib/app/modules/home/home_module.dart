@@ -8,6 +8,7 @@ import 'package:fidelin_user_app/app/modules/home/domain/usecases/fetch_cards_us
 import 'package:fidelin_user_app/app/modules/home/home_page.dart';
 import 'package:fidelin_user_app/app/modules/home/presentation/controllers/home_controller.dart';
 import 'package:fidelin_user_app/app/modules/home/presentation/pages/cards_page.dart';
+import 'package:fidelin_user_app/app/modules/home/presentation/pages/input_code.dart';
 import 'package:fidelin_user_app/app/modules/home/presentation/pages/profile_page.dart';
 import 'package:fidelin_user_app/app/modules/home/presentation/pages/qr_scanner_page.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -30,12 +31,16 @@ class HomeModule extends Module {
   @override
   void routes(RouteManager r) {
     r.child(
+      '/input_code',
+      child: (context) => InputCode(type: r.args.queryParams['type']),
+    );
+    r.child('/qr', child: (context) => const QRScannerPage());
+    r.child(
       '/',
       child: (context) => const HomePage(),
       children: [
         ChildRoute('/cards', child: (context) => CardsPage()),
         ChildRoute('/profile', child: (context) => const ProfilePage()),
-        ChildRoute('/qr', child: (context) => const QRScannerPage()),
       ],
     );
   }

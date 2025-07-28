@@ -38,13 +38,10 @@ abstract class _HomeControllerBase with Store {
 
     final Either<Exception, List<UserCard>> response =
         await _fetchCardsUseCase.call();
-    response.fold(
-      (Exception e) {},
-      (List<UserCard> listOfCards) {
-        cards.clear();
-        cards.addAll(listOfCards);
-      },
-    );
+    response.fold((Exception e) {}, (List<UserCard> listOfCards) {
+      cards.clear();
+      cards.addAll(listOfCards);
+    });
 
     // List<UserCard> fakerUserCards =
     //     List.generate(3, (i) => EntityGenerator.generateUserCard());
@@ -67,7 +64,9 @@ abstract class _HomeControllerBase with Store {
     isLoading = true;
 
     final Either<Exception, Unit> response = await _addPointUseCase.call(
-        pointId: pointId, cardId: cards[indexCard].id);
+      pointId: pointId,
+      cardId: cards[indexCard].id,
+    );
     response.fold(
       (Exception e) {
         isLoading = false;

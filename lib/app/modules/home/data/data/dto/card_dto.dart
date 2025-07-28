@@ -15,7 +15,7 @@ class CardDTO {
   final bool active;
   final String storeId;
   @JsonKey(fromJson: _timeToExpireFromJson, toJson: _timeToExpireToJson)
-  final TimeToExpireDTO timeToExpire;
+  final TimeToExpireDTO? timeToExpire;
   final DateTime createdAt;
   final DateTime updatedAt;
 
@@ -40,12 +40,11 @@ class CardDTO {
     required this.style,
   });
 
-  // Custom deserialization/serialization for nested objects
-  static TimeToExpireDTO _timeToExpireFromJson(Map<String, dynamic> json) =>
-      TimeToExpireDTO.fromJson(json);
-  static Map<String, dynamic> _timeToExpireToJson(
-          TimeToExpireDTO timeToExpire) =>
-      timeToExpire.toJson();
+  static TimeToExpireDTO? _timeToExpireFromJson(Map<String, dynamic>? json) =>
+      json != null ? TimeToExpireDTO.fromJson(json) : null;
+  static Map<String, dynamic>? _timeToExpireToJson(
+    TimeToExpireDTO? timeToExpire,
+  ) => timeToExpire?.toJson();
 
   static StoreDTO _storeFromJson(Map<String, dynamic> json) =>
       StoreDTO.fromJson(json);

@@ -8,7 +8,7 @@ part 'user_card_dto.g.dart';
 @JsonSerializable()
 class UserCardDTO {
   final String id;
-  final DateTime expiration;
+  final DateTime? expiration;
   final int pointsCount;
   final String userId;
   final DateTime createdAt;

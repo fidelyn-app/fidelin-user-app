@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:fidelin_user_app/app/core/errors/Failure.dart';
@@ -17,14 +18,16 @@ class CardsDataSourceImpl implements CardsDataSource {
       String token = Modular.get<UserStore>().getToken();
 
       final url = Uri.parse('$_baseUrl/user/cards');
-      final response = await http.get(
-        url,
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json',
-          'Authorization': 'Bearer $token',
-        },
-      );
+      final response = await http
+          .get(
+            url,
+            headers: {
+              'Content-Type': 'application/json',
+              'Accept': 'application/json',
+              'Authorization': 'Bearer $token',
+            },
+          )
+          .timeout(const Duration(seconds: 3));
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body) as List<dynamic>;
         final List<UserCardDTO> cards = [];
@@ -45,6 +48,12 @@ class CardsDataSourceImpl implements CardsDataSource {
       }
     } on Failure catch (error) {
       rethrow;
+    } on TimeoutException catch (_) {
+      throw Failure(
+        message: 'O servidor demorou para responder.',
+        error: 'Timeout',
+        statusCode: 408,
+      );
     }
   }
 

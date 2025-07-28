@@ -8,7 +8,9 @@ part of 'user_card_dto.dart';
 
 UserCardDTO _$UserCardDTOFromJson(Map<String, dynamic> json) => UserCardDTO(
       id: json['id'] as String,
-      expiration: DateTime.parse(json['expiration'] as String),
+      expiration: json['expiration'] == null
+          ? null
+          : DateTime.parse(json['expiration'] as String),
       pointsCount: (json['pointsCount'] as num).toInt(),
       userId: json['userId'] as String,
       createdAt: DateTime.parse(json['createdAt'] as String),
@@ -20,7 +22,7 @@ UserCardDTO _$UserCardDTOFromJson(Map<String, dynamic> json) => UserCardDTO(
 Map<String, dynamic> _$UserCardDTOToJson(UserCardDTO instance) =>
     <String, dynamic>{
       'id': instance.id,
-      'expiration': instance.expiration.toIso8601String(),
+      'expiration': instance.expiration?.toIso8601String(),
       'pointsCount': instance.pointsCount,
       'userId': instance.userId,
       'createdAt': instance.createdAt.toIso8601String(),

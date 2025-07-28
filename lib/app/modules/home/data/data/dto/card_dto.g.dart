@@ -15,7 +15,7 @@ CardDTO _$CardDTOFromJson(Map<String, dynamic> json) => CardDTO(
       active: json['active'] as bool,
       storeId: json['storeId'] as String,
       timeToExpire: CardDTO._timeToExpireFromJson(
-          json['timeToExpire'] as Map<String, dynamic>),
+          json['timeToExpire'] as Map<String, dynamic>?),
       createdAt: DateTime.parse(json['createdAt'] as String),
       updatedAt: DateTime.parse(json['updatedAt'] as String),
       store: CardDTO._storeFromJson(json['store'] as Map<String, dynamic>),

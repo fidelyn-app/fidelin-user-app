@@ -126,28 +126,30 @@ class _HomePageState extends State<HomePage> {
                 ),
                 InkWell(
                   onTap: () async {
-                    final result = await Navigator.of(context).push<String>(
-                      MaterialPageRoute(builder: (_) => const QRScannerPage()),
-                    );
+                    // final result = await Navigator.of(context).push<String>(
+                    //   MaterialPageRoute(builder: (_) => const QRScannerPage()),
+                    // );
 
-                    if (result != null) {
-                      final command = result.split('/')[0];
-                      final value = result.split('/')[1];
+                    Modular.to.pushNamed('/home/qr'); // correto
 
-                      switch (command) {
-                        case 'ADD_CARD':
-                          _qrController.addCard(value);
-                          break;
-                        case 'ADD_POINT':
-                          _qrController.addPoint(value);
-                          break;
-                        default:
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(content: Text('QR Code inválido')),
-                          );
-                          break;
-                      }
-                    }
+                    // if (result != null) {
+                    //   final command = result.split('/')[0];
+                    //   final value = result.split('/')[1];
+
+                    //   switch (command) {
+                    //     case 'ADD_CARD':
+                    //       _qrController.addCard(value);
+                    //       break;
+                    //     case 'ADD_POINT':
+                    //       _qrController.addPoint(value);
+                    //       break;
+                    //     default:
+                    //       ScaffoldMessenger.of(context).showSnackBar(
+                    //         const SnackBar(content: Text('QR Code inválido')),
+                    //       );
+                    //       break;
+                    //   }
+                    // }
                   },
                   child: Container(
                     decoration: const BoxDecoration(

@@ -3,7 +3,7 @@ import 'point_entity.dart';
 
 class UserCard {
   final String id;
-  final DateTime expiration;
+  final DateTime? expiration;
   final int pointsCount;
   final String userId;
   final DateTime createdAt;
