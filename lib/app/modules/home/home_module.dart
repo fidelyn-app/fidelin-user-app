@@ -7,6 +7,7 @@ import 'package:fidelin_user_app/app/modules/home/domain/usecases/add_point_usec
 import 'package:fidelin_user_app/app/modules/home/domain/usecases/fetch_cards_usecase.dart';
 import 'package:fidelin_user_app/app/modules/home/home_page.dart';
 import 'package:fidelin_user_app/app/modules/home/presentation/controllers/home_controller.dart';
+import 'package:fidelin_user_app/app/modules/home/presentation/controllers/input_code_controller.dart';
 import 'package:fidelin_user_app/app/modules/home/presentation/pages/cards_page.dart';
 import 'package:fidelin_user_app/app/modules/home/presentation/pages/input_code.dart';
 import 'package:fidelin_user_app/app/modules/home/presentation/pages/profile_page.dart';
@@ -26,6 +27,7 @@ class HomeModule extends Module {
     i.add<AddPointUseCase>(AddPointUseCaseImpl.new);
 
     i.addSingleton(HomeController.new);
+    i.addSingleton(InputCodeController.new);
   }
 
   @override

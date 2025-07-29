@@ -60,11 +60,11 @@ abstract class _HomeControllerBase with Store {
   }
 
   @action
-  Future<void> addPoint(String pointId) async {
+  Future<void> addPoint({required String shortCodeId}) async {
     isLoading = true;
 
     final Either<Exception, Unit> response = await _addPointUseCase.call(
-      pointId: pointId,
+      pointId: shortCodeId,
       cardId: cards[indexCard].id,
     );
     response.fold(
@@ -78,11 +78,11 @@ abstract class _HomeControllerBase with Store {
   }
 
   @action
-  Future<void> addCard(String cardId) async {
+  Future<void> addCard({required String shortCodeId}) async {
     isLoading = true;
 
     final Either<Exception, Unit> response = await _addCardUseCase.call(
-      cardId: cardId,
+      cardId: shortCodeId,
     );
     response.fold(
       (Exception e) {
