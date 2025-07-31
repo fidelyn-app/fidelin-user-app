@@ -18,7 +18,9 @@ import 'package:flutter_modular/flutter_modular.dart';
 class HomeModule extends Module {
   @override
   void binds(Injector i) {
-    i.add<CardsDataSource>(() => CardsDataSourceImpl());
+    i.add<CardsDataSource>(
+      () => CardsDataSourceImpl(baseUrl: dotenv.env['API_URL']!),
+    );
 
     i.add<CardsRepository>(CardsRepositoryImpl.new);
 

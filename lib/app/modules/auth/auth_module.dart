@@ -12,6 +12,7 @@ import 'package:fidelin_user_app/app/modules/auth/presentation/controllers/signu
 import 'package:fidelin_user_app/app/modules/auth/presentation/pages/check_email_page.dart';
 import 'package:fidelin_user_app/app/modules/auth/presentation/pages/forgot_password_page.dart';
 import 'package:fidelin_user_app/app/modules/auth/presentation/pages/signup_page.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
 import 'presentation/pages/signin_page.dart';
@@ -19,7 +20,9 @@ import 'presentation/pages/signin_page.dart';
 class AuthModule extends Module {
   @override
   void binds(Injector i) {
-    i.add<AuthDataSource>(AuthDataSourceImpl.new);
+    i.add<AuthDataSource>(
+      () => AuthDataSourceImpl(baseUrl: dotenv.env['API_URL']!),
+    );
 
     i.add<AuthRepository>(AuthRepositoryImpl.new);
 
@@ -35,21 +38,9 @@ class AuthModule extends Module {
 
   @override
   void routes(RouteManager r) {
-    r.child(
-      '/',
-      child: (context) => const SignInPage(),
-    );
-    r.child(
-      '/signup',
-      child: (context) => const SignUpPage(),
-    );
-    r.child(
-      '/forgot-password',
-      child: (context) => const ForgotPasswordPage(),
-    );
-    r.child(
-      '/check-email',
-      child: (context) => const CheckEmailPage(),
-    );
+    r.child('/', child: (context) => const SignInPage());
+    r.child('/signup', child: (context) => const SignUpPage());
+    r.child('/forgot-password', child: (context) => const ForgotPasswordPage());
+    r.child('/check-email', child: (context) => const CheckEmailPage());
   }
 }

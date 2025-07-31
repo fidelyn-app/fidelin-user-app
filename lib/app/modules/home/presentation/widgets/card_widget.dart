@@ -141,7 +141,7 @@ Widget _header(UserCard userCard, BuildContext context) {
 
 Widget _avatar(UserCard userCard) {
   return Visibility(
-    visible: false,
+    visible: true,
     child: Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20.0),
       child: Column(

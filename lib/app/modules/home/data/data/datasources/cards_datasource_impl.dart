@@ -10,7 +10,9 @@ import 'package:http/http.dart' as http;
 import 'cards_datasource.dart';
 
 class CardsDataSourceImpl implements CardsDataSource {
-  final String _baseUrl = "http://192.168.100.9:3000";
+  final String _baseUrl;
+
+  CardsDataSourceImpl({required String baseUrl}) : _baseUrl = baseUrl;
 
   @override
   Future<List<UserCardDTO>> fetchCards() async {

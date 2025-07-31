@@ -69,7 +69,7 @@ class _InputCodeState extends State<InputCode> with HomeMixin {
                           borderColor: const Color(0xFFF22F52),
                           showFieldAsBox: true,
                           keyboardType: TextInputType.text,
-
+                          fieldWidth: maxWidth / 8.2,
                           borderRadius: BorderRadius.circular(12),
                           focusedBorderColor: const Color(0xFFF22F52),
                           inputFormatters: [UpperCaseTextFormatter()],

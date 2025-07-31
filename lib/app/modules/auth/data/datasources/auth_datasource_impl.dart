@@ -12,11 +12,11 @@ import 'package:http/http.dart' as http;
 import 'auth_datasource.dart';
 
 class AuthDataSourceImpl implements AuthDataSource {
-  final String _baseUrl = "http://192.168.100.9:3000";
+  final String _baseUrl;
 
   final http.Client _httpClient = Modular.get<HttpClient>();
 
-  AuthDataSourceImpl();
+  AuthDataSourceImpl({required String baseUrl}) : _baseUrl = baseUrl;
 
   @override
   Future<void> requestForgotPassword({required String email}) async {
