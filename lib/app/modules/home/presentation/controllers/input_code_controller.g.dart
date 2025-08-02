@@ -25,6 +25,38 @@ mixin _$InputCodeController on _InputCodeControllerBase, Store {
     });
   }
 
+  late final _$successAtom =
+      Atom(name: '_InputCodeControllerBase.success', context: context);
+
+  @override
+  bool get success {
+    _$successAtom.reportRead();
+    return super.success;
+  }
+
+  @override
+  set success(bool value) {
+    _$successAtom.reportWrite(value, super.success, () {
+      super.success = value;
+    });
+  }
+
+  late final _$errorAtom =
+      Atom(name: '_InputCodeControllerBase.error', context: context);
+
+  @override
+  bool get error {
+    _$errorAtom.reportRead();
+    return super.error;
+  }
+
+  @override
+  set error(bool value) {
+    _$errorAtom.reportWrite(value, super.error, () {
+      super.error = value;
+    });
+  }
+
   late final _$addPointAsyncAction =
       AsyncAction('_InputCodeControllerBase.addPoint', context: context);
 
@@ -46,7 +78,9 @@ mixin _$InputCodeController on _InputCodeControllerBase, Store {
   @override
   String toString() {
     return '''
-isLoading: ${isLoading}
+isLoading: ${isLoading},
+success: ${success},
+error: ${error}
     ''';
   }
 }

@@ -55,6 +55,7 @@ dependencies:
   qr_flutter: ^4.1.0
   mobile_scanner: ^7.0.1
   flutter_otp_text_field: ^1.5.1+1
+  flutter_bloc: ^9.1.1
 
 dev_dependencies:
   flutter_test:
@@ -88,6 +89,7 @@ flutter:
     - assets/images/forgot_password.png
     - assets/images/mail_sent.png
     - assets/images/dialog_success.png
+    - assets/images/dialog_error.png
     - .env
 
   # An image asset can refer to one or more resolution-specific "variants", see

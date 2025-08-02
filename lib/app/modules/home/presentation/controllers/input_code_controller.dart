@@ -46,13 +46,11 @@ abstract class _InputCodeControllerBase with Store {
       (Exception e) {
         error = true;
         success = false;
-        isLoading = false;
       },
       (_) {
         success = true;
         error = false;
         _homeController.fetchUserCards();
-        isLoading = false;
       },
     );
   }
@@ -68,13 +66,11 @@ abstract class _InputCodeControllerBase with Store {
       (Exception e) {
         error = true;
         success = false;
-        isLoading = false;
       },
       (_) {
         success = true;
         error = false;
         _homeController.fetchUserCards();
-        isLoading = false;
       },
     );
   }

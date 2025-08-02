@@ -93,8 +93,6 @@ class CardsDataSourceImpl implements CardsDataSource {
     required String pointId,
   }) async {
     try {
-      await Future.delayed(const Duration(seconds: 3));
-
       String token = Modular.get<UserStore>().getToken();
 
       final url = Uri.parse('$_baseUrl/user/cards/$cardId/point/$pointId');

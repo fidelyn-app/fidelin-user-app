@@ -9,9 +9,11 @@ import 'package:fidelin_user_app/app/modules/home/home_page.dart';
 import 'package:fidelin_user_app/app/modules/home/presentation/controllers/home_controller.dart';
 import 'package:fidelin_user_app/app/modules/home/presentation/controllers/input_code_controller.dart';
 import 'package:fidelin_user_app/app/modules/home/presentation/pages/cards_page.dart';
+import 'package:fidelin_user_app/app/modules/home/presentation/pages/error_page.dart';
 import 'package:fidelin_user_app/app/modules/home/presentation/pages/input_code.dart';
 import 'package:fidelin_user_app/app/modules/home/presentation/pages/profile_page.dart';
 import 'package:fidelin_user_app/app/modules/home/presentation/pages/qr_scanner_page.dart';
+import 'package:fidelin_user_app/app/modules/home/presentation/pages/sucess_page.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
@@ -29,7 +31,7 @@ class HomeModule extends Module {
     i.add<AddPointUseCase>(AddPointUseCaseImpl.new);
 
     i.addSingleton(HomeController.new);
-    i.addSingleton(InputCodeController.new);
+    i.add(InputCodeController.new);
   }
 
   @override
@@ -39,6 +41,8 @@ class HomeModule extends Module {
       child: (context) => InputCode(type: r.args.queryParams['type']),
     );
     r.child('/qr', child: (context) => const QRScannerPage());
+    r.child('/success', child: (context) => const SuccessPage());
+    r.child('/error', child: (context) => const ErrorPage());
     r.child(
       '/',
       child: (context) => const HomePage(),
