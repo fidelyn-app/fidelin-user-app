@@ -20,22 +20,88 @@ class CardWidget extends StatefulWidget {
   State<CardWidget> createState() => _CardWidgetState();
 }
 
-class _CardWidgetState extends State<CardWidget> {
+class _CardWidgetState extends State<CardWidget>
+    with SingleTickerProviderStateMixin {
   final HomeController _homeController = Modular.get<HomeController>();
 
   late UserCard userCard;
+  late AnimationController _controller;
+  late Animation<double> _animation;
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     userCard = _homeController.cards[widget.index];
+
+    _controller = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 600),
+    );
+
+    _animation = Tween<double>(
+      begin: 0.0,
+      end: 1.0,
+    ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeInOut));
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  void _toggleCard() {
+    if (_controller.isAnimating) return;
+    if (_controller.status == AnimationStatus.completed) {
+      _controller.reverse();
+    } else {
+      _controller.forward();
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     final double cardWidget = widget.constraints.maxWidth / 1.30;
 
+    // GestureDetector envolve a animação para captar toques e virar o cartão
+    return GestureDetector(
+      behavior: HitTestBehavior.translucent,
+      onTap: _toggleCard,
+      child: SizedBox(
+        width: cardWidget,
+        child: AnimatedBuilder(
+          animation: _animation,
+          builder: (context, child) {
+            final angle = _animation.value * math.pi; // 0 -> pi
+            // true: mostra frente ; false: mostra verso
+            final isFront = angle <= (math.pi / 2);
+
+            // Matriz 3D para efeito de profundidade
+            final transform =
+                Matrix4.identity()
+                  ..setEntry(3, 2, 0.001) // perspectiva
+                  ..rotateY(angle);
+
+            return Transform(
+              transform: transform,
+              alignment: Alignment.center,
+              child:
+                  isFront
+                      ? _buildFront(cardWidget)
+                      // Quando estivermos no "verso", rotacionamos +pi para corrigir orientação do conteúdo
+                      : Transform(
+                        transform: Matrix4.identity()..rotateY(math.pi),
+                        alignment: Alignment.center,
+                        child: _buildBack(cardWidget),
+                      ),
+            );
+          },
+        ),
+      ),
+    );
+  }
+
+  Widget _buildFront(double width) {
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 8.0),
       decoration:
@@ -51,7 +117,7 @@ class _CardWidgetState extends State<CardWidget> {
                     color: Colors.grey.withOpacity(0.5),
                     spreadRadius: 5,
                     blurRadius: 7,
-                    offset: const Offset(0, 3), // changes position of shadow
+                    offset: const Offset(0, 3),
                   ),
                 ],
               )
@@ -63,12 +129,11 @@ class _CardWidgetState extends State<CardWidget> {
                     color: Colors.grey.withOpacity(0.5),
                     spreadRadius: 5,
                     blurRadius: 7,
-                    offset: const Offset(0, 3), // changes position of shadow
+                    offset: const Offset(0, 3),
                   ),
                 ],
               ),
-      width:
-          cardWidget, // Tem que ser igual ao tamanho do afastamento das bordas
+      width: width,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
@@ -77,6 +142,126 @@ class _CardWidgetState extends State<CardWidget> {
           _titleAndSubtitle(userCard),
           _gridPoints(userCard, context),
           _bottom(userCard),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildBack(double width) {
+    // Verso: personalize aqui (ex.: QR + descrição). Mantive visual próximo ao front.
+    return Container(
+      margin: const EdgeInsets.symmetric(vertical: 8.0),
+      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
+      decoration: BoxDecoration(
+        color:
+            userCard.card.style.backgroundColor?.withOpacity(0.95) ??
+            Colors.black87,
+        borderRadius: BorderRadius.circular(20.0),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.5),
+            spreadRadius: 5,
+            blurRadius: 7,
+            offset: const Offset(0, 3),
+          ),
+        ],
+      ),
+      width: width,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          // Cabeçalho simplificado no verso
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              const SizedBox(width: 32), // placeholder (mantém alinhamento)
+              Text(
+                "Cartão",
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+              IconButton(
+                icon: Icon(MdiIcons.qrcode, color: Colors.white, size: 28),
+                onPressed: () {
+                  // pode abrir diálogo maior também
+                  _dialogQRCode(context, userCard);
+                },
+              ),
+            ],
+          ),
+          const SizedBox(height: 8),
+          // QR inline
+          QrImageView(
+            data: userCard.id,
+            version: QrVersions.auto,
+            size: 140,
+            backgroundColor: Colors.white,
+          ),
+          const SizedBox(height: 8),
+          Text(
+            userCard.card.description,
+            style: const TextStyle(color: Colors.white),
+            textAlign: TextAlign.center,
+          ),
+          const SizedBox(height: 12),
+          // Informações extras — ex.: contatos
+          if (userCard.card.store.contacts.phone != null)
+            Text(
+              "Tel: ${userCard.card.store.contacts.phone}",
+              style: const TextStyle(color: Colors.white70, fontSize: 12),
+            ),
+          const SizedBox(height: 8),
+          // Botões rápidos
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              IconButton(
+                icon: const Icon(
+                  FontAwesomeIcons.whatsapp,
+                  color: Colors.white,
+                ),
+                onPressed: () {
+                  final Uri url = Uri.parse(
+                    "https://wa.me/${userCard.card.store.contacts.phone}?text=Olá!",
+                  );
+                  _launchUrl(url);
+                },
+              ),
+              IconButton(
+                icon: const Icon(
+                  FontAwesomeIcons.instagram,
+                  color: Colors.white,
+                ),
+                onPressed: () async {
+                  final Uri nativeUrl = Uri.parse(
+                    "instagram://user?username=${userCard.card.store.contacts.instagram}",
+                  );
+                  final Uri webUrl = Uri.parse(
+                    "https://www.instagram.com/${userCard.card.store.contacts.instagram}/",
+                  );
+                  if (await canLaunchUrl(nativeUrl)) {
+                    await _launchUrl(nativeUrl);
+                  } else if (await canLaunchUrl(webUrl)) {
+                    await _launchUrl(webUrl);
+                  } else {
+                    print("can't open Instagram");
+                  }
+                },
+              ),
+              IconButton(
+                icon: const Icon(Icons.phone, color: Colors.white),
+                onPressed: () {
+                  final Uri launchUri = Uri(
+                    scheme: 'tel',
+                    path: '+5581996509220',
+                  );
+                  _launchUrl(launchUri);
+                },
+              ),
+            ],
+          ),
         ],
       ),
     );
@@ -174,8 +359,6 @@ Widget _avatar(UserCard userCard) {
 }
 
 Widget _gridPoints(UserCard userCard, context) {
-  //Quantidade de items, tamanho do container
-
   return Expanded(
     child: LayoutBuilder(
       builder:
@@ -290,15 +473,11 @@ double calculateMaxCrossAxisExtent(
     return screenWidth / 4;
   }
 
-  // Calculate the available area per square
   final totalArea = (screenWidth - 40) * (screenHeight - 20);
 
   final areaPerSquare = totalArea / itemCount;
 
-  // Calculate the ideal side length based on the available area and aspect ratio
   final idealSideLength = math.sqrt(areaPerSquare / 1).floor();
-
-  // Round down to the nearest integer to ensure all squares fit within the total area
 
   return idealSideLength.toDouble();
 }

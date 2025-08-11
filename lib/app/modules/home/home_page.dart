@@ -1,9 +1,7 @@
 import 'package:fidelin_user_app/app/modules/home/presentation/controllers/home_controller.dart';
 import 'package:fidelin_user_app/app/modules/home/presentation/pages/cards_page.dart';
 import 'package:fidelin_user_app/app/modules/home/presentation/pages/profile_page.dart';
-import 'package:fidelin_user_app/app/modules/home/presentation/pages/qr_scanner_page.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
 class HomePage extends StatefulWidget {
