@@ -8,6 +8,7 @@ import 'package:fidelin_user_app/app/modules/auth/data/dto/user_dto.dart';
 import 'package:fidelin_user_app/app/modules/auth/data/mapper/user_mapper.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:http/http.dart' as http;
+import 'package:logger/logger.dart';
 
 import 'auth_datasource.dart';
 
@@ -15,6 +16,7 @@ class AuthDataSourceImpl implements AuthDataSource {
   final String _baseUrl;
 
   final http.Client _httpClient = Modular.get<HttpClient>();
+  final Logger _logger = Modular.get<Logger>();
 
   AuthDataSourceImpl({required String baseUrl}) : _baseUrl = baseUrl;
 
@@ -23,18 +25,36 @@ class AuthDataSourceImpl implements AuthDataSource {
     try {
       final url = Uri.parse('$_baseUrl/user/forgot-password');
       final response = await _httpClient.post(url, body: {'email': email});
-      final data = jsonDecode(response.body) as Map<String, dynamic>;
-      if (response.statusCode == 200) {
-        print('Forgot password request sent successfully.');
-      } else {
-        throw Failure(
-          error: data['error'] ?? '',
-          message: data['message'] ?? '',
-          statusCode: response.statusCode,
-        );
+
+      Map<String, dynamic>? data;
+
+      // Só tenta decodificar se o body não for vazio
+      if (response.body.isNotEmpty) {
+        try {
+          data = jsonDecode(response.body) as Map<String, dynamic>;
+        } catch (e) {
+          // Se não for JSON válido, não quebra o fluxo
+          _logger.i('Aviso: resposta não é JSON válido: $e');
+        }
       }
-    } catch (e) {
-      throw Exception('Failed to send forgot password request: $e');
+
+      if (response.statusCode == 200) {
+        _logger.d('Forgot password request sent successfully.');
+        return; // garante saída imediata
+      }
+
+      // Erro da API
+      throw Failure(
+        error: data?['error'] ?? '',
+        message: data?['message'] ?? 'Erro desconhecido',
+        statusCode: response.statusCode,
+      );
+    } on Failure {
+      rethrow; // Mantém falhas da API como estão
+    } catch (e, s) {
+      _logger.e('Erro inesperado em requestForgotPassword: $e');
+      _logger.e(s);
+      throw Exception('Falha ao enviar solicitação de esqueci minha senha');
     }
   }
 
@@ -110,8 +130,11 @@ class AuthDataSourceImpl implements AuthDataSource {
     required String password,
   }) async {
     try {
-      final url = Uri.parse('$_baseUrl/user/signup');
-      final response = await _httpClient.post(url, body: '');
+      final url = Uri.parse('$_baseUrl/user/update-password');
+      final response = await _httpClient.post(
+        url,
+        body: {'email': email, 'code': code, 'password': password},
+      );
       if (response.statusCode == 201) {
       } else {
         final data = jsonDecode(response.body) as Map<String, dynamic>;

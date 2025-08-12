@@ -16,9 +16,10 @@ abstract class _ForgotPasswordControllerBase with Store {
   late ForgotPasswordUseCase _forgotPasswordUseCase;
   late UpdatePasswordUseCase _updatePasswordUseCase;
 
-  _ForgotPasswordControllerBase(
-      {required ForgotPasswordUseCase forgotPasswordUseCase,
-      required UpdatePasswordUseCase updatePasswordUseCase}) {
+  _ForgotPasswordControllerBase({
+    required ForgotPasswordUseCase forgotPasswordUseCase,
+    required UpdatePasswordUseCase updatePasswordUseCase,
+  }) {
     _forgotPasswordUseCase = forgotPasswordUseCase;
     _updatePasswordUseCase = updatePasswordUseCase;
   }
@@ -72,11 +73,14 @@ abstract class _ForgotPasswordControllerBase with Store {
       final Either<Failure, Unit> response = await _forgotPasswordUseCase.call(
         email: emailTextController.text,
       );
-      response.fold((Failure e) {
-        AsukaSnackbar.alert(e.message).show();
-      }, (_) {
-        Modular.to.pushNamed('/auth/check-email');
-      });
+      response.fold(
+        (Failure e) {
+          AsukaSnackbar.alert(e.message).show();
+        },
+        (_) {
+          Modular.to.pushNamed('/auth/check-email');
+        },
+      );
       isLoading = false;
     }
   }
@@ -85,14 +89,18 @@ abstract class _ForgotPasswordControllerBase with Store {
   Future<void> updatePassword() async {
     isLoading = true;
     final Either<Failure, Unit> response = await _updatePasswordUseCase.call(
-        email: emailTextController.text,
-        code: codeTextController.text,
-        password: passwordTextController.text);
-    response.fold((Failure e) {
-      AsukaSnackbar.alert(e.message).show();
-    }, (_) {
-      Modular.to.popUntil((route) => route.isFirst);
-    });
+      email: emailTextController.text,
+      code: codeTextController.text,
+      password: passwordTextController.text,
+    );
+    response.fold(
+      (Failure e) {
+        AsukaSnackbar.alert(e.message).show();
+      },
+      (_) {
+        Modular.to.popUntil((route) => route.isFirst);
+      },
+    );
     isLoading = false;
   }
 }

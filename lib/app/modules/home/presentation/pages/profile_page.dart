@@ -40,6 +40,23 @@ class _ProfilePageState extends State<ProfilePage>
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
+                    Container(
+                      padding: EdgeInsets.all(2), // espessura da "borda"
+                      decoration: BoxDecoration(
+                        color: Colors.grey, // cor da borda
+                        shape: BoxShape.circle,
+                      ),
+                      child: CircleAvatar(
+                        radius: picSize,
+                        backgroundColor: Colors.white,
+                        child: Icon(
+                          Icons.person,
+                          size: 64,
+                          color: Colors.black26,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 24),
                     Text(
                       _userStore.user!.name,
                       textAlign: TextAlign.center,
@@ -67,11 +84,12 @@ class _ProfilePageState extends State<ProfilePage>
                             ),
                           ),
                           const Divider(height: 0),
-                          const Visibility(
-                            visible: false,
+                          Visibility(
+                            visible: true,
                             child: Padding(
                               padding: EdgeInsets.symmetric(horizontal: 15),
                               child: ListTile(
+                                onTap: () {},
                                 leading: Icon(Icons.lock),
                                 title: Text('Mudar Senha'),
                               ),
@@ -96,7 +114,6 @@ class _ProfilePageState extends State<ProfilePage>
                               ),
                             ),
                           ),
-                          const SizedBox(height: 24),
                           ElevatedButton.icon(
                             onPressed: () async {
                               await _userStore.removeUser();
@@ -131,7 +148,8 @@ class _ProfilePageState extends State<ProfilePage>
                         ],
                       ),
                     ),
-                    const SizedBox(height: 10),
+                    Center(child: Text("v1.0.0")),
+                    const SizedBox(height: 32),
                   ],
                 ),
               ),
