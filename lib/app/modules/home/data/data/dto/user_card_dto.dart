@@ -13,6 +13,7 @@ class UserCardDTO {
   final String userId;
   final DateTime createdAt;
   final DateTime updatedAt;
+  final String shortCode;
 
   @JsonKey(fromJson: _cardFromJson, toJson: _cardToJson)
   final CardDTO card;
@@ -29,6 +30,7 @@ class UserCardDTO {
     required this.updatedAt,
     required this.card,
     required this.points,
+    required this.shortCode,
   });
 
   static CardDTO _cardFromJson(Map<String, dynamic> json) =>

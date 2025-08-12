@@ -28,68 +28,58 @@ class _ProfilePageState extends State<ProfilePage>
     return Scaffold(
       body: LayoutBuilder(
         builder:
-            (BuildContext context, BoxConstraints constraints) => Stack(
-              children: [
-                Container(
-                  height: constraints.maxWidth / 2.5,
-                  decoration: const BoxDecoration(
-                    image: DecorationImage(
-                      fit: BoxFit.cover,
-                      image: NetworkImage(
-                        "https://firebasestorage.googleapis.com/v0/b/fidelin-b1ad0.appspot.com/o/cards%2F2.png?alt=media&token=eec7dc73-898a-4eac-b244-1a90dd7d95d8",
+            (BuildContext context, BoxConstraints constraints) => Container(
+              margin: EdgeInsets.only(top: constraints.maxWidth / 3),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.vertical(top: Radius.circular(30.0)),
+                color: Colors.white,
+              ),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 28.0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    Text(
+                      _userStore.user!.name,
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: 22.0,
+                        fontWeight: FontWeight.w600,
                       ),
                     ),
-                  ),
-                ),
-                Container(
-                  margin: EdgeInsets.only(top: constraints.maxWidth / 3),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.vertical(
-                      top: Radius.circular(30.0),
-                    ),
-                    color: Colors.white,
-                  ),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      SizedBox(height: picSize + 20),
-                      Text(
-                        _userStore.user!.name,
-                        textAlign: TextAlign.center,
-                        style: TextStyle(fontSize: 22.0),
-                      ),
-                      Text(_userStore.user!.email, textAlign: TextAlign.center),
-                      Expanded(
-                        child: ListView(
-                          physics: const NeverScrollableScrollPhysics(),
-                          children: <Widget>[
-                            Visibility(
-                              visible: false,
-                              child: Padding(
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: 15,
-                                ),
-                                child: ListTile(
-                                  onTap: () {},
-                                  leading: const Icon(Icons.person),
-                                  title: const Text('Editar Perfil'),
-                                ),
+                    Text(_userStore.user!.email, textAlign: TextAlign.center),
+                    Expanded(
+                      child: ListView(
+                        physics: const NeverScrollableScrollPhysics(),
+                        children: <Widget>[
+                          Visibility(
+                            visible: false,
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 15,
+                              ),
+                              child: ListTile(
+                                onTap: () {},
+                                leading: const Icon(Icons.person),
+                                title: const Text('Editar Perfil'),
                               ),
                             ),
-                            const Divider(height: 0),
-                            const Visibility(
-                              visible: false,
-                              child: Padding(
-                                padding: EdgeInsets.symmetric(horizontal: 15),
-                                child: ListTile(
-                                  leading: Icon(Icons.lock),
-                                  title: Text('Mudar Senha'),
-                                ),
+                          ),
+                          const Divider(height: 0),
+                          const Visibility(
+                            visible: false,
+                            child: Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 15),
+                              child: ListTile(
+                                leading: Icon(Icons.lock),
+                                title: Text('Mudar Senha'),
                               ),
                             ),
-                            const Divider(height: 1),
-                            Padding(
+                          ),
+                          Visibility(
+                            visible: false,
+                            child: Padding(
                               padding: const EdgeInsets.symmetric(
                                 horizontal: 15,
                               ),
@@ -105,40 +95,46 @@ class _ProfilePageState extends State<ProfilePage>
                                 },
                               ),
                             ),
-                          ],
-                        ),
-                      ),
-                      const SizedBox(height: 10),
-                    ],
-                  ),
-                ),
-                Positioned(
-                  top: constraints.maxWidth / 5,
-                  left: constraints.maxWidth / 2 - picSize,
-                  child: CircleAvatar(
-                    radius: picSize,
-                    backgroundColor: Colors.black12,
-                    child:
-                        _userStore.user!.avatarUrl != null
-                            ? CircleAvatar(
-                              backgroundColor: Colors.white,
-                              radius: picSize - 2,
-                              backgroundImage: NetworkImage(
-                                _userStore.user!.avatarUrl!,
-                              ),
-                            )
-                            : CircleAvatar(
-                              backgroundColor: Colors.white,
-                              radius: picSize - 2,
-                              child: const Icon(
-                                Icons.person,
-                                size: 64,
-                                color: Colors.black26,
+                          ),
+                          const SizedBox(height: 24),
+                          ElevatedButton.icon(
+                            onPressed: () async {
+                              await _userStore.removeUser();
+                              Modular.to.pushNamedAndRemoveUntil(
+                                "/auth/",
+                                (_) => false,
+                              );
+                            },
+                            icon: Icon(
+                              Icons.logout,
+                              color: Theme.of(context).colorScheme.primary,
+                            ),
+                            label: Text(
+                              "Sair",
+                              style: TextStyle(
+                                fontSize: 16.0,
+                                fontWeight: FontWeight.bold,
+                                color: Theme.of(context).colorScheme.primary,
                               ),
                             ),
-                  ),
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.white,
+                              side: BorderSide(
+                                color: Theme.of(context).colorScheme.primary,
+                                width: 2,
+                              ),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(height: 10),
+                  ],
                 ),
-              ],
+              ),
             ),
       ),
     );

@@ -21,14 +21,19 @@ class EntityGenerator {
       pointsCount: pointsCount,
       userId: faker.guid.guid(),
       createdAt: faker.date.dateTime(
-          maxYear: DateTime.now().year, minYear: DateTime.now().year - 1),
+        maxYear: DateTime.now().year,
+        minYear: DateTime.now().year - 1,
+      ),
       updatedAt: faker.date.dateTime(
-          maxYear: DateTime.now().year, minYear: DateTime.now().year - 1),
+        maxYear: DateTime.now().year,
+        minYear: DateTime.now().year - 1,
+      ),
       card: generateCard(), // Assuming you have a similar function for Card
       points: List.generate(
-          faker.randomGenerator.integer(pointsCount),
-          (_) =>
-              generatePoint()), // Assuming you have a similar function for Point
+        faker.randomGenerator.integer(pointsCount),
+        (_) => generatePoint(),
+      ),
+      shortCode: faker.randomGenerator.string(6).toUpperCase(),
     );
   }
 
@@ -60,9 +65,13 @@ class EntityGenerator {
       storeId: faker.guid.guid(),
       timeToExpire: TimeToExpire(months: faker.randomGenerator.integer(24)),
       createdAt: faker.date.dateTime(
-          maxYear: DateTime.now().year, minYear: DateTime.now().year - 1),
+        maxYear: DateTime.now().year,
+        minYear: DateTime.now().year - 1,
+      ),
       updatedAt: faker.date.dateTime(
-          maxYear: DateTime.now().year, minYear: DateTime.now().year - 1),
+        maxYear: DateTime.now().year,
+        minYear: DateTime.now().year - 1,
+      ),
       store: generateStore(),
       style: generateStyle(),
     );
@@ -78,8 +87,9 @@ class EntityGenerator {
       legalName: faker.company.name(),
       taxId: '00.000.000/0000-00', // Assuming taxId follows ISBN-13 format
       email: faker.internet.email(),
-      password: faker.internet
-          .password(), // **Warning:** Consider hashing in real applications
+      password:
+          faker.internet
+              .password(), // **Warning:** Consider hashing in real applications
       avatarUrl:
           'https://picsum.photos/200', // Assuming you want random image URLs
       phone: faker.phoneNumber.toString(),
@@ -87,9 +97,13 @@ class EntityGenerator {
       stripeId: faker.guid.guid(),
       contacts: generateContacts(),
       createdAt: faker.date.dateTime(
-          maxYear: DateTime.now().year, minYear: DateTime.now().year - 1),
+        maxYear: DateTime.now().year,
+        minYear: DateTime.now().year - 1,
+      ),
       updatedAt: faker.date.dateTime(
-          maxYear: DateTime.now().year, minYear: DateTime.now().year - 1),
+        maxYear: DateTime.now().year,
+        minYear: DateTime.now().year - 1,
+      ),
     );
   }
 
@@ -113,9 +127,13 @@ class EntityGenerator {
       id: faker.guid.guid(),
       used: faker.randomGenerator.boolean(),
       createdAt: faker.date.dateTime(
-          maxYear: DateTime.now().year, minYear: DateTime.now().year - 1),
+        maxYear: DateTime.now().year,
+        minYear: DateTime.now().year - 1,
+      ),
       updatedAt: faker.date.dateTime(
-          maxYear: DateTime.now().year, minYear: DateTime.now().year - 1),
+        maxYear: DateTime.now().year,
+        minYear: DateTime.now().year - 1,
+      ),
     );
   }
 

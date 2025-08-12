@@ -14,9 +14,9 @@ class UserCardMapper {
       createdAt: dto.createdAt,
       updatedAt: dto.updatedAt,
       card: CardMapper.toEntity(dto.card), // Assuming CardMapper exists
-      points: dto.points
-          .map((pointDTO) => PointMapper.toEntity(pointDTO))
-          .toList(), // Assuming PointMapper exists
+      points:
+          dto.points.map((pointDTO) => PointMapper.toEntity(pointDTO)).toList(),
+      shortCode: dto.shortCode,
     );
   }
 
@@ -29,9 +29,8 @@ class UserCardMapper {
       createdAt: entity.createdAt,
       updatedAt: entity.updatedAt,
       card: CardMapper.toDto(entity.card), // Assuming CardMapper exists
-      points: entity.points
-          .map((point) => PointMapper.toDto(point))
-          .toList(), // Assuming PointMapper exists
+      points: entity.points.map((point) => PointMapper.toDto(point)).toList(),
+      shortCode: entity.shortCode,
     );
   }
 }

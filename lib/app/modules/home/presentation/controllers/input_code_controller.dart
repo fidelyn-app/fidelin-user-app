@@ -36,11 +36,12 @@ abstract class _InputCodeControllerBase with Store {
   Future<void> addPoint({required String shortCodeId}) async {
     isLoading = true;
 
-    final cardId = _homeController.cards[_homeController.indexCard].id;
+    final cardShortCode =
+        _homeController.cards[_homeController.indexCard].shortCode;
 
     final Either<Exception, Unit> response = await _addPointUseCase.call(
       pointId: shortCodeId,
-      cardId: cardId,
+      cardId: cardShortCode,
     );
     response.fold(
       (Exception e) {

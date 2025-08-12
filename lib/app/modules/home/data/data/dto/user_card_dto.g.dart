@@ -17,6 +17,7 @@ UserCardDTO _$UserCardDTOFromJson(Map<String, dynamic> json) => UserCardDTO(
       updatedAt: DateTime.parse(json['updatedAt'] as String),
       card: UserCardDTO._cardFromJson(json['card'] as Map<String, dynamic>),
       points: UserCardDTO._pointsFromJson(json['points'] as List),
+      shortCode: json['shortCode'] as String,
     );
 
 Map<String, dynamic> _$UserCardDTOToJson(UserCardDTO instance) =>
@@ -27,6 +28,7 @@ Map<String, dynamic> _$UserCardDTOToJson(UserCardDTO instance) =>
       'userId': instance.userId,
       'createdAt': instance.createdAt.toIso8601String(),
       'updatedAt': instance.updatedAt.toIso8601String(),
+      'shortCode': instance.shortCode,
       'card': UserCardDTO._cardToJson(instance.card),
       'points': UserCardDTO._pointsToJson(instance.points),
     };

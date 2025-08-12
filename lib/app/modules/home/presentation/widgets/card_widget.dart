@@ -88,7 +88,6 @@ class _CardWidgetState extends State<CardWidget>
               child:
                   isFront
                       ? _buildFront(cardWidget)
-                      // Quando estivermos no "verso", rotacionamos +pi para corrigir orientação do conteúdo
                       : Transform(
                         transform: Matrix4.identity()..rotateY(math.pi),
                         alignment: Alignment.center,

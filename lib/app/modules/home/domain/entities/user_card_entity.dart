@@ -8,6 +8,7 @@ class UserCard {
   final String userId;
   final DateTime createdAt;
   final DateTime updatedAt;
+  final String shortCode;
 
   final Card card;
   final List<Point> points;
@@ -21,6 +22,7 @@ class UserCard {
     required this.updatedAt,
     required this.card,
     required this.points,
+    required this.shortCode,
   });
 
   @override
@@ -33,6 +35,7 @@ class UserCard {
         userId: $userId,
         createdAt: $createdAt,
         updatedAt: $updatedAt,
+        shortCode $shortCode,
         card: ${card.toString()},
         points: ${points.map((point) => point.toString())} points (details omitted for brevity)
       )
