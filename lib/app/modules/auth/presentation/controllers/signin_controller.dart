@@ -5,7 +5,7 @@ import 'package:asuka/asuka.dart';
 import 'package:dartz/dartz.dart';
 import 'package:fidelin_user_app/app/core/domain/entities/user_entity.dart';
 import 'package:fidelin_user_app/app/core/errors/Failure.dart';
-import 'package:fidelin_user_app/app/core/stores/user_store.dart';
+import 'package:fidelin_user_app/app/core/stores/app_store.dart';
 import 'package:fidelin_user_app/app/modules/auth/domain/usecases/signin_with_email_usecase.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
@@ -18,7 +18,7 @@ class SignInController = _SignInControllerBase with _$SignInController;
 abstract class _SignInControllerBase with Store {
   late SignInWithEmailUseCase _signInWithEmailUseCase;
 
-  final UserStore _userStore = Modular.get<UserStore>();
+  final AppStore _userStore = Modular.get<AppStore>();
 
   _SignInControllerBase(
       {required SignInWithEmailUseCase signInWithEmailUseCase}) {

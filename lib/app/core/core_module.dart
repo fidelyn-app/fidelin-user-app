@@ -1,5 +1,5 @@
 import 'package:fidelin_user_app/app/core/services/shared_local_storage_service.dart';
-import 'package:fidelin_user_app/app/core/stores/user_store.dart';
+import 'package:fidelin_user_app/app/core/stores/app_store.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:http/http.dart' as http;
 import 'package:logger/logger.dart';
@@ -14,6 +14,6 @@ class CoreModule extends Module {
     i.addSingleton(() => HttpClient(i.get<http.Client>(), i.get<Logger>()));
 
     i.addSingleton(() => SharedLocalStorageService());
-    i.addSingleton(UserStore.new);
+    i.addSingleton(AppStore.new);
   }
 }

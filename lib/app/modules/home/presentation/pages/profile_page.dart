@@ -1,4 +1,4 @@
-import 'package:fidelin_user_app/app/core/stores/user_store.dart';
+import 'package:fidelin_user_app/app/core/stores/app_store.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
@@ -11,14 +11,14 @@ class ProfilePage extends StatefulWidget {
 
 class _ProfilePageState extends State<ProfilePage>
     with AutomaticKeepAliveClientMixin<ProfilePage> {
+  @override
   bool get wantKeepAlive => true;
-  final UserStore _userStore = Modular.get<UserStore>();
+  final AppStore _userStore = Modular.get<AppStore>();
 
   double picSize = 60.0;
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
   }
 

@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:fidelin_user_app/app/core/errors/Failure.dart';
-import 'package:fidelin_user_app/app/core/stores/user_store.dart';
+import 'package:fidelin_user_app/app/core/stores/app_store.dart';
 import 'package:fidelin_user_app/app/modules/home/data/data/dto/user_card_dto.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:http/http.dart' as http;
@@ -17,7 +17,7 @@ class CardsDataSourceImpl implements CardsDataSource {
   @override
   Future<List<UserCardDTO>> fetchCards() async {
     try {
-      String token = Modular.get<UserStore>().getToken();
+      String token = Modular.get<AppStore>().getToken();
 
       final url = Uri.parse('$_baseUrl/user/cards');
       final response = await http
@@ -62,7 +62,7 @@ class CardsDataSourceImpl implements CardsDataSource {
   @override
   Future<void> addCard({required String cardId}) async {
     try {
-      String token = Modular.get<UserStore>().getToken();
+      String token = Modular.get<AppStore>().getToken();
 
       final url = Uri.parse('$_baseUrl/user/cards/$cardId');
       final response = await http.post(
@@ -93,7 +93,7 @@ class CardsDataSourceImpl implements CardsDataSource {
     required String pointId,
   }) async {
     try {
-      String token = Modular.get<UserStore>().getToken();
+      String token = Modular.get<AppStore>().getToken();
 
       final url = Uri.parse('$_baseUrl/user/cards/$cardId/point/$pointId');
       final response = await http.post(

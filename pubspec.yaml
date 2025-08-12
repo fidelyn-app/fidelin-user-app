@@ -51,7 +51,7 @@ dependencies:
   shared_preferences: ^2.5.2
   asuka: ^2.2.1
   logger: ^2.5.0
-  package_info_plus: ^8.3.0
+  package_info_plus: ^8.3.1
   qr_flutter: ^4.1.0
   mobile_scanner: ^7.0.1
   flutter_otp_text_field: ^1.5.1+1
