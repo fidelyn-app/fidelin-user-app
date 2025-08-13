@@ -81,33 +81,43 @@ txt2 = re.sub(r'^\s*version:.*$', new_version_line, txt, flags=re.MULTILINE)
 pubspec_path.write_text(txt2, encoding='utf-8')
 print("Wrote new pubspec version:", new_version_line)
 
-# --- Android (android/app/build.gradle) ---
+# --- Android: try build.gradle or build.gradle.kts ---
 android_gradle = repo_root / 'android' / 'app' / 'build.gradle'
+android_gradle_kts = repo_root / 'android' / 'app' / 'build.gradle.kts'
+android_file = None
 if android_gradle.exists():
-    gtxt = android_gradle.read_text(encoding='utf-8')
-    gtxt2 = re.sub(r'(versionCode\s+)\d+', r'\g<1>' + str(new_build), gtxt)
-    gtxt2 = re.sub(r'(versionName\s+)"[^"]+"', r'\g<1>"' + new_version + '"', gtxt2)
+    android_file = android_gradle
+elif android_gradle_kts.exists():
+    android_file = android_gradle_kts
+
+if android_file:
+    gtxt = android_file.read_text(encoding='utf-8')
+    # update versionCode (handles both "versionCode 1" and "versionCode = 1")
+    gtxt2 = re.sub(r'(versionCode\s*=?\s*)(\d+)', lambda m: m.group(1) + str(new_build), gtxt)
+    # update versionName (handles both 'versionName "x.y.z"' and 'versionName = "x.y.z"')
+    gtxt2 = re.sub(r'(versionName\s*=?\s*)"[^"]+"', lambda m: m.group(1) + f'"{new_version}"', gtxt2)
     if gtxt != gtxt2:
-        android_gradle.write_text(gtxt2, encoding='utf-8')
-        print("Updated android/app/build.gradle -> versionCode and versionName")
+        android_file.write_text(gtxt2, encoding='utf-8')
+        print(f"Updated {android_file.relative_to(repo_root)} -> versionCode and versionName")
     else:
-        print("No changes in android/app/build.gradle (patterns not found).")
+        print(f"No changes in {android_file.relative_to(repo_root)} (patterns not found).")
 else:
-    print("android/app/build.gradle not found; skipping Android update.")
+    print("android/app/build.gradle(.kts) not found; skipping Android update.")
 
 # --- iOS (ios/Runner/Info.plist) ---
 ios_info = repo_root / 'ios' / 'Runner' / 'Info.plist'
 if ios_info.exists():
     itxt = ios_info.read_text(encoding='utf-8')
+    # use lambda replacements to avoid backreference ambiguity (\1 + digits)
     itxt2 = re.sub(
         r'(<key>CFBundleShortVersionString</key>\s*<string>)([^<]+)(</string>)',
-        r'\1' + new_version + r'\3',
+        lambda m: m.group(1) + new_version + m.group(3),
         itxt,
         flags=re.MULTILINE
     )
     itxt2 = re.sub(
         r'(<key>CFBundleVersion</key>\s*<string>)([^<]+)(</string>)',
-        r'\1' + str(new_build) + r'\3',
+        lambda m: m.group(1) + str(new_build) + m.group(3),
         itxt2,
         flags=re.MULTILINE
     )
