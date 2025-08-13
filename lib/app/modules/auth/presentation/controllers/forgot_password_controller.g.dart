@@ -106,6 +106,17 @@ mixin _$ForgotPasswordController on _ForgotPasswordControllerBase, Store {
   }
 
   @override
+  void reset() {
+    final _$actionInfo = _$_ForgotPasswordControllerBaseActionController
+        .startAction(name: '_ForgotPasswordControllerBase.reset');
+    try {
+      return super.reset();
+    } finally {
+      _$_ForgotPasswordControllerBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   String toString() {
     return '''
 passwordVisible: ${passwordVisible},

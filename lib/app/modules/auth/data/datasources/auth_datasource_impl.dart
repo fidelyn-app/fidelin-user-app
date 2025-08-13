@@ -52,9 +52,11 @@ class AuthDataSourceImpl implements AuthDataSource {
     } on Failure {
       rethrow; // Mantém falhas da API como estão
     } catch (e, s) {
-      _logger.e('Erro inesperado em requestForgotPassword: $e');
-      _logger.e(s);
-      throw Exception('Falha ao enviar solicitação de esqueci minha senha');
+      _logger.e('Erro inesperado em requestForgotPassword: $e', stackTrace: s);
+      throw Failure(
+        message: 'Falha ao enviar solicitação de esqueci minha senha',
+        statusCode: 500,
+      );
     }
   }
 
@@ -84,8 +86,14 @@ class AuthDataSourceImpl implements AuthDataSource {
           statusCode: response.statusCode,
         );
       }
-    } catch (e) {
-      throw Failure(message: '', statusCode: 500);
+    } on Failure {
+      rethrow;
+    } catch (e, s) {
+      _logger.e('Erro inesperado em signInWithEmail: $e', stackTrace: s);
+      throw Failure(
+        message: 'Ocorreu um erro inesperado. Tente novamente.',
+        statusCode: 500,
+      );
     }
   }
 
@@ -95,11 +103,18 @@ class AuthDataSourceImpl implements AuthDataSource {
       final url = Uri.parse('$_baseUrl/logout');
       final response = await _httpClient.post(url);
       if (response.statusCode == 200) {
+        // Logout bem-sucedido
       } else {
-        throw Exception('Failed to sign out: ${response.statusCode}');
+        throw Failure(
+          message: 'Falha ao fazer logout',
+          statusCode: response.statusCode,
+        );
       }
-    } catch (e) {
-      throw Exception('Failed to sign out: $e');
+    } on Failure {
+      rethrow;
+    } catch (e, s) {
+      _logger.e('Erro inesperado em signOut: $e', stackTrace: s);
+      throw Failure(message: 'Falha ao fazer logout', statusCode: 500);
     }
   }
 
@@ -118,8 +133,11 @@ class AuthDataSourceImpl implements AuthDataSource {
           statusCode: response.statusCode,
         );
       }
-    } catch (e) {
-      throw Exception('Failed to sign up: $e');
+    } on Failure {
+      rethrow;
+    } catch (e, s) {
+      _logger.e('Erro inesperado em signUpWithEmail: $e', stackTrace: s);
+      throw Failure(message: 'Falha ao realizar o cadastro', statusCode: 500);
     }
   }
 
@@ -136,17 +154,21 @@ class AuthDataSourceImpl implements AuthDataSource {
         body: {'email': email, 'code': code, 'password': password},
       );
       if (response.statusCode == 201) {
+        return;
       } else {
         final data = jsonDecode(response.body) as Map<String, dynamic>;
 
         throw Failure(
           error: data['error'],
-          message: data['message'],
+          message: data['message'].toString(),
           statusCode: response.statusCode,
         );
       }
-    } catch (e) {
-      throw Exception('Failed to sign up: $e');
+    } on Failure {
+      rethrow;
+    } catch (e, s) {
+      _logger.e('Erro inesperado em updatePassword: $e', stackTrace: s);
+      throw Failure(message: 'Falha ao atualizar a senha', statusCode: 500);
     }
   }
 }

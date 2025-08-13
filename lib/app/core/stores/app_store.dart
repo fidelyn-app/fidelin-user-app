@@ -1,4 +1,3 @@
-
 import 'package:fidelin_user_app/app/core/domain/entities/user_entity.dart';
 import 'package:fidelin_user_app/app/core/services/shared_local_storage_service.dart';
 import 'package:fidelin_user_app/app/modules/auth/data/dto/user_dto.dart';
@@ -83,6 +82,6 @@ abstract class _AppStoreBase with Store {
   @action
   Future<void> loadAppVersion() async {
     final info = await PackageInfo.fromPlatform();
-    appVersion = '${info.version}+${info.buildNumber}';
+    appVersion = info.version;
   }
 }

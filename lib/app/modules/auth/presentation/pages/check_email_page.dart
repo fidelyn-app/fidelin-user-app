@@ -68,8 +68,9 @@ class _CheckEmailPageState extends State<CheckEmailPage> with AuthMixin {
                         ),
                       ),
                     ),
-                    const TextField(
-                      decoration: InputDecoration(
+                    TextFormField(
+                      controller: _controller.codeTextController,
+                      decoration: const InputDecoration(
                         border: OutlineInputBorder(),
                         labelText: 'Código',
                         prefixIcon: Align(
@@ -128,7 +129,7 @@ class _CheckEmailPageState extends State<CheckEmailPage> with AuthMixin {
                         return TextFormField(
                           validator: _controller.passwordEquals,
                           controller: _controller.confirmPasswordTextController,
-                          obscureText: !_controller.passwordVisible,
+                          obscureText: !_controller.confirmPasswordVisible,
                           decoration: InputDecoration(
                             border: const OutlineInputBorder(),
                             labelText: 'Confirmação de senha',
@@ -138,7 +139,7 @@ class _CheckEmailPageState extends State<CheckEmailPage> with AuthMixin {
                                       _controller
                                           .toggleConfirmPasswordVisible(),
                               icon: Icon(
-                                _controller.passwordVisible
+                                _controller.confirmPasswordVisible
                                     ? Icons.visibility
                                     : Icons.visibility_off,
                                 color: Theme.of(context).colorScheme.primary,
@@ -155,8 +156,7 @@ class _CheckEmailPageState extends State<CheckEmailPage> with AuthMixin {
                     ),
                     const SizedBox(height: 16.0),
                     ElevatedButton(
-                      onPressed:
-                          () => forgotPasswordController.updatePassword(),
+                      onPressed: () => _controller.updatePassword(),
                       child: Text(
                         "Confirmar",
                         style: TextStyle(

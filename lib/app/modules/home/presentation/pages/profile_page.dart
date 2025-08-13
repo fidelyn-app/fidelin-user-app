@@ -1,4 +1,5 @@
 import 'package:fidelin_user_app/app/core/stores/app_store.dart';
+import 'package:fidelin_user_app/app/modules/home/presentation/mixins/home_mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
@@ -10,7 +11,7 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage>
-    with AutomaticKeepAliveClientMixin<ProfilePage> {
+    with HomeMixin, AutomaticKeepAliveClientMixin<ProfilePage> {
   @override
   bool get wantKeepAlive => true;
   final AppStore _userStore = Modular.get<AppStore>();
@@ -83,20 +84,24 @@ class _ProfilePageState extends State<ProfilePage>
                               ),
                             ),
                           ),
-                          const Divider(height: 0),
+
                           Visibility(
                             visible: true,
                             child: Padding(
                               padding: EdgeInsets.symmetric(horizontal: 15),
                               child: ListTile(
-                                onTap: () {},
+                                onTap: () async {
+                                  final result = await Modular.to
+                                      .pushNamed<bool>('/auth/forgot-password');
+                                },
                                 leading: Icon(Icons.lock),
                                 title: Text('Mudar Senha'),
                               ),
                             ),
                           ),
+                          const Divider(height: 1),
                           Visibility(
-                            visible: false,
+                            visible: true,
                             child: Padding(
                               padding: const EdgeInsets.symmetric(
                                 horizontal: 15,
@@ -114,41 +119,44 @@ class _ProfilePageState extends State<ProfilePage>
                               ),
                             ),
                           ),
-                          ElevatedButton.icon(
-                            onPressed: () async {
-                              await _userStore.removeUser();
-                              Modular.to.pushNamedAndRemoveUntil(
-                                "/auth/",
-                                (_) => false,
-                              );
-                            },
-                            icon: Icon(
-                              Icons.logout,
-                              color: Theme.of(context).colorScheme.primary,
-                            ),
-                            label: Text(
-                              "Sair",
-                              style: TextStyle(
-                                fontSize: 16.0,
-                                fontWeight: FontWeight.bold,
+                          Visibility(
+                            visible: false,
+                            child: ElevatedButton.icon(
+                              onPressed: () async {
+                                await _userStore.removeUser();
+                                Modular.to.pushNamedAndRemoveUntil(
+                                  "/auth/",
+                                  (_) => false,
+                                );
+                              },
+                              icon: Icon(
+                                Icons.logout,
                                 color: Theme.of(context).colorScheme.primary,
                               ),
-                            ),
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.white,
-                              side: BorderSide(
-                                color: Theme.of(context).colorScheme.primary,
-                                width: 2,
+                              label: Text(
+                                "Sair",
+                                style: TextStyle(
+                                  fontSize: 16.0,
+                                  fontWeight: FontWeight.bold,
+                                  color: Theme.of(context).colorScheme.primary,
+                                ),
                               ),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(8),
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: Colors.white,
+                                side: BorderSide(
+                                  color: Theme.of(context).colorScheme.primary,
+                                  width: 2,
+                                ),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
                               ),
                             ),
                           ),
                         ],
                       ),
                     ),
-                    Center(child: Text("v1.0.0")),
+                    Center(child: Text(appStore.appVersion!)),
                     const SizedBox(height: 32),
                   ],
                 ),

@@ -45,7 +45,7 @@ abstract class _ForgotPasswordControllerBase with Store {
       return 'As senhas devem ser iguais';
     }
 
-    if (value!.isEmpty) {
+    if (value == null || value.isEmpty) {
       return 'Insira uma senha';
     }
     bool passwordValid = RegExp(r"(?=.{8,})").hasMatch(value);
@@ -67,40 +67,63 @@ abstract class _ForgotPasswordControllerBase with Store {
 
   @action
   Future<void> requestForgotPassword() async {
-    formField.currentState!.validate();
-    if (formField.currentState!.validate()) {
+    if (formField.currentState?.validate() ?? false) {
       isLoading = true;
-      final Either<Failure, Unit> response = await _forgotPasswordUseCase.call(
-        email: emailTextController.text,
-      );
-      response.fold(
-        (Failure e) {
-          AsukaSnackbar.alert(e.message).show();
-        },
-        (_) {
-          Modular.to.pushNamed('/auth/check-email');
-        },
-      );
-      isLoading = false;
+      try {
+        final Either<Failure, Unit> response = await _forgotPasswordUseCase
+            .call(email: emailTextController.text);
+        response.fold(
+          (Failure e) {
+            AsukaSnackbar.alert(e.message).show();
+          },
+          (_) {
+            Modular.to.pushNamed('/auth/check-email');
+          },
+        );
+      } finally {
+        isLoading = false;
+      }
     }
   }
 
   @action
   Future<void> updatePassword() async {
     isLoading = true;
-    final Either<Failure, Unit> response = await _updatePasswordUseCase.call(
-      email: emailTextController.text,
-      code: codeTextController.text,
-      password: passwordTextController.text,
-    );
-    response.fold(
-      (Failure e) {
-        AsukaSnackbar.alert(e.message).show();
-      },
-      (_) {
-        Modular.to.popUntil((route) => route.isFirst);
-      },
-    );
+    try {
+      final Either<Failure, Unit> response = await _updatePasswordUseCase.call(
+        email: emailTextController.text,
+        code: codeTextController.text,
+        password: passwordTextController.text,
+      );
+      response.fold(
+        (Failure e) {
+          AsukaSnackbar.alert(e.message).show();
+        },
+        (_) {
+          AsukaSnackbar.success('Senha atualizada com sucesso!').show();
+          Modular.to.popUntil((route) => route.isFirst);
+          reset(); // Limpa o estado após o sucesso
+        },
+      );
+    } finally {
+      isLoading = false;
+    }
+  }
+
+  @action
+  void reset() {
+    // Limpa os controladores de texto
+    passwordTextController.clear();
+    confirmPasswordTextController.clear();
+    emailTextController.clear();
+    codeTextController.clear();
+
+    // Reseta as flags de estado
+    passwordVisible = false;
+    confirmPasswordVisible = false;
     isLoading = false;
+
+    // Reseta o estado do formulário, se ele já foi construído
+    formField.currentState?.reset();
   }
 }
