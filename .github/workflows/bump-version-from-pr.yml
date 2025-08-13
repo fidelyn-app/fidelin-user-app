@@ -12,6 +12,7 @@ jobs:
     # roda só quando o PR for mergeado
     if: ${{ github.event.pull_request.merged == true }}
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout main
         uses: actions/checkout@v4
@@ -30,7 +31,6 @@ jobs:
           echo "PR title: $PR_TITLE"
           echo "PR number: $PR_NUMBER"
           echo "PR user: $PR_USER"
-          # mostra apenas para debug; valores estarão disponíveis como env no próximo passo
 
       - name: Determine bump type from PR title
         id: determine
@@ -54,8 +54,9 @@ jobs:
           PR_USER: ${{ github.event.pull_request.user.login }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          set -e
+          set -euo pipefail
           echo "Bump type: $BUMP_TYPE"
+
           python3 - <<'PY'
 import os, re, sys, pathlib, subprocess, datetime
 
@@ -197,5 +198,4 @@ print("Committed, pushed and tagged:", tag_name)
 PY
 
       - name: Output result
-        run: |
-          echo "Version bump job finished."
+        run: echo "Version bump job finished."
