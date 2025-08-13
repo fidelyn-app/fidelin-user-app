@@ -1,163 +1,122 @@
-# scripts/bump.py
-# Executar: python3 scripts/bump.py
+#!/usr/bin/env python3
 import os
 import re
-import sys
-import pathlib
 import subprocess
-import datetime
+from pathlib import Path
+from datetime import datetime
+import sys
 
-repo_root = pathlib.Path(__file__).resolve().parent.parent
+# -------------------------
+# Configurações
+# -------------------------
+PUBSPEC_FILE = Path("pubspec.yaml")
+IOS_INFO_PLIST = Path("ios/Runner/Info.plist")
+ANDROID_GRADLE_FILES = [
+    Path("android/app/build.gradle.kts"),
+    Path("android/app/build.gradle")
+]
+CHANGELOG_FILE = Path("CHANGELOG.md")
 
-# Inputs via environment (workflow irá setar)
-pr_title = os.getenv('PR_TITLE', '') or ''
-pr_body = os.getenv('PR_BODY', '') or ''
-pr_number = os.getenv('PR_NUMBER', '') or ''
-pr_user = os.getenv('PR_USER', '') or ''
-github_token = os.getenv('GITHUB_TOKEN', '')
-# Detect bump type from PR title if not explicitly passed
-bump = os.getenv('BUMP_TYPE', '') or ''
+# -------------------------
+# Funções auxiliares
+# -------------------------
 
-if not bump:
-    m = re.search(r'\[(major|minor|patch|build)\]', pr_title, flags=re.I)
-    if not m:
-        m = re.search(r'^(major|minor|patch|build)[:\s\-]', pr_title, flags=re.I)
-    if not m:
-        m = re.search(r'\b(major|minor|patch|build)\b', pr_title, flags=re.I)
-    if m:
-        bump = m.group(1).lower()
+def read_version_from_pubspec():
+    content = PUBSPEC_FILE.read_text()
+    match = re.search(r"version:\s*([0-9]+\.[0-9]+\.[0-9]+)\+([0-9]+)", content)
+    if not match:
+        raise ValueError("Não foi possível encontrar a versão no pubspec.yaml")
+    return match.group(1), int(match.group(2))
+
+def write_version_to_pubspec(version, build):
+    content = PUBSPEC_FILE.read_text()
+    content = re.sub(r"version:\s*[0-9]+\.[0-9]+\.[0-9]+\+([0-9]+)",
+                     f"version: {version}+{build}", content)
+    PUBSPEC_FILE.write_text(content)
+
+def bump_version(version, bump_type):
+    major, minor, patch = map(int, version.split('.'))
+    if bump_type == "major":
+        major += 1
+        minor = 0
+        patch = 0
+    elif bump_type == "minor":
+        minor += 1
+        patch = 0
+    elif bump_type == "patch":
+        patch += 1
     else:
-        bump = 'none'
+        raise ValueError("Bump type inválido")
+    return f"{major}.{minor}.{patch}"
 
-if bump not in ('major', 'minor', 'patch', 'build'):
-    print("No bump requested (no [MAJOR]/[MINOR]/[PATCH]/[BUILD] in PR title). Exiting.")
-    sys.exit(0)
-
-print("Detected bump type:", bump)
-
-# --- pubspec.yaml ---
-pubspec_path = repo_root / 'pubspec.yaml'
-if not pubspec_path.exists():
-    print("Error: pubspec.yaml not found at", pubspec_path)
-    sys.exit(1)
-
-txt = pubspec_path.read_text(encoding='utf-8')
-m = re.search(r'^\s*version:\s*([0-9]+)\.([0-9]+)\.([0-9]+)(?:\+([0-9]+))?\s*$',
-              txt, flags=re.MULTILINE)
-if not m:
-    print("Could not find 'version: X.Y.Z+N' in pubspec.yaml")
-    sys.exit(1)
-
-major, minor, patch, build = m.groups()
-major = int(major)
-minor = int(minor)
-patch = int(patch)
-build = int(build) if build else 0
-
-old_version = f"{major}.{minor}.{patch}"
-old_build = build
-print("Old version:", old_version, "Old build:", old_build)
-
-# Bump logic
-if bump == 'major':
-    major += 1
-    minor = 0
-    patch = 0
-elif bump == 'minor':
-    minor += 1
-    patch = 0
-elif bump == 'patch':
-    patch += 1
-elif bump == 'build':
-    # keep semver, only increase build
-    pass
-
-new_build = old_build + 1
-new_version = f"{major}.{minor}.{patch}"
-new_version_line = f"version: {new_version}+{new_build}"
-
-# Write pubspec
-txt2 = re.sub(r'^\s*version:.*$', new_version_line, txt, flags=re.MULTILINE)
-pubspec_path.write_text(txt2, encoding='utf-8')
-print("Wrote new pubspec version:", new_version_line)
-
-# --- Android (android/app/build.gradle) ---
-android_gradle = repo_root / 'android' / 'app' / 'build.gradle'
-if android_gradle.exists():
-    gtxt = android_gradle.read_text(encoding='utf-8')
-    gtxt2 = re.sub(r'(versionCode\s+)\d+', r'\g<1>' + str(new_build), gtxt)
-    gtxt2 = re.sub(r'(versionName\s+)"[^"]+"', r'\g<1>"' + new_version + '"', gtxt2)
-    if gtxt != gtxt2:
-        android_gradle.write_text(gtxt2, encoding='utf-8')
-        print("Updated android/app/build.gradle -> versionCode and versionName")
+def update_ios_info_plist(version, build):
+    if IOS_INFO_PLIST.exists():
+        text = IOS_INFO_PLIST.read_text()
+        text = re.sub(r"<key>CFBundleShortVersionString</key>\s*<string>[^<]+</string>",
+                      f"<key>CFBundleShortVersionString</key>\n\t<string>{version}</string>", text)
+        text = re.sub(r"<key>CFBundleVersion</key>\s*<string>[^<]+</string>",
+                      f"<key>CFBundleVersion</key>\n\t<string>{build}</string>", text)
+        IOS_INFO_PLIST.write_text(text)
+        print("Atualizado ios/Runner/Info.plist -> CFBundleShortVersionString e CFBundleVersion")
     else:
-        print("No changes in android/app/build.gradle (patterns not found).")
-else:
-    print("android/app/build.gradle not found; skipping Android update.")
+        print("Info.plist não encontrado; pulando atualização iOS.")
 
-# --- iOS (ios/Runner/Info.plist) ---
-ios_info = repo_root / 'ios' / 'Runner' / 'Info.plist'
-if ios_info.exists():
-    itxt = ios_info.read_text(encoding='utf-8')
-    itxt2 = re.sub(
-        r'(<key>CFBundleShortVersionString</key>\s*<string>)([^<]+)(</string>)',
-        r'\1' + new_version + r'\3',
-        itxt,
-        flags=re.MULTILINE
-    )
-    itxt2 = re.sub(
-        r'(<key>CFBundleVersion</key>\s*<string>)([^<]+)(</string>)',
-        r'\1' + str(new_build) + r'\3',
-        itxt2,
-        flags=re.MULTILINE
-    )
-    if itxt != itxt2:
-        ios_info.write_text(itxt2, encoding='utf-8')
-        print("Updated ios/Runner/Info.plist -> CFBundleShortVersionString and CFBundleVersion")
+def update_android_gradle(version, build):
+    for gradle_file in ANDROID_GRADLE_FILES:
+        if gradle_file.exists():
+            text = gradle_file.read_text()
+            
+            # Se usar variáveis do Flutter, não mexe
+            if "flutter.versionCode" in text and "flutter.versionName" in text:
+                print(f"{gradle_file} usa flutter.versionCode/versionName; sem alterações necessárias.")
+                continue
+            
+            # Atualiza valores fixos
+            new_text = re.sub(r"versionCode\s+\d+", f"versionCode {build}", text)
+            new_text = re.sub(r'versionName\s+"[^"]+"', f'versionName "{version}"', new_text)
+            
+            if new_text != text:
+                gradle_file.write_text(new_text)
+                print(f"Atualizado {gradle_file} -> versionCode e versionName")
+            else:
+                print(f"Nenhuma alteração necessária em {gradle_file}")
+
+def update_changelog(version, build, bump_type, pr_number):
+    now = datetime.now().strftime("%Y-%m-%d")
+    entry = f"## {version}+{build} - {now}\n- Bump type: {bump_type} (PR #{pr_number})\n\n"
+    if CHANGELOG_FILE.exists():
+        old_content = CHANGELOG_FILE.read_text()
     else:
-        print("No changes in ios/Runner/Info.plist (patterns not found).")
-else:
-    print("ios/Runner/Info.plist not found; skipping iOS update.")
+        old_content = ""
+    CHANGELOG_FILE.write_text(entry + old_content)
+    print("CHANGELOG.md atualizado.")
 
-# --- CHANGELOG.md entry ---
-changelog_path = repo_root / 'CHANGELOG.md'
-today = datetime.datetime.utcnow().date().isoformat()
-tag_name = f"v{new_version}+{new_build}"
+# -------------------------
+# Execução principal
+# -------------------------
 
-header = f"## {tag_name} - {today}\n\n"
-meta = f"- PR #{pr_number} by @{pr_user}\n- Title: {pr_title}\n\n"
-body = (pr_body.strip() + "\n\n") if pr_body.strip() else ""
-entry = header + meta + body + "---\n\n"
+if __name__ == "__main__":
+    bump_type = os.getenv("BUMP_TYPE", "patch").lower()
+    pr_number = os.getenv("PR_NUMBER", "manual")
 
-if changelog_path.exists():
-    existing = changelog_path.read_text(encoding='utf-8')
-    changelog_path.write_text(entry + existing, encoding='utf-8')
-    print("Prepended changelog with PR description.")
-else:
-    changelog_path.write_text("# Changelog\n\n" + entry, encoding='utf-8')
-    print("Created CHANGELOG.md with first entry.")
+    old_version, old_build = read_version_from_pubspec()
+    new_version = bump_version(old_version, bump_type)
+    new_build = old_build + 1
 
-# --- Git commit, tag, push ---
-# Ensure git user
-subprocess.run(['git', 'config', 'user.name', 'github-actions'], check=True)
-subprocess.run(['git', 'config', 'user.email', 'actions@github.com'], check=True)
+    print(f"Detected bump type: {bump_type}")
+    print(f"Old version: {old_version} Old build: {old_build}")
+    print(f"New version: {new_version}+{new_build}")
 
-subprocess.run(['git', 'add', '-A'], check=True)
-commit_msg = f'chore: bump version to {new_version}+{new_build} (BUMP={bump}) - PR #{pr_number} [ci skip]'
-res = subprocess.run(['git', 'status', '--porcelain'], capture_output=True, text=True)
-if not res.stdout.strip():
-    print("No changes to commit.")
-    sys.exit(0)
+    write_version_to_pubspec(new_version, new_build)
+    update_ios_info_plist(new_version, new_build)
+    update_android_gradle(new_version, new_build)
+    update_changelog(new_version, new_build, bump_type, pr_number)
 
-subprocess.run(['git', 'commit', '-m', commit_msg], check=True)
-
-# Create tag
-tag_msg = f"{tag_name} - Release generated by workflow (PR #{pr_number})"
-subprocess.run(['git', 'tag', '-a', tag_name, '-m', tag_msg], check=True)
-
-# Push commit and tag
-# Note: actions/checkout must be used with persist-credentials: true so this push uses the GITHUB_TOKEN.
-subprocess.run(['git', 'push', 'origin', 'HEAD:main'], check=True)
-subprocess.run(['git', 'push', 'origin', tag_name], check=True)
-
-print("Committed, pushed and tagged:", tag_name)
+    # Commit e tag
+    subprocess.run(["git", "add", "."], check=True)
+    commit_msg = f"chore: bump version to {new_version}+{new_build} (BUMP={bump_type}) - PR #{pr_number} [ci skip]"
+    subprocess.run(["git", "commit", "-m", commit_msg], check=True)
+    tag_name = f"v{new_version}+{new_build}"
+    subprocess.run(["git", "tag", tag_name], check=True)
+    subprocess.run(["git", "push", "origin", "HEAD:main"], check=True)
+    subprocess.run(["git", "push", "origin", tag_name], check=True)
