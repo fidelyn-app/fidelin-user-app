@@ -7,9 +7,7 @@ import 'package:flutter_modular/flutter_modular.dart';
 
 class AppModule extends Module {
   @override
-  List<Module> get imports => [
-        CoreModule(),
-      ];
+  List<Module> get imports => [CoreModule()];
 
   @override
   void routes(RouteManager r) {
