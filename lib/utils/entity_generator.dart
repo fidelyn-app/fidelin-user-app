@@ -40,16 +40,15 @@ class EntityGenerator {
   static Style generateStyle() {
     return Style(
       id: faker.guid.guid(),
-      pointBorderRadius: 2.0,
-      pointBorderSize: 2.0,
-      pointColor: ColorMapper.hexToColor(_generateRandomHexColor()),
-      backgroundColor: ColorMapper.hexToColor(_generateRandomHexColor()),
-      pointColumnSize: faker.randomGenerator.integer(6, min: 4),
-      backgroundUrl: 'https://picsum.photos/400/600',
-      pointBackgroundUrl: 'https://picsum.photos/400/600',
+      colorPrimary: ColorMapper.hexToColor(_generateRandomHexColor()),
+      colorSecondary: ColorMapper.hexToColor(_generateRandomHexColor()),
       pointShowNumbers: faker.randomGenerator.boolean(),
-      subtitle: faker.company.person.lastName(),
+      pointBorderRadius: double.parse(
+        (faker.randomGenerator.integer(200, min: 0) / 10).toStringAsFixed(2),
+      ),
+      backgroundUrl: 'https://picsum.photos/400/600',
       title: faker.company.person.firstName(),
+      subtitle: faker.company.person.lastName(),
     );
   }
 

@@ -2,19 +2,22 @@ import 'dart:math';
 
 import 'package:fidelin_user_app/app/core/stores/app_store.dart';
 import 'package:fidelin_user_app/app/modules/home/presentation/controllers/home_controller.dart';
-import 'package:fidelin_user_app/app/modules/home/presentation/widgets/card_widget.dart';
+import 'package:fidelin_user_app/app/modules/home/presentation/widgets/card/card_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:scroll_snap_list/scroll_snap_list.dart';
 
 class CardsPage extends StatefulWidget {
+  const CardsPage({super.key});
+
   @override
-  _CardsPageState createState() => _CardsPageState();
+  State<CardsPage> createState() => _CardsPageState();
 }
 
 class _CardsPageState extends State<CardsPage>
     with AutomaticKeepAliveClientMixin<CardsPage> {
+  @override
   bool get wantKeepAlive => true;
   final AppStore _userStore = Modular.get<AppStore>();
   final HomeController _homeController = Modular.get<HomeController>();

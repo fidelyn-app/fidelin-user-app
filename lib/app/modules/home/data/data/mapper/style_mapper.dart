@@ -6,14 +6,11 @@ class StyleMapper {
   static Style toEntity(StyleDTO dto) {
     return Style(
       id: dto.id,
-      pointColor: ColorMapper.hexToColor(dto.pointColor),
+      colorPrimary: ColorMapper.hexToColor(dto.colorPrimary),
+      colorSecondary: ColorMapper.hexToColor(dto.colorSecondary),
       pointShowNumbers: dto.pointShowNumbers,
-      pointBorderRadius: double.parse(dto.pointBorderRadius),
-      pointBorderSize: double.parse(dto.pointBorderSize),
-      pointColumnSize: dto.pointColumnSize,
-      pointBackgroundUrl: dto.pointBackgroundUrl,
+      pointBorderRadius: dto.pointBorderRadius,
       backgroundUrl: dto.backgroundUrl,
-      backgroundColor: ColorMapper.hexToColor(dto.backgroundColor),
       title: dto.title,
       subtitle: dto.subtitle,
     );
@@ -21,15 +18,12 @@ class StyleMapper {
 
   static StyleDTO toDto(Style entity) {
     return StyleDTO(
-      id: entity.id.toString(),
-      pointColor: ColorMapper.colorToHex(entity.pointColor),
+      id: entity.id,
+      colorPrimary: ColorMapper.colorToHex(entity.colorPrimary),
+      colorSecondary: ColorMapper.colorToHex(entity.colorSecondary),
       pointShowNumbers: entity.pointShowNumbers,
-      pointBorderSize: entity.pointBorderSize.toString(),
-      pointBorderRadius: entity.pointBorderRadius.toString(),
-      pointColumnSize: entity.pointColumnSize,
-      pointBackgroundUrl: entity.pointBackgroundUrl,
+      pointBorderRadius: entity.pointBorderRadius,
       backgroundUrl: entity.backgroundUrl,
-      backgroundColor: ColorMapper.colorToHex(entity.backgroundColor),
       title: entity.title,
       subtitle: entity.subtitle,
     );

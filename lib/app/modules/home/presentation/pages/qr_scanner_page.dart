@@ -1,11 +1,9 @@
 import 'package:fidelin_user_app/app/modules/home/presentation/mixins/home_mixin.dart';
 import 'package:fidelin_user_app/app/modules/home/presentation/widgets/dashed_container.dart';
-import 'package:fidelin_user_app/app/modules/home/presentation/widgets/dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
-import 'package:mobx/mobx.dart';
 
 class QRScannerPage extends StatefulWidget {
   const QRScannerPage({super.key});
@@ -18,52 +16,9 @@ class _QRScannerPageState extends State<QRScannerPage> with HomeMixin {
   final MobileScannerController controller = MobileScannerController();
   bool _isProcessing = false;
 
-  late ReactionDisposer _successDisposer;
-  late ReactionDisposer _errorDisposer;
-
   @override
   void initState() {
     super.initState();
-
-    // Dispara um diálogo de sucesso quando inputCodeController.success mudar para true
-    // _successDisposer = reaction<bool>((_) => inputCodeController.success, (
-    //   success,
-    // ) {
-    //   if (success) {
-    //     showDialog(
-    //       context: context,
-    //       barrierDismissible: true,
-    //       builder:
-    //           (_) => const DialogWidget(
-    //             title: 'Sucesso',
-    //             description: 'Seu cartão/ponto foi adicionado com sucesso!',
-    //             icon: Icons.check_circle,
-    //             iconColor: Colors.greenAccent,
-    //           ),
-    //     ).then((_) {
-    //       Modular.to.pushNamedAndRemoveUntil('/home/', (p0) => false);
-    //     });
-    //   }
-    // });
-
-    // // Dispara um diálogo de erro quando inputCodeController.error mudar para true
-    // _errorDisposer = reaction<bool>((_) => inputCodeController.error, (error) {
-    //   if (error) {
-    //     showDialog(
-    //       context: context,
-    //       barrierDismissible: true,
-    //       builder:
-    //           (_) => const DialogWidget(
-    //             title: 'Erro',
-    //             description: 'Não foi possível realizar a operação.',
-    //             icon: Icons.error,
-    //             iconColor: Colors.redAccent,
-    //           ),
-    //     ).then((_) {
-    //       Modular.to.pushNamedAndRemoveUntil('/home/', (p0) => false);
-    //     });
-    //   }
-    // });
   }
 
   @override

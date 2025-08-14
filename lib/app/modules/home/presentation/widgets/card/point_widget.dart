@@ -27,22 +27,21 @@ class PointWidget extends StatelessWidget {
           style: BorderStyle.solid,
         ),
       ),
-      child: selected
-          ? Container(
-              margin: const EdgeInsets.all(2.0),
-              decoration: BoxDecoration(
-                color: color,
-                borderRadius: BorderRadius.circular(5.0),
-              ),
-            )
-          : Center(
-              child: Text(
-                '$index',
-                style: const TextStyle(
-                  color: Colors.grey,
+      child:
+          selected
+              ? Container(
+                margin: const EdgeInsets.all(2.0),
+                decoration: BoxDecoration(
+                  color: color,
+                  borderRadius: BorderRadius.circular(5.0),
+                ),
+              )
+              : Center(
+                child: Text(
+                  '$index',
+                  style: const TextStyle(color: Colors.grey),
                 ),
               ),
-            ),
     );
   }
 }
