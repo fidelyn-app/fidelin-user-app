@@ -6,6 +6,7 @@ import 'package:fidelin_user_app/app/modules/home/presentation/widgets/point_wid
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:lottie/lottie.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -101,60 +102,32 @@ class _CardWidgetState extends State<CardWidget>
   }
 
   Widget _buildFront(double width) {
-    return Container(
-      margin: const EdgeInsets.symmetric(vertical: 8.0),
-      decoration:
-          userCard.card.style.backgroundUrl != null
-              ? BoxDecoration(
-                image: DecorationImage(
-                  fit: BoxFit.fill,
-                  image: NetworkImage(userCard.card.style.backgroundUrl!),
-                ),
-                borderRadius: BorderRadius.circular(20.0),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.withOpacity(0.5),
-                    spreadRadius: 5,
-                    blurRadius: 7,
-                    offset: const Offset(0, 3),
-                  ),
-                ],
-              )
-              : BoxDecoration(
-                color: userCard.card.style.backgroundColor,
-                borderRadius: BorderRadius.circular(20.0),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.withOpacity(0.5),
-                    spreadRadius: 5,
-                    blurRadius: 7,
-                    offset: const Offset(0, 3),
-                  ),
-                ],
-              ),
-      width: width,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          _header(userCard, context),
-          _avatar(userCard),
-          _titleAndSubtitle(userCard),
-          _gridPoints(userCard, context),
-          _bottom(userCard),
-        ],
-      ),
-    );
-  }
+    final backgroundUrl = userCard.card.style.backgroundUrl;
 
-  Widget _buildBack(double width) {
-    // Verso: personalize aqui (ex.: QR + descrição). Mantive visual próximo ao front.
+    Widget backgroundWidget;
+
+    if (backgroundUrl != null) {
+      if (backgroundUrl.toLowerCase().endsWith('.json')) {
+        // Lottie animation
+        backgroundWidget = Positioned.fill(
+          child: Lottie.network(backgroundUrl, fit: BoxFit.cover, repeat: true),
+        );
+      } else {
+        // Image (png, jpeg, etc)
+        backgroundWidget = Positioned.fill(
+          child: Image.network(backgroundUrl, fit: BoxFit.cover),
+        );
+      }
+    } else {
+      // Fallback: cor de fundo
+      backgroundWidget = Container(color: userCard.card.style.backgroundColor);
+    }
+
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 8.0),
-      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
+      width: width,
+      height: 300,
       decoration: BoxDecoration(
-        color:
-            userCard.card.style.backgroundColor?.withOpacity(0.95) ??
-            Colors.black87,
         borderRadius: BorderRadius.circular(20.0),
         boxShadow: [
           BoxShadow(
@@ -165,103 +138,180 @@ class _CardWidgetState extends State<CardWidget>
           ),
         ],
       ),
-      width: width,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          // Cabeçalho simplificado no verso
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              const SizedBox(width: 32), // placeholder (mantém alinhamento)
-              Text(
-                "Cartão",
-                style: const TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-              IconButton(
-                icon: Icon(MdiIcons.qrcode, color: Colors.white, size: 28),
-                onPressed: () {
-                  // pode abrir diálogo maior também
-                  _dialogQRCode(context, userCard);
-                },
-              ),
-            ],
-          ),
-          const SizedBox(height: 8),
-          // QR inline
-          QrImageView(
-            data: userCard.id,
-            version: QrVersions.auto,
-            size: 140,
-            backgroundColor: Colors.white,
-          ),
-          const SizedBox(height: 8),
-          Text(
-            userCard.card.description,
-            style: const TextStyle(color: Colors.white),
-            textAlign: TextAlign.center,
-          ),
-          const SizedBox(height: 12),
-          // Informações extras — ex.: contatos
-          if (userCard.card.store.contacts.phone != null)
-            Text(
-              "Tel: ${userCard.card.store.contacts.phone}",
-              style: const TextStyle(color: Colors.white70, fontSize: 12),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(20.0),
+        child: Stack(
+          children: [
+            backgroundWidget,
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                _header(userCard, context),
+                _avatar(userCard),
+                _titleAndSubtitle(userCard),
+                _gridPoints(userCard, context),
+                _bottom(userCard),
+              ],
             ),
-          const SizedBox(height: 8),
-          // Botões rápidos
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              IconButton(
-                icon: const Icon(
-                  FontAwesomeIcons.whatsapp,
-                  color: Colors.white,
-                ),
-                onPressed: () {
-                  final Uri url = Uri.parse(
-                    "https://wa.me/${userCard.card.store.contacts.phone}?text=Olá!",
-                  );
-                  _launchUrl(url);
-                },
-              ),
-              IconButton(
-                icon: const Icon(
-                  FontAwesomeIcons.instagram,
-                  color: Colors.white,
-                ),
-                onPressed: () async {
-                  final Uri nativeUrl = Uri.parse(
-                    "instagram://user?username=${userCard.card.store.contacts.instagram}",
-                  );
-                  final Uri webUrl = Uri.parse(
-                    "https://www.instagram.com/${userCard.card.store.contacts.instagram}/",
-                  );
-                  if (await canLaunchUrl(nativeUrl)) {
-                    await _launchUrl(nativeUrl);
-                  } else if (await canLaunchUrl(webUrl)) {
-                    await _launchUrl(webUrl);
-                  } else {
-                    print("can't open Instagram");
-                  }
-                },
-              ),
-              IconButton(
-                icon: const Icon(Icons.phone, color: Colors.white),
-                onPressed: () {
-                  final Uri launchUri = Uri(
-                    scheme: 'tel',
-                    path: '+5581996509220',
-                  );
-                  _launchUrl(launchUri);
-                },
-              ),
-            ],
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildBack(double width) {
+    final backgroundUrl = userCard.card.style.backgroundUrl;
+
+    Widget backgroundWidget;
+
+    if (backgroundUrl != null) {
+      if (backgroundUrl.toLowerCase().endsWith('.json')) {
+        // Lottie animation
+        backgroundWidget = Positioned.fill(
+          child: Lottie.network(backgroundUrl, fit: BoxFit.cover, repeat: true),
+        );
+      } else {
+        // Image (png, jpeg, etc)
+        backgroundWidget = Positioned.fill(
+          child: Image.network(backgroundUrl, fit: BoxFit.cover),
+        );
+      }
+    } else {
+      // Fallback: cor de fundo
+      backgroundWidget = Container(
+        color:
+            userCard.card.style.backgroundColor?.withOpacity(0.95) ??
+            Colors.black87,
+      );
+    }
+
+    return Container(
+      margin: const EdgeInsets.symmetric(vertical: 8.0),
+      width: width,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(20.0),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.5),
+            spreadRadius: 5,
+            blurRadius: 7,
+            offset: const Offset(0, 3),
           ),
         ],
+      ),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(20.0),
+        child: Stack(
+          children: [
+            backgroundWidget,
+            Container(
+              padding: const EdgeInsets.symmetric(
+                horizontal: 16.0,
+                vertical: 12.0,
+              ),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  // Cabeçalho simplificado no verso
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const SizedBox(width: 32),
+                      Text(
+                        "Cartão",
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                      IconButton(
+                        icon: Icon(
+                          MdiIcons.qrcode,
+                          color: Colors.white,
+                          size: 28,
+                        ),
+                        onPressed: () => _dialogQRCode(context, userCard),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 8),
+                  // QR inline
+                  QrImageView(
+                    data: userCard.id,
+                    version: QrVersions.auto,
+                    size: 140,
+                    backgroundColor: Colors.white,
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    userCard.card.description,
+                    style: const TextStyle(color: Colors.white),
+                    textAlign: TextAlign.center,
+                  ),
+                  const SizedBox(height: 12),
+                  if (userCard.card.store.contacts.phone != null)
+                    Text(
+                      "Tel: ${userCard.card.store.contacts.phone}",
+                      style: const TextStyle(
+                        color: Colors.white70,
+                        fontSize: 12,
+                      ),
+                    ),
+                  const SizedBox(height: 8),
+                  // Botões rápidos
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      IconButton(
+                        icon: const Icon(
+                          FontAwesomeIcons.whatsapp,
+                          color: Colors.white,
+                        ),
+                        onPressed: () {
+                          final Uri url = Uri.parse(
+                            "https://wa.me/${userCard.card.store.contacts.phone}?text=Olá!",
+                          );
+                          _launchUrl(url);
+                        },
+                      ),
+                      IconButton(
+                        icon: const Icon(
+                          FontAwesomeIcons.instagram,
+                          color: Colors.white,
+                        ),
+                        onPressed: () async {
+                          final Uri nativeUrl = Uri.parse(
+                            "instagram://user?username=${userCard.card.store.contacts.instagram}",
+                          );
+                          final Uri webUrl = Uri.parse(
+                            "https://www.instagram.com/${userCard.card.store.contacts.instagram}/",
+                          );
+                          if (await canLaunchUrl(nativeUrl)) {
+                            await _launchUrl(nativeUrl);
+                          } else if (await canLaunchUrl(webUrl)) {
+                            await _launchUrl(webUrl);
+                          } else {
+                            print("can't open Instagram");
+                          }
+                        },
+                      ),
+                      IconButton(
+                        icon: const Icon(Icons.phone, color: Colors.white),
+                        onPressed: () {
+                          final Uri launchUri = Uri(
+                            scheme: 'tel',
+                            path: '+5581996509220',
+                          );
+                          _launchUrl(launchUri);
+                        },
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

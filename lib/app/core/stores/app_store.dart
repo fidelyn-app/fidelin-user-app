@@ -33,7 +33,7 @@ abstract class _AppStoreBase with Store {
     var userMapped = UserMapper.mapEntityToDTO(userEntity);
 
     Modular.get<SharedLocalStorageService>().put(
-      'fidelin/user',
+      'fidelyn/user',
       userMapped.toJSON(),
     );
   }
@@ -43,17 +43,17 @@ abstract class _AppStoreBase with Store {
     user = null;
     _token = null;
 
-    Modular.get<SharedLocalStorageService>().delete('fidelin/user');
-    Modular.get<SharedLocalStorageService>().delete('fidelin/token');
+    Modular.get<SharedLocalStorageService>().delete('fidelyn/user');
+    Modular.get<SharedLocalStorageService>().delete('fidelyn/token');
   }
 
   @action
   Future<bool> check() async {
     String? userJSON = await Modular.get<SharedLocalStorageService>().get(
-      'fidelin_store/user',
+      'fidelyn/user',
     );
     String? tokenJSON = await Modular.get<SharedLocalStorageService>().get(
-      'fidelin_store/token',
+      'fidelyn/token',
     );
 
     if (userJSON == null && tokenJSON == null) {
@@ -72,7 +72,7 @@ abstract class _AppStoreBase with Store {
   void setToken(String newToken) {
     _token = newToken;
 
-    Modular.get<SharedLocalStorageService>().put('fidelin/token', _token!);
+    Modular.get<SharedLocalStorageService>().put('fidelyn/token', _token!);
   }
 
   String getToken() {
