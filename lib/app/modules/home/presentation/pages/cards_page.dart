@@ -49,7 +49,7 @@ class _CardsPageState extends State<CardsPage>
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: <Widget>[
                           SizedBox(
-                            height: constraints.maxHeight * 0.25,
+                            height: constraints.maxHeight * 0.20,
                             child: Padding(
                               padding: const EdgeInsets.symmetric(
                                 horizontal: 28.0,

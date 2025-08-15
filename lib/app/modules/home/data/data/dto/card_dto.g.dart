@@ -8,7 +8,6 @@ part of 'card_dto.dart';
 
 CardDTO _$CardDTOFromJson(Map<String, dynamic> json) => CardDTO(
       id: json['id'] as String,
-      backgroundUrl: json['backgroundUrl'] as String?,
       maxPoints: (json['maxPoints'] as num).toInt(),
       color: json['color'] as String?,
       description: json['description'] as String,
@@ -24,7 +23,6 @@ CardDTO _$CardDTOFromJson(Map<String, dynamic> json) => CardDTO(
 
 Map<String, dynamic> _$CardDTOToJson(CardDTO instance) => <String, dynamic>{
       'id': instance.id,
-      'backgroundUrl': instance.backgroundUrl,
       'maxPoints': instance.maxPoints,
       'color': instance.color,
       'description': instance.description,

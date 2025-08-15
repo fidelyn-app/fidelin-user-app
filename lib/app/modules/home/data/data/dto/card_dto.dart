@@ -8,7 +8,6 @@ part 'card_dto.g.dart';
 @JsonSerializable()
 class CardDTO {
   final String id;
-  final String? backgroundUrl; // Allow null for optional fields
   final int maxPoints;
   final String? color;
   final String description;
@@ -27,7 +26,6 @@ class CardDTO {
 
   CardDTO({
     required this.id,
-    this.backgroundUrl,
     required this.maxPoints,
     this.color,
     required this.description,
