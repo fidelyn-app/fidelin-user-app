@@ -15,6 +15,7 @@ class CardBack extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final backgroundUrl = userCard.card.style.backgroundUrl;
+    final isCardActive = userCard.card.active;
 
     Widget backgroundWidget;
 
@@ -68,6 +69,26 @@ class CardBack extends StatelessWidget {
 
                 _bottom(userCard),
               ],
+            ),
+            !isCardActive ? foreground() : SizedBox(),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget foreground() {
+    return Container(
+      color: const Color.fromARGB(255, 0, 0, 0).withOpacity(0.8),
+      child: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(Icons.warning, color: Colors.yellow),
+            SizedBox(height: 10),
+            Text(
+              'Cartão Pausado',
+              style: TextStyle(color: Colors.white, fontSize: 18.0),
             ),
           ],
         ),
