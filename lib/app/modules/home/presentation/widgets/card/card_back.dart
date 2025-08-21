@@ -5,6 +5,7 @@ import 'package:lottie/lottie.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:auto_size_text/auto_size_text.dart';
 
 class CardBack extends StatelessWidget {
   final UserCard userCard;
@@ -116,19 +117,26 @@ class CardBack extends StatelessWidget {
 // }
 
 Widget _rewardDescription2() {
+  const text =
+      'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.';
+
   return Padding(
-    padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 24.0),
-    child: const Text(
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. ',
+    padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 16.0),
+    child: AutoSizeText(
+      text,
       textAlign: TextAlign.center,
-      style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+      style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+      maxLines: 6, // limite de linhas (ajuste conforme desejar)
+      minFontSize: 10, // menor tamanho permitido
+      maxFontSize: 18, // tamanho inicial / máximo
+      overflow: TextOverflow.ellipsis,
     ),
   );
 }
 
 Widget _qrCode(String data) {
   return Padding(
-    padding: const EdgeInsets.symmetric(vertical: 14.0),
+    padding: const EdgeInsets.symmetric(vertical: 0.0),
     child: QrImageView(
       data: data, //userCard.id,
       version: QrVersions.auto,

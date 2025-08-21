@@ -153,7 +153,7 @@ class _CardFrontState extends State<CardFront>
                                               .userCard
                                               .card
                                               .style
-                                              .colorPrimary!,
+                                              .colorPrimary,
                                         )
                                         : Colors.white,
                               ),
