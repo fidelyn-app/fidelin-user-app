@@ -1,3 +1,5 @@
+// ignore_for_file: unnecessary_null_comparison
+
 import 'package:fidelin_user_app/app/modules/home/domain/entities/user_card_entity.dart';
 import 'package:fidelin_user_app/app/modules/home/presentation/widgets/card/point_widget.dart';
 import 'package:flutter/material.dart';
@@ -5,16 +7,71 @@ import 'package:lottie/lottie.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'dart:math' as math;
 
-class CardFront extends StatelessWidget {
+class CardFront extends StatefulWidget {
   final UserCard userCard;
   final double width;
 
   const CardFront({super.key, required this.userCard, required this.width});
 
   @override
+  State<CardFront> createState() => _CardFrontState();
+}
+
+class _CardFrontState extends State<CardFront>
+    with SingleTickerProviderStateMixin {
+  late final ScrollController _scrollController;
+  late final AnimationController _animController;
+  late final Animation<double> _bounceAnim;
+  bool _showIndicator = false;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _scrollController = ScrollController();
+    _scrollController.addListener(_updateIndicatorVisibility);
+
+    _animController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 700),
+    );
+
+    _bounceAnim = Tween<double>(begin: 0.0, end: 8.0).animate(
+      CurvedAnimation(parent: _animController, curve: Curves.easeInOut),
+    );
+
+    _animController.repeat(reverse: true);
+
+    WidgetsBinding.instance.addPostFrameCallback(
+      (_) => _updateIndicatorVisibility(),
+    );
+  }
+
+  void _updateIndicatorVisibility() {
+    if (!_scrollController.hasClients) return;
+
+    final maxScroll = _scrollController.position.maxScrollExtent;
+    final current = _scrollController.position.pixels;
+
+    final shouldShow = maxScroll > 2.0 && current < maxScroll - 2.0;
+
+    if (shouldShow != _showIndicator && mounted) {
+      setState(() => _showIndicator = shouldShow);
+    }
+  }
+
+  @override
+  void dispose() {
+    _scrollController.removeListener(_updateIndicatorVisibility);
+    _scrollController.dispose();
+    _animController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final backgroundUrl = userCard.card.style.backgroundUrl;
-    final isCardActive = userCard.card.active;
+    final backgroundUrl = widget.userCard.card.style.backgroundUrl;
+    final isCardActive = widget.userCard.card.active;
 
     Widget backgroundWidget;
 
@@ -29,12 +86,14 @@ class CardFront extends StatelessWidget {
         );
       }
     } else {
-      backgroundWidget = Container(color: userCard.card.style.colorPrimary);
+      backgroundWidget = Container(
+        color: widget.userCard.card.style.colorPrimary,
+      );
     }
 
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 8.0),
-      width: width,
+      width: widget.width,
       height: 300,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(20.0),
@@ -52,21 +111,71 @@ class CardFront extends StatelessWidget {
         child: Stack(
           children: [
             backgroundWidget,
-            Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                _header(userCard, context),
-                _avatar(userCard),
-                _titleAndSubtitle(userCard),
-                _gridPoints(userCard, context),
-                //_bottom(userCard),
-              ],
+            Positioned.fill(
+              child: Stack(
+                children: [
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      _header(widget.userCard, context),
+                      _avatar(widget.userCard),
+                      _titleAndSubtitle(widget.userCard),
+                      _gridPoints(widget.userCard, context, _scrollController),
+                    ],
+                  ),
+
+                  if (_showIndicator)
+                    Positioned(
+                      bottom: 8,
+                      left: 0,
+                      right: 0,
+                      child: IgnorePointer(
+                        ignoring: true,
+                        child: Center(
+                          child: AnimatedBuilder(
+                            animation: _bounceAnim,
+                            builder: (context, child) {
+                              return Transform.translate(
+                                offset: Offset(0, -_bounceAnim.value),
+                                child: Opacity(opacity: 0.95, child: child),
+                              );
+                            },
+                            child: Container(
+                              padding: const EdgeInsets.all(2),
+                              child: Icon(
+                                Icons.keyboard_arrow_down_rounded,
+                                size: 36,
+                                color:
+                                    widget.userCard.card.style.colorPrimary !=
+                                            null
+                                        ? _contrastColor(
+                                          widget
+                                              .userCard
+                                              .card
+                                              .style
+                                              .colorPrimary!,
+                                        )
+                                        : Colors.white,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                ],
+              ),
             ),
+
             !isCardActive ? foreground() : const SizedBox(),
           ],
         ),
       ),
     );
+  }
+
+  Color _contrastColor(Color bg) {
+    final lum = bg.computeLuminance();
+    return lum > 0.5 ? Colors.black : Colors.grey.shade300;
   }
 
   Widget foreground() {
@@ -160,7 +269,7 @@ Widget _avatar(UserCard userCard) {
         children: [
           CircleAvatar(
             backgroundColor: Colors.white,
-            radius: 52.0,
+            radius: 42,
             child:
                 userCard.card.store.avatarUrl != null
                     ? CircleAvatar(
@@ -185,36 +294,35 @@ Widget _avatar(UserCard userCard) {
   );
 }
 
-Widget _gridPoints(UserCard userCard, context) {
+Widget _gridPoints(
+  UserCard userCard,
+  BuildContext context,
+  ScrollController controller,
+) {
   return Expanded(
     child: LayoutBuilder(
-      builder:
-          (BuildContext context, BoxConstraints constraints) =>
-              GridView.builder(
-                primary: false,
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 20.0,
-                  vertical: 10,
-                ),
-                itemCount: userCard.card.maxPoints,
-                gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-                  maxCrossAxisExtent: calculateMaxCrossAxisExtent(
-                    constraints.maxWidth,
-                    constraints.minHeight,
-                    userCard.card.maxPoints,
-                    itemSpacing: 12,
-                  ),
-                ),
-                itemBuilder:
-                    (BuildContext context, int index) => PointWidget(
-                      selected: userCard.points.length > index,
-                      color: userCard.card.style.colorPrimary,
-                      isLastPoint: userCard.card.maxPoints - 1 == index,
-                      index: index + 1,
-                    ),
+      builder: (BuildContext context, BoxConstraints constraints) {
+        return GridView.builder(
+          controller: controller,
+          primary: false,
+          shrinkWrap: true,
+          padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10),
+          itemCount: userCard.card.maxPoints,
+          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 4,
+            crossAxisSpacing: 0.0,
+            mainAxisSpacing: 0.0,
+            childAspectRatio: 1,
+          ),
+          itemBuilder:
+              (BuildContext context, int index) => PointWidget(
+                selected: userCard.points.length > index,
+                color: userCard.card.style.colorPrimary,
+                isLastPoint: userCard.card.maxPoints - 1 == index,
+                index: index + 1,
               ),
+        );
+      },
     ),
   );
 }
