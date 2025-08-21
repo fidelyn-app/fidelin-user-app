@@ -25,7 +25,7 @@ class _ProfilePageState extends State<ProfilePage>
       body: LayoutBuilder(
         builder:
             (BuildContext context, BoxConstraints constraints) => Container(
-              margin: EdgeInsets.only(top: constraints.maxWidth / 3),
+              margin: EdgeInsets.only(top: constraints.maxWidth / 4),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.vertical(top: Radius.circular(30.0)),
                 color: Colors.white,
