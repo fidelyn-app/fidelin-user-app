@@ -1,22 +1,20 @@
 import 'package:fidelin_user_app/app/modules/home/data/data/dto/card_dto.dart';
+import 'package:fidelin_user_app/app/modules/home/data/data/mapper/reward_mapper.dart';
 import 'package:fidelin_user_app/app/modules/home/data/data/mapper/store_mapper.dart';
 import 'package:fidelin_user_app/app/modules/home/data/data/mapper/style_mapper.dart';
 import 'package:fidelin_user_app/app/modules/home/domain/entities/card_entity.dart';
+import 'package:fidelin_user_app/app/modules/home/domain/entities/time_to_expire_entity.dart';
 
 class CardMapper {
   static Card toEntity(CardDTO dto) {
     return Card(
       id: dto.id,
-      maxPoints: dto.maxPoints,
-      description: dto.description,
       active: dto.active,
       storeId: dto.storeId,
       timeToExpire:
           dto.timeToExpire == null
               ? null
               : TimeToExpireMapper.toEntity(dto.timeToExpire!),
-      createdAt: dto.createdAt,
-      updatedAt: dto.updatedAt,
       store: StoreMapper.toEntity(dto.store),
       style: StyleMapper.toEntity(dto.style),
     );
@@ -25,16 +23,12 @@ class CardMapper {
   static CardDTO toDto(Card entity) {
     return CardDTO(
       id: entity.id,
-      maxPoints: entity.maxPoints,
-      description: entity.description,
       active: entity.active,
       storeId: entity.storeId,
       timeToExpire:
           entity.timeToExpire == null
               ? null
               : TimeToExpireMapper.toDto(entity.timeToExpire!),
-      createdAt: entity.createdAt,
-      updatedAt: entity.updatedAt,
       store: StoreMapper.toDto(entity.store),
       style: StyleMapper.toDto(entity.style),
     );

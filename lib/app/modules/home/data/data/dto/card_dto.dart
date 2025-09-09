@@ -1,6 +1,7 @@
 import 'package:fidelin_user_app/app/modules/home/data/data/dto/style_dto.dart';
 import 'package:json_annotation/json_annotation.dart';
 
+import 'reward_dto.dart';
 import 'store_dto.dart';
 
 part 'card_dto.g.dart';
@@ -8,15 +9,11 @@ part 'card_dto.g.dart';
 @JsonSerializable()
 class CardDTO {
   final String id;
-  final int maxPoints;
   final String? color;
-  final String description;
   final bool active;
   final String storeId;
   @JsonKey(fromJson: _timeToExpireFromJson, toJson: _timeToExpireToJson)
   final TimeToExpireDTO? timeToExpire;
-  final DateTime createdAt;
-  final DateTime updatedAt;
 
   @JsonKey(fromJson: _storeFromJson, toJson: _storeToJson)
   final StoreDTO store;
@@ -26,16 +23,13 @@ class CardDTO {
 
   CardDTO({
     required this.id,
-    required this.maxPoints,
     this.color,
-    required this.description,
     required this.active,
     required this.storeId,
     required this.timeToExpire,
-    required this.createdAt,
-    required this.updatedAt,
     required this.store,
     required this.style,
+    //required this.reward,
   });
 
   static TimeToExpireDTO? _timeToExpireFromJson(Map<String, dynamic>? json) =>

@@ -6,15 +6,8 @@ part 'point_dto.g.dart';
 class PointDTO {
   final String id;
   final bool used;
-  final DateTime createdAt;
-  final DateTime updatedAt;
 
-  PointDTO({
-    required this.id,
-    required this.used,
-    required this.createdAt,
-    required this.updatedAt,
-  });
+  PointDTO({required this.id, required this.used});
 
   factory PointDTO.fromJson(Map<String, dynamic> json) =>
       _$PointDTOFromJson(json);

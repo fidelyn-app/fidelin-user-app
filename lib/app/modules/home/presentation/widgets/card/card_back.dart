@@ -216,7 +216,7 @@ Widget _header(UserCard userCard, BuildContext context) {
       children: [
         Center(
           child: Text(
-            "${userCard.points.length}/${userCard.card.maxPoints}",
+            "${userCard.points.length}/${userCard.reward.pointsRequired}",
             style: const TextStyle(
               color: Colors.white,
               fontSize: 16.0,

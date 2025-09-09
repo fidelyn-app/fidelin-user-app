@@ -239,7 +239,7 @@ Widget _header(UserCard userCard, BuildContext context) {
       children: [
         Center(
           child: Text(
-            "${userCard.points.length}/${userCard.card.maxPoints}",
+            "${userCard.points.length}/${userCard.reward.pointsRequired}",
             style: const TextStyle(
               color: Colors.white,
               fontSize: 16.0,
@@ -307,7 +307,7 @@ Widget _gridPoints(
           primary: false,
           shrinkWrap: true,
           padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10),
-          itemCount: userCard.card.maxPoints,
+          itemCount: userCard.reward.pointsRequired,
           gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 4,
             crossAxisSpacing: 0.0,
@@ -318,7 +318,7 @@ Widget _gridPoints(
               (BuildContext context, int index) => PointWidget(
                 selected: userCard.points.length > index,
                 color: userCard.card.style.colorPrimary,
-                isLastPoint: userCard.card.maxPoints - 1 == index,
+                isLastPoint: userCard.reward.pointsRequired - 1 == index,
                 index: index + 1,
               ),
         );

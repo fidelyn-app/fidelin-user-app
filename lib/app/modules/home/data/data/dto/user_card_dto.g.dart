@@ -13,11 +13,11 @@ UserCardDTO _$UserCardDTOFromJson(Map<String, dynamic> json) => UserCardDTO(
           : DateTime.parse(json['expiration'] as String),
       pointsCount: (json['pointsCount'] as num).toInt(),
       userId: json['userId'] as String,
-      createdAt: DateTime.parse(json['createdAt'] as String),
-      updatedAt: DateTime.parse(json['updatedAt'] as String),
       card: UserCardDTO._cardFromJson(json['card'] as Map<String, dynamic>),
       points: UserCardDTO._pointsFromJson(json['points'] as List),
       shortCode: json['shortCode'] as String,
+      reward:
+          UserCardDTO._rewardFromJson(json['reward'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$UserCardDTOToJson(UserCardDTO instance) =>
@@ -26,9 +26,8 @@ Map<String, dynamic> _$UserCardDTOToJson(UserCardDTO instance) =>
       'expiration': instance.expiration?.toIso8601String(),
       'pointsCount': instance.pointsCount,
       'userId': instance.userId,
-      'createdAt': instance.createdAt.toIso8601String(),
-      'updatedAt': instance.updatedAt.toIso8601String(),
       'shortCode': instance.shortCode,
       'card': UserCardDTO._cardToJson(instance.card),
       'points': UserCardDTO._pointsToJson(instance.points),
+      'reward': UserCardDTO._rewardToJson(instance.reward),
     };

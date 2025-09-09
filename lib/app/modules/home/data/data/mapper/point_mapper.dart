@@ -3,20 +3,10 @@ import 'package:fidelin_user_app/app/modules/home/domain/entities/point_entity.d
 
 class PointMapper {
   static Point toEntity(PointDTO dto) {
-    return Point(
-      id: dto.id,
-      used: dto.used,
-      createdAt: dto.createdAt,
-      updatedAt: dto.updatedAt,
-    );
+    return Point(id: dto.id, used: dto.used);
   }
 
   static PointDTO toDto(Point entity) {
-    return PointDTO(
-      id: entity.id,
-      used: entity.used,
-      createdAt: entity.createdAt,
-      updatedAt: entity.updatedAt,
-    );
+    return PointDTO(id: entity.id, used: entity.used);
   }
 }

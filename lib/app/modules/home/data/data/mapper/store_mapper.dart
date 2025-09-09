@@ -9,13 +9,10 @@ class StoreMapper {
       legalName: dto.legalName,
       taxId: dto.taxId,
       email: dto.email,
-      password: dto.password,
       avatarUrl: dto.avatarUrl,
       phone: dto.phone,
       active: dto.active,
       stripeId: dto.stripeId,
-      createdAt: dto.createdAt,
-      updatedAt: dto.updatedAt,
       contacts: Contacts(),
     );
   }
@@ -27,13 +24,10 @@ class StoreMapper {
       legalName: entity.legalName,
       taxId: entity.taxId,
       email: entity.email,
-      password: entity.password,
       avatarUrl: entity.avatarUrl,
       phone: entity.phone,
       active: entity.active,
       stripeId: entity.stripeId,
-      createdAt: entity.createdAt,
-      updatedAt: entity.updatedAt,
     );
   }
 }
