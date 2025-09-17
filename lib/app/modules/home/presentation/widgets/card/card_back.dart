@@ -7,6 +7,8 @@ import 'package:qr_flutter/qr_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 
+import 'countdown_time.dart';
+
 class CardBack extends StatelessWidget {
   final UserCard userCard;
   final double width;
@@ -62,18 +64,39 @@ class CardBack extends StatelessWidget {
                   child: Column(
                     children: [
                       _header(userCard, context),
+
                       _qrCode(userCard.id),
+
                       _rewardDescription2(),
                     ],
                   ),
                 ),
-
+                _countDown(),
                 _bottom(userCard),
               ],
             ),
             !isCardActive ? foreground() : SizedBox(),
           ],
         ),
+      ),
+    );
+  }
+
+  Widget _countDown() {
+    final expiration = userCard.expiration;
+    if (expiration == null) {
+      return const SizedBox.shrink(); // nada é criado
+    }
+
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8.0),
+      child: CountdownTimer(
+        expiration: expiration,
+        onExpired: () {
+          print('Expirou!');
+        },
+        style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+        userCard: userCard,
       ),
     );
   }
