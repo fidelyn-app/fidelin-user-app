@@ -74,7 +74,7 @@ dev_dependencies:
   json_serializable: ^6.9.0
   faker: ^2.2.0
   flutter_launcher_icons: ^0.14.3
-  flutter_native_splash: ^2.4.5
+  flutter_native_splash: ^2.4.6
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -123,6 +123,11 @@ flutter_native_splash:
   image: assets/app/splash-screen.png
   android: true
   ios: true
+  android_12:
+    color: "#F22E52"
+    icon_background_color: null
+    image: assets/app/splash-screen.png
+
 
 flutter_launcher_icons:
   android: "launcher_icon"
