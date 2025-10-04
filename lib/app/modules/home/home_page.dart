@@ -1,4 +1,3 @@
-import 'package:fidelin_user_app/app/modules/home/presentation/controllers/home_controller.dart';
 import 'package:fidelin_user_app/app/modules/home/presentation/pages/cards_page.dart';
 import 'package:fidelin_user_app/app/modules/home/presentation/pages/profile_page.dart';
 import 'package:flutter/material.dart';
@@ -15,8 +14,6 @@ class _HomePageState extends State<HomePage> {
   late int _selectedPageIndex;
   late List<Widget> _pages;
   late PageController _pageController;
-
-  final HomeController _qrController = Modular.get<HomeController>();
 
   @override
   void initState() {

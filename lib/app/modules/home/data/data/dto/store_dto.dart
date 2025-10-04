@@ -9,15 +9,10 @@ class StoreDTO {
   final String? legalName;
   final String taxId;
   final String email;
-  final String password;
   final bool active;
   final String? avatarUrl;
   final String? phone;
   final String stripeId;
-  @JsonKey(fromJson: _dateTimeFromJson, toJson: _dateTimeToJson)
-  final DateTime createdAt;
-  @JsonKey(fromJson: _dateTimeFromJson, toJson: _dateTimeToJson)
-  final DateTime updatedAt;
 
   StoreDTO({
     required this.id,
@@ -25,13 +20,10 @@ class StoreDTO {
     this.legalName,
     required this.taxId,
     required this.email,
-    required this.password,
     this.avatarUrl,
     this.phone,
     required this.active,
     required this.stripeId,
-    required this.createdAt,
-    required this.updatedAt,
   });
 
   // Handle proper DateTime conversion during serialization/deserialization

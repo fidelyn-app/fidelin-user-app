@@ -1,5 +1,4 @@
 import 'package:fidelin_user_app/app/modules/home/presentation/mixins/home_mixin.dart';
-import 'package:fidelin_user_app/app/modules/home/presentation/widgets/dialog.dart';
 import 'package:fidelin_user_app/app/modules/home/utils/formatters/uppercase_text_formatter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
@@ -23,8 +22,6 @@ class _InputCodeState extends State<InputCode> with HomeMixin {
     var title = '';
     var subtitle = '';
 
-    var code = '';
-
     switch (widget.type) {
       case 'card':
         title = 'Código do cartão';
@@ -42,7 +39,6 @@ class _InputCodeState extends State<InputCode> with HomeMixin {
         child: LayoutBuilder(
           builder: (context, constraints) {
             final maxWidth = constraints.maxWidth;
-            final maxHeight = constraints.maxHeight;
 
             return Observer(
               builder: (_) {

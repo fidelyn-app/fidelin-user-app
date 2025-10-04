@@ -19,18 +19,13 @@ class _ProfilePageState extends State<ProfilePage>
   double picSize = 60.0;
 
   @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
     super.build(context);
     return Scaffold(
       body: LayoutBuilder(
         builder:
             (BuildContext context, BoxConstraints constraints) => Container(
-              margin: EdgeInsets.only(top: constraints.maxWidth / 3),
+              margin: EdgeInsets.only(top: constraints.maxWidth / 4),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.vertical(top: Radius.circular(30.0)),
                 color: Colors.white,
@@ -91,8 +86,9 @@ class _ProfilePageState extends State<ProfilePage>
                               padding: EdgeInsets.symmetric(horizontal: 15),
                               child: ListTile(
                                 onTap: () async {
-                                  final result = await Modular.to
-                                      .pushNamed<bool>('/auth/forgot-password');
+                                  await Modular.to.pushNamed<bool>(
+                                    '/auth/forgot-password',
+                                  );
                                 },
                                 leading: Icon(Icons.lock),
                                 title: Text('Mudar Senha'),

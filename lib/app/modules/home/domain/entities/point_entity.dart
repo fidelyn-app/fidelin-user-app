@@ -1,15 +1,8 @@
 class Point {
   final String id;
   final bool used;
-  final DateTime createdAt;
-  final DateTime updatedAt;
 
-  Point({
-    required this.id,
-    required this.used,
-    required this.createdAt,
-    required this.updatedAt,
-  });
+  Point({required this.id, required this.used});
 
   @override
   String toString() {
@@ -17,8 +10,6 @@ class Point {
     Store(
       id: $id,
       used: $used,
-      createdAt: $createdAt,
-      updatedAt: $updatedAt
     )
    ''';
   }

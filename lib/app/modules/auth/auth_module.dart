@@ -11,7 +11,9 @@ import 'package:fidelin_user_app/app/modules/auth/presentation/controllers/signi
 import 'package:fidelin_user_app/app/modules/auth/presentation/controllers/signup_controller.dart';
 import 'package:fidelin_user_app/app/modules/auth/presentation/pages/check_email_page.dart';
 import 'package:fidelin_user_app/app/modules/auth/presentation/pages/forgot_password_page.dart';
+import 'package:fidelin_user_app/app/modules/auth/presentation/pages/privacy_policy_page.dart';
 import 'package:fidelin_user_app/app/modules/auth/presentation/pages/signup_page.dart';
+import 'package:fidelin_user_app/app/modules/auth/presentation/pages/terms_and_conditions_page.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
@@ -42,5 +44,10 @@ class AuthModule extends Module {
     r.child('/signup', child: (context) => const SignUpPage());
     r.child('/forgot-password', child: (context) => const ForgotPasswordPage());
     r.child('/check-email', child: (context) => const CheckEmailPage());
+    r.child(
+      '/terms-and-conditions',
+      child: (context) => const TermsAndConditionsPage(),
+    );
+    r.child('/privacy-policy', child: (context) => const PrivacyPolicyPage());
   }
 }
