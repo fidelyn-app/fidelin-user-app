@@ -5,6 +5,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 
 class SignInPage extends StatefulWidget {
   const SignInPage({super.key});
@@ -201,6 +202,19 @@ class _SignInPageState extends State<SignInPage> {
                             ),
                           ),
                         ),
+                        SpaceWidget(size: SpaceSize.m),
+                        FutureBuilder<String>(
+                          future: _getVersion(),
+                          builder: (context, snapshot) {
+                            final text = snapshot.data ?? '...';
+                            return Center(
+                              child: Text(
+                                text,
+                                style: TextStyle(color: Colors.black54),
+                              ),
+                            );
+                          },
+                        ),
                         SpaceWidget(size: SpaceSize.xl),
                       ],
                     ),
@@ -210,5 +224,10 @@ class _SignInPageState extends State<SignInPage> {
             ),
       ),
     );
+  }
+
+  Future<String> _getVersion() async {
+    final info = await PackageInfo.fromPlatform();
+    return '${info.version}+${info.buildNumber}';
   }
 }
