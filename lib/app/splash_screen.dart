@@ -13,18 +13,25 @@ class SplashScreen extends StatelessWidget {
           Modular.to.pushNamedAndRemoveUntil("/home/", (_) => false);
         });
   }
-
   @override
   Widget build(BuildContext context) {
+    // mesma cor da splash nativa (use exatamente o hex)
+    const bgColor = Color(0xFFF22F52);
+
+    final width = MediaQuery.of(context).size.width;
+
+    // ajuste a porcentagem (0.20 a 0.30 geralmente funciona bem)
+    final logoSize = width * 0.70;
+
     return Scaffold(
-      backgroundColor: const Color(0xFFF22F52), // cor vermelha da splash nativa
+      backgroundColor: bgColor,
       body: Center(
         child: Image.asset(
           'assets/app/splash-screen.png',
-          width:
-              MediaQuery.of(context).size.width *
-              0.70, // 35% da largura da tela
-          fit: BoxFit.contain,
+          fit: BoxFit.fill,
+          width: logoSize,
+          // se a sua imagem tiver fundo transparente, é ok;
+          // se quiser, force um fundo com Container/Decoration antes do ClipOval.
         ),
       ),
     );

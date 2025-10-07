@@ -21,7 +21,7 @@ class HomeModule extends Module {
   @override
   void binds(Injector i) {
     i.add<CardsDataSource>(
-      () => CardsDataSourceImpl(baseUrl: dotenv.env['API_URL']!),
+      () => CardsDataSourceImpl(baseUrl: dotenv.env['BASE_URL']!),
     );
 
     i.add<CardsRepository>(CardsRepositoryImpl.new);
