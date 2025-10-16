@@ -1,3 +1,4 @@
+import 'package:fidelin_user_app/app/core/services/config_service.dart';
 import 'package:fidelin_user_app/app/core/stores/app_store.dart';
 import 'package:fidelin_user_app/app/modules/home/presentation/mixins/home_mixin.dart';
 import 'package:flutter/material.dart';
@@ -15,6 +16,7 @@ class _ProfilePageState extends State<ProfilePage>
   @override
   bool get wantKeepAlive => true;
   final AppStore _userStore = Modular.get<AppStore>();
+  final ConfigService _configService = Modular.get<ConfigService>();
 
   double picSize = 60.0;
 

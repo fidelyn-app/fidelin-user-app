@@ -1,3 +1,6 @@
+import 'package:configcat_client/configcat_client.dart';
+import 'package:fidelin_user_app/app/core/enums/config_service_keys_enum.dart';
+import 'package:fidelin_user_app/app/core/services/config_service.dart';
 import 'package:fidelin_user_app/app/core/utils/text_validators.dart';
 import 'package:fidelin_user_app/app/core/widgets/spacer.dart';
 import 'package:fidelin_user_app/app/modules/auth/presentation/controllers/signin_controller.dart';
@@ -5,6 +8,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 
 class SignInPage extends StatefulWidget {
   const SignInPage({super.key});
@@ -15,6 +19,7 @@ class SignInPage extends StatefulWidget {
 
 class _SignInPageState extends State<SignInPage> {
   final SignInController _controller = Modular.get<SignInController>();
+  final ConfigService _configService = Modular.get<ConfigService>();
 
   @override
   void initState() {
@@ -201,6 +206,19 @@ class _SignInPageState extends State<SignInPage> {
                             ),
                           ),
                         ),
+                        SpaceWidget(size: SpaceSize.m),
+                        FutureBuilder<String>(
+                          future: _getVersion(),
+                          builder: (context, snapshot) {
+                            final text = snapshot.data ?? '...';
+                            return Center(
+                              child: Text(
+                                text,
+                                style: TextStyle(color: Colors.black54),
+                              ),
+                            );
+                          },
+                        ),
                         SpaceWidget(size: SpaceSize.xl),
                       ],
                     ),
@@ -210,5 +228,10 @@ class _SignInPageState extends State<SignInPage> {
             ),
       ),
     );
+  }
+
+  Future<String> _getVersion() async {
+    final info = await PackageInfo.fromPlatform();
+    return '${info.version}+${info.buildNumber}';
   }
 }
