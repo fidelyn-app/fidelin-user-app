@@ -9,8 +9,8 @@ class AppWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp.router(
       builder: Asuka.builder,
-      title: 'Fidelin',
-      debugShowCheckedModeBanner: false,
+      title: 'Fidelyn User',
+      debugShowCheckedModeBanner: true,
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(
           seedColor: const Color(0xFFF22F52),
