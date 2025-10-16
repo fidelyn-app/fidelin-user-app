@@ -1,8 +1,11 @@
+import 'dart:convert';
+
 import 'package:fidelin_user_app/app/core/services/config_service.dart';
 import 'package:fidelin_user_app/app/core/stores/app_store.dart';
 import 'package:fidelin_user_app/app/modules/home/presentation/mixins/home_mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
+import 'package:crypto/crypto.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -47,10 +50,20 @@ class _ProfilePageState extends State<ProfilePage>
                       child: CircleAvatar(
                         radius: picSize,
                         backgroundColor: Colors.white,
-                        child: Icon(
-                          Icons.person,
-                          size: 64,
-                          color: Colors.black26,
+                        child: ClipRRect(
+                          borderRadius: BorderRadiusGeometry.circular(picSize),
+                          child: Image.network(
+                            getGravatarUrl(
+                              _userStore.user!.email,
+                              size: picSize.toInt() * 2,
+                            ),
+                            width: picSize * 2,
+                            height: picSize * 2,
+                            fit: BoxFit.cover,
+                            errorBuilder:
+                                (context, error, stackTrace) =>
+                                    Icon(Icons.person, size: picSize * 2),
+                          ),
                         ),
                       ),
                     ),
@@ -162,5 +175,12 @@ class _ProfilePageState extends State<ProfilePage>
             ),
       ),
     );
+  }
+
+  String getGravatarUrl(String email, {int size = 200, String def = 'mp'}) {
+    final normalized = email.trim().toLowerCase();
+    final bytes = utf8.encode(normalized);
+    final hash = md5.convert(bytes).toString();
+    return 'https://www.gravatar.com/avatar/$hash?s=$size&d=$def';
   }
 }

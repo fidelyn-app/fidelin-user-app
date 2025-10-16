@@ -11,6 +11,7 @@ import 'package:fidelin_user_app/app/modules/auth/presentation/controllers/signi
 import 'package:fidelin_user_app/app/modules/auth/presentation/controllers/signup_controller.dart';
 import 'package:fidelin_user_app/app/modules/auth/presentation/pages/check_email_page.dart';
 import 'package:fidelin_user_app/app/modules/auth/presentation/pages/forgot_password_page.dart';
+import 'package:fidelin_user_app/app/modules/auth/presentation/pages/intro_page.dart';
 import 'package:fidelin_user_app/app/modules/auth/presentation/pages/privacy_policy_page.dart';
 import 'package:fidelin_user_app/app/modules/auth/presentation/pages/signup_page.dart';
 import 'package:fidelin_user_app/app/modules/auth/presentation/pages/terms_and_conditions_page.dart';
@@ -49,5 +50,6 @@ class AuthModule extends Module {
       child: (context) => const TermsAndConditionsPage(),
     );
     r.child('/privacy-policy', child: (context) => const PrivacyPolicyPage());
+    r.child('/intro', child: (context) => const IntroPage());
   }
 }

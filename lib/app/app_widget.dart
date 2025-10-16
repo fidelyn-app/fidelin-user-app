@@ -15,7 +15,8 @@ class AppWidget extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(
           seedColor: const Color(0xFFF22F52),
           primary: const Color(0xFFF22F52),
-          secondary: const Color(0xFFF22F52),
+          secondary: const Color(0xFF082359),
+          tertiary: const Color(0xFFAC243D),
           brightness: Brightness.light,
           surface: const Color(0xFFFFFFFF),
         ),

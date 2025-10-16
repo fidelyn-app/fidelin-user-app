@@ -9,7 +9,7 @@ class SharedLocalStorageService implements ILocalStorage {
   }
 
   @override
-  Future get(String key) async {
+  Future<dynamic> get(String key) async {
     var shared = await SharedPreferences.getInstance();
     return shared.get(key);
   }
