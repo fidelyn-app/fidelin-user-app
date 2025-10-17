@@ -111,7 +111,22 @@ def safe_git_push(tag_name):
 # -------------------------
 
 if __name__ == "__main__":
-    bump_type = os.getenv("BUMP_TYPE", "patch").lower()
+    # -------------------------
+    # Detect bump type
+    # -------------------------
+    bump_type = os.getenv("BUMP_TYPE")
+    if not bump_type:
+        pr_title = os.getenv("PR_TITLE", "")
+        if "[MAJOR]" in pr_title.upper():
+            bump_type = "major"
+        elif "[MINOR]" in pr_title.upper():
+            bump_type = "minor"
+        elif "[PATCH]" in pr_title.upper():
+            bump_type = "patch"
+        else:
+            bump_type = "patch"  # default
+    bump_type = bump_type.lower()
+
     pr_number = os.getenv("PR_NUMBER", "manual")
 
     old_version, old_build = read_version_from_pubspec()
