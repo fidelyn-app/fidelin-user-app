@@ -4,7 +4,8 @@ import re
 import subprocess
 from pathlib import Path
 from datetime import datetime
-import requests
+import json
+from urllib import request, error
 
 # -------------------------
 # Configurações
@@ -15,9 +16,10 @@ ANDROID_GRADLE_FILES = [
     Path("android/app/build.gradle.kts"),
     Path("android/app/build.gradle")
 ]
+LOCAL_PROPERTIES_FILE = Path("android/local.properties")
 CHANGELOG_FILE = Path("CHANGELOG.md")
-GITHUB_REPO = "fidelyn-app/fidelyn-user-app"  # usuário/repositorio
-GITHUB_TOKEN = os.getenv("GITHUB_TOKEN")  # passado pelo workflow
+GITHUB_REPO = "fidelyn-app/fidelin-user-app"  # usuário/repositorio
+GITHUB_TOKEN = os.getenv("GITHUB_TOKEN")       # passado pelo workflow
 
 # -------------------------
 # Funções auxiliares
@@ -81,6 +83,22 @@ def update_android_gradle(version, build):
             else:
                 print(f"Nenhuma alteração necessária em {gradle_file}")
 
+def update_local_properties(version, build):
+    if LOCAL_PROPERTIES_FILE.exists():
+        lines = LOCAL_PROPERTIES_FILE.read_text().splitlines()
+        new_lines = []
+        for line in lines:
+            if line.startswith("flutter.versionName="):
+                new_lines.append(f"flutter.versionName={version}")
+            elif line.startswith("flutter.versionCode="):
+                new_lines.append(f"flutter.versionCode={build}")
+            else:
+                new_lines.append(line)
+        LOCAL_PROPERTIES_FILE.write_text("\n".join(new_lines) + "\n")
+        print("android/local.properties atualizado -> flutter.versionName e flutter.versionCode")
+    else:
+        print("android/local.properties não encontrado; pulando atualização.")
+
 def update_changelog(version, build, bump_type, pr_number, pr_body=""):
     now = datetime.now().strftime("%Y-%m-%d")
     entry = f"## {version}+{build} - {now}\n- Bump type: {bump_type} (PR #{pr_number})\n"
@@ -112,7 +130,10 @@ def safe_git_push(tag_name):
 
 def create_github_release(tag_name, release_body):
     url = f"https://api.github.com/repos/{GITHUB_REPO}/releases"
-    headers = {"Authorization": f"token {GITHUB_TOKEN}"}
+    headers = {
+        "Authorization": f"token {GITHUB_TOKEN}",
+        "Accept": "application/vnd.github+json"
+    }
     data = {
         "tag_name": tag_name,
         "name": tag_name,
@@ -120,17 +141,19 @@ def create_github_release(tag_name, release_body):
         "draft": False,
         "prerelease": False
     }
-    response = requests.post(url, json=data, headers=headers)
-    if response.status_code == 201:
-        print(f"Release criada com sucesso: {tag_name}")
-    else:
-        print(f"Falha ao criar release: {response.status_code} {response.text}")
+    req = request.Request(url, data=json.dumps(data).encode(), headers=headers, method="POST")
+    try:
+        with request.urlopen(req) as resp:
+            print(f"Release criada com sucesso: {tag_name}")
+    except error.HTTPError as e:
+        print(f"Falha ao criar release: {e.code} {e.read().decode()}")
 
 # -------------------------
 # Execução principal
 # -------------------------
 
 if __name__ == "__main__":
+    # Detect bump type a partir de env ou PR title
     bump_type = os.getenv("BUMP_TYPE")
     if not bump_type:
         pr_title = os.getenv("PR_TITLE", "")
@@ -155,12 +178,14 @@ if __name__ == "__main__":
     print(f"Old version: {old_version} Old build: {old_build}")
     print(f"New version: {new_version}+{new_build}")
 
+    # Atualizações nos arquivos
     write_version_to_pubspec(new_version, new_build)
     update_ios_info_plist(new_version, new_build)
     update_android_gradle(new_version, new_build)
+    update_local_properties(new_version, new_build)
     update_changelog(new_version, new_build, bump_type, pr_number, pr_body)
 
-    # Commit e tag
+    # Commit, tag e push
     commit_msg = f"chore: bump version to {new_version}+{new_build} (BUMP={bump_type}) - PR #{pr_number} [ci skip]"
     safe_git_commit(commit_msg)
 
