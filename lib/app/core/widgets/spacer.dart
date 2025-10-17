@@ -11,7 +11,6 @@ class Spacer {
   static const double xxl = 48.0;
   static const double xxxl = 64.0;
 
-  // Se quiser, pode ter um método para pegar pelo enum:
   static double fromSize(SpaceSize size) {
     switch (size) {
       case SpaceSize.xs:

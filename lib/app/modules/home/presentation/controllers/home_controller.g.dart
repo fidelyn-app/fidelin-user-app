@@ -67,6 +67,14 @@ mixin _$HomeController on _HomeControllerBase, Store {
         .run(() => super.addCard(shortCodeId: shortCodeId));
   }
 
+  late final _$deleteCardAsyncAction =
+      AsyncAction('_HomeControllerBase.deleteCard', context: context);
+
+  @override
+  Future<void> deleteCard({required String cardId}) {
+    return _$deleteCardAsyncAction.run(() => super.deleteCard(cardId: cardId));
+  }
+
   @override
   String toString() {
     return '''

@@ -4,6 +4,7 @@ import 'package:fidelin_user_app/app/modules/home/data/data/repositories/cards_r
 import 'package:fidelin_user_app/app/modules/home/domain/repositories/cards_repository.dart';
 import 'package:fidelin_user_app/app/modules/home/domain/usecases/add_card_usecase.dart';
 import 'package:fidelin_user_app/app/modules/home/domain/usecases/add_point_usecase.dart';
+import 'package:fidelin_user_app/app/modules/home/domain/usecases/delete_card_usecase.dart';
 import 'package:fidelin_user_app/app/modules/home/domain/usecases/fetch_cards_usecase.dart';
 import 'package:fidelin_user_app/app/modules/home/home_page.dart';
 import 'package:fidelin_user_app/app/modules/home/presentation/controllers/home_controller.dart';
@@ -29,6 +30,7 @@ class HomeModule extends Module {
     i.add<FetchCardsUseCase>(FetchCardsUseCaseImpl.new);
     i.add<AddCardUseCase>(AddCardUseCaseImpl.new);
     i.add<AddPointUseCase>(AddPointUseCaseImpl.new);
+    i.add<DeleteCardUseCase>(DeleteCardUseCase.new);
 
     i.addSingleton(HomeController.new);
     i.add(InputCodeController.new);

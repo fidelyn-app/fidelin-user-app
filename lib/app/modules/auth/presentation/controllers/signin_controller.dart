@@ -1,6 +1,3 @@
-// import 'package:customer/app/modules/auth/domain/entities/user_entity.dart';
-// import 'package:customer/app/modules/auth/domain/usecases/signin_with_email_usecase.dart';
-// import 'package:customer/shared/stores/user_store.dart';
 import 'package:asuka/asuka.dart';
 import 'package:dartz/dartz.dart';
 import 'package:fidelin_user_app/app/core/domain/entities/user_entity.dart';
@@ -20,8 +17,9 @@ abstract class _SignInControllerBase with Store {
 
   final AppStore _userStore = Modular.get<AppStore>();
 
-  _SignInControllerBase(
-      {required SignInWithEmailUseCase signInWithEmailUseCase}) {
+  _SignInControllerBase({
+    required SignInWithEmailUseCase signInWithEmailUseCase,
+  }) {
     _signInWithEmailUseCase = signInWithEmailUseCase;
   }
 
@@ -48,15 +46,18 @@ abstract class _SignInControllerBase with Store {
 
       final Either<Failure, UserEntity> _response =
           await _signInWithEmailUseCase.call(
-        email: emailTextController.text,
-        password: passwordTextController.text,
+            email: emailTextController.text,
+            password: passwordTextController.text,
+          );
+      _response.fold(
+        (Failure e) {
+          AsukaSnackbar.alert(e.message).show();
+        },
+        (UserEntity user) {
+          _userStore.setUser(user);
+          Modular.to.navigate('/home/');
+        },
       );
-      _response.fold((Failure e) {
-        AsukaSnackbar.alert(e.message).show();
-      }, (UserEntity user) {
-        _userStore.setUser(user);
-        Modular.to.navigate('/home/');
-      });
       loading = false;
     }
   }

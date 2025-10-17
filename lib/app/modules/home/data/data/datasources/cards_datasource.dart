@@ -6,4 +6,6 @@ abstract class CardsDataSource {
   Future<void> addCard({required String cardId});
 
   Future<void> addPoint({required String cardId, required String pointId});
+
+  Future<void> deleteCard({required String cardId});
 }

@@ -1,9 +1,5 @@
 import 'package:flutter/material.dart';
 
-/// Tela de Política de Privacidade para o aplicativo Fidelyn (usuário final).
-///
-/// Arquivo gerado automaticamente. Se quiser ajustes (versão comprimida,
-/// link para Política de Cookies, integração com WebView, ou tradução), peça que eu atualize.
 class PrivacyPolicyPage extends StatelessWidget {
   const PrivacyPolicyPage({super.key});
 
@@ -108,7 +104,6 @@ class PrivacyPolicyPage extends StatelessWidget {
               ),
               const SizedBox(height: 16),
 
-              // Sections rendered como parágrafos simples
               ..._sections
                   .map(
                     (s) => Padding(

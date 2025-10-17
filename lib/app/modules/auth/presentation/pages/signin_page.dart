@@ -1,6 +1,3 @@
-import 'package:configcat_client/configcat_client.dart';
-import 'package:fidelin_user_app/app/core/enums/config_service_keys_enum.dart';
-import 'package:fidelin_user_app/app/core/services/config_service.dart';
 import 'package:fidelin_user_app/app/core/utils/text_validators.dart';
 import 'package:fidelin_user_app/app/core/widgets/spacer.dart';
 import 'package:fidelin_user_app/app/modules/auth/presentation/controllers/signin_controller.dart';
@@ -19,7 +16,6 @@ class SignInPage extends StatefulWidget {
 
 class _SignInPageState extends State<SignInPage> {
   final SignInController _controller = Modular.get<SignInController>();
-  final ConfigService _configService = Modular.get<ConfigService>();
 
   @override
   void initState() {
@@ -88,7 +84,6 @@ class _SignInPageState extends State<SignInPage> {
                                         () =>
                                             _controller.togglePasswordVisible(),
                                     icon: Icon(
-                                      // Based on passwordVisible state choose the icon
                                       _controller.passwordVisible
                                           ? Icons.visibility
                                           : Icons.visibility_off,

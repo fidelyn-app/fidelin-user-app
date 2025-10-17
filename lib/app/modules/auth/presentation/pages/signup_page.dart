@@ -1,3 +1,4 @@
+import 'package:fidelin_user_app/app/core/utils/text_validators.dart';
 import 'package:fidelin_user_app/app/core/widgets/spacer.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -55,11 +56,6 @@ class _SignUpPageState extends State<SignUpPage> {
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
-                        // SizedBox(
-                        //   height: 150,
-                        //   child: Image.asset('assets/images/white-logo.png'),
-                        // ),
-                        // SpaceWidget(size: SpaceSize.xxl),
                         Text(
                           "Cadastre-se",
                           style: TextStyle(
@@ -70,7 +66,7 @@ class _SignUpPageState extends State<SignUpPage> {
                         ),
                         SpaceWidget(size: SpaceSize.xl),
                         TextFormField(
-                          // validator: Validators.name,
+                          validator: Validators.name,
                           controller: _controller.nameTextController,
                           decoration: const InputDecoration(
                             border: OutlineInputBorder(),
@@ -84,7 +80,7 @@ class _SignUpPageState extends State<SignUpPage> {
                         ),
                         const SizedBox(height: 16.0),
                         TextFormField(
-                          // validator: Validators.email,
+                          validator: Validators.email,
                           controller: _controller.emailTextController,
                           decoration: const InputDecoration(
                             border: OutlineInputBorder(),

@@ -90,7 +90,6 @@ abstract class _AppStoreBase with Store {
 
   @action
   Future<bool> checkFirstRun() async {
-    return true;
     final hasRunBefore =
         await _sharedPreferences.get('fidelyn/hasRunBefore') ?? false;
 

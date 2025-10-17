@@ -28,29 +28,26 @@ class AuthDataSourceImpl implements AuthDataSource {
 
       Map<String, dynamic>? data;
 
-      // Só tenta decodificar se o body não for vazio
       if (response.body.isNotEmpty) {
         try {
           data = jsonDecode(response.body) as Map<String, dynamic>;
         } catch (e) {
-          // Se não for JSON válido, não quebra o fluxo
           _logger.i('Aviso: resposta não é JSON válido: $e');
         }
       }
 
       if (response.statusCode == 200) {
         _logger.d('Forgot password request sent successfully.');
-        return; // garante saída imediata
+        return;
       }
 
-      // Erro da API
       throw Failure(
         error: data?['error'] ?? '',
         message: data?['message'] ?? 'Erro desconhecido',
         statusCode: response.statusCode,
       );
     } on Failure {
-      rethrow; // Mantém falhas da API como estão
+      rethrow;
     } catch (e, s) {
       _logger.e('Erro inesperado em requestForgotPassword: $e', stackTrace: s);
       throw Failure(
@@ -103,7 +100,6 @@ class AuthDataSourceImpl implements AuthDataSource {
       final url = Uri.parse('$_baseUrl/logout');
       final response = await _httpClient.post(url);
       if (response.statusCode == 200) {
-        // Logout bem-sucedido
       } else {
         throw Failure(
           message: 'Falha ao fazer logout',

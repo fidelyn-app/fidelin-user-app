@@ -14,8 +14,6 @@ class SignUpController = _SignUpControllerBase with _$SignUpController;
 abstract class _SignUpControllerBase with Store {
   late SignUpWithEmailUseCase _signUpWithEmailUseCase;
 
-  // final UserStore _userStore = Modular.get<UserStore>();
-
   _SignUpControllerBase({
     required SignUpWithEmailUseCase signUpWithEmailUseCase,
   }) {
@@ -58,25 +56,19 @@ abstract class _SignUpControllerBase with Store {
         password: passwordTextController.text,
       );
 
-      final Either<Failure, Unit> response =
-          await _signUpWithEmailUseCase.call(user);
-      response.fold((Failure e) {
-        AsukaSnackbar.alert(e.message).show();
-      }, (_) {
-        AsukaSnackbar.success("Usuário cadastrado!").show();
-        Modular.to.pop();
-      });
+      final Either<Failure, Unit> response = await _signUpWithEmailUseCase.call(
+        user,
+      );
+      response.fold(
+        (Failure e) {
+          AsukaSnackbar.alert(e.message).show();
+        },
+        (_) {
+          AsukaSnackbar.success("Usuário cadastrado!").show();
+          Modular.to.pop();
+        },
+      );
     }
-
-    // final Either<Exception, UserEntity> _response =
-    //     await _signInWithEmailUseCase.call(
-    //   email: emailTextController.text,
-    //   password: passwordTextController.text,
-    // );
-    // _response.fold((Exception e) {}, (UserEntity user) {
-    //   _userStore.setUser(user);
-    //   Modular.to.navigate('/home/');
-    // });
 
     isLoading = false;
   }

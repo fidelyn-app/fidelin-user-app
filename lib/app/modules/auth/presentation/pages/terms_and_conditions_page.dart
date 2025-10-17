@@ -1,9 +1,5 @@
 import 'package:flutter/material.dart';
 
-/// Tela de Termos e Condições para o aplicativo Fidelyn (usuário final).
-///
-/// Arquivo gerado automaticamente. Se quiser ajustes (botão de "Aceitar",
-/// checkbox obrigatório, versão em HTML, ou tradução), peça que eu atualize.
 class TermsAndConditionsPage extends StatelessWidget {
   const TermsAndConditionsPage({super.key});
 
@@ -123,7 +119,6 @@ class TermsAndConditionsPage extends StatelessWidget {
               ),
               const SizedBox(height: 16),
 
-              // Sections rendered como parágrafos simples (sem ExpansionTile)
               ..._sections
                   .map(
                     (s) => Padding(
@@ -148,7 +143,6 @@ class TermsAndConditionsPage extends StatelessWidget {
 
               const SizedBox(height: 24),
 
-              // Small footer with action hints
               const Text(
                 'Ao continuar a usar o aplicativo, você declara que leu e concorda com estes Termos.',
                 textAlign: TextAlign.center,
