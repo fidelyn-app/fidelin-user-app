@@ -1,5 +1,4 @@
-name: Bump version from PR title and generate changelog
-
+name: Test
 on:
   pull_request:
     types: [closed]
