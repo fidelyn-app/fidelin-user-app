@@ -4,6 +4,7 @@ import re
 import subprocess
 from pathlib import Path
 from datetime import datetime
+import requests
 
 # -------------------------
 # Configurações
@@ -15,6 +16,8 @@ ANDROID_GRADLE_FILES = [
     Path("android/app/build.gradle")
 ]
 CHANGELOG_FILE = Path("CHANGELOG.md")
+GITHUB_REPO = "fidelyn-app/fidelyn-user-app"  # usuário/repositorio
+GITHUB_TOKEN = os.getenv("GITHUB_TOKEN")  # passado pelo workflow
 
 # -------------------------
 # Funções auxiliares
@@ -65,12 +68,10 @@ def update_android_gradle(version, build):
         if gradle_file.exists():
             text = gradle_file.read_text()
             
-            # Se usar variáveis do Flutter, não mexe
             if "flutter.versionCode" in text and "flutter.versionName" in text:
                 print(f"{gradle_file} usa flutter.versionCode/versionName; sem alterações necessárias.")
                 continue
             
-            # Atualiza valores fixos
             new_text = re.sub(r"versionCode\s+\d+", f"versionCode {build}", text)
             new_text = re.sub(r'versionName\s+"[^"]+"', f'versionName "{version}"', new_text)
             
@@ -80,9 +81,13 @@ def update_android_gradle(version, build):
             else:
                 print(f"Nenhuma alteração necessária em {gradle_file}")
 
-def update_changelog(version, build, bump_type, pr_number):
+def update_changelog(version, build, bump_type, pr_number, pr_body=""):
     now = datetime.now().strftime("%Y-%m-%d")
-    entry = f"## {version}+{build} - {now}\n- Bump type: {bump_type} (PR #{pr_number})\n\n"
+    entry = f"## {version}+{build} - {now}\n- Bump type: {bump_type} (PR #{pr_number})\n"
+    if pr_body:
+        entry += f"\n{pr_body.strip()}\n"
+    entry += "\n"
+    
     if CHANGELOG_FILE.exists():
         old_content = CHANGELOG_FILE.read_text()
     else:
@@ -91,7 +96,6 @@ def update_changelog(version, build, bump_type, pr_number):
     print("CHANGELOG.md atualizado.")
 
 def safe_git_commit(commit_msg):
-    # Configura Git caso não esteja configurado (CI)
     try:
         subprocess.run(["git", "config", "--global", "user.name"], check=True, capture_output=True)
         subprocess.run(["git", "config", "--global", "user.email"], check=True, capture_output=True)
@@ -106,14 +110,27 @@ def safe_git_push(tag_name):
     subprocess.run(["git", "push", "origin", "HEAD:main"], check=True)
     subprocess.run(["git", "push", "origin", tag_name], check=True)
 
+def create_github_release(tag_name, release_body):
+    url = f"https://api.github.com/repos/{GITHUB_REPO}/releases"
+    headers = {"Authorization": f"token {GITHUB_TOKEN}"}
+    data = {
+        "tag_name": tag_name,
+        "name": tag_name,
+        "body": release_body,
+        "draft": False,
+        "prerelease": False
+    }
+    response = requests.post(url, json=data, headers=headers)
+    if response.status_code == 201:
+        print(f"Release criada com sucesso: {tag_name}")
+    else:
+        print(f"Falha ao criar release: {response.status_code} {response.text}")
+
 # -------------------------
 # Execução principal
 # -------------------------
 
 if __name__ == "__main__":
-    # -------------------------
-    # Detect bump type
-    # -------------------------
     bump_type = os.getenv("BUMP_TYPE")
     if not bump_type:
         pr_title = os.getenv("PR_TITLE", "")
@@ -124,10 +141,11 @@ if __name__ == "__main__":
         elif "[PATCH]" in pr_title.upper():
             bump_type = "patch"
         else:
-            bump_type = "patch"  # default
+            bump_type = "patch"
     bump_type = bump_type.lower()
 
     pr_number = os.getenv("PR_NUMBER", "manual")
+    pr_body = os.getenv("PR_BODY", "")
 
     old_version, old_build = read_version_from_pubspec()
     new_version = bump_version(old_version, bump_type)
@@ -140,9 +158,9 @@ if __name__ == "__main__":
     write_version_to_pubspec(new_version, new_build)
     update_ios_info_plist(new_version, new_build)
     update_android_gradle(new_version, new_build)
-    update_changelog(new_version, new_build, bump_type, pr_number)
+    update_changelog(new_version, new_build, bump_type, pr_number, pr_body)
 
-    # Commit e tag com segurança
+    # Commit e tag
     commit_msg = f"chore: bump version to {new_version}+{new_build} (BUMP={bump_type}) - PR #{pr_number} [ci skip]"
     safe_git_commit(commit_msg)
 
@@ -150,4 +168,7 @@ if __name__ == "__main__":
     subprocess.run(["git", "tag", tag_name], check=True)
     safe_git_push(tag_name)
 
-    print(f"Version bumped and pushed: {new_version}+{new_build}")
+    # Criar release no GitHub
+    create_github_release(tag_name, pr_body)
+
+    print(f"Version bumped, pushed and release created: {new_version}+{new_build}")
