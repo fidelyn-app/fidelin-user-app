@@ -6,6 +6,7 @@ import 'package:fidelin_user_app/app/modules/home/presentation/widgets/card/card
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:scroll_snap_list/scroll_snap_list.dart';
 
 class CardsPage extends StatefulWidget {
@@ -106,8 +107,38 @@ class _CardsPageState extends State<CardsPage>
                                         itemCount: _homeController.cards.length,
                                         dynamicItemSize: true,
                                       )
-                                      : const Center(
-                                        child: Text("Você não possui cartões"),
+                                      : Center(
+                                        child: Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                            horizontal: 28.0,
+                                            vertical: 16.0,
+                                          ),
+                                          child: Column(
+                                            children: [
+                                              const SizedBox(height: 16),
+                                              SvgPicture.asset(
+                                                'assets/images/no_cards.svg',
+                                                width: 150,
+                                                height: 150,
+                                                fit: BoxFit.cover,
+                                              ),
+                                              const SizedBox(height: 16),
+                                              const Text(
+                                                "Você não possui cartões",
+                                                style: TextStyle(
+                                                  fontSize: 18,
+                                                  fontWeight: FontWeight.w500,
+                                                ),
+                                              ),
+                                              const SizedBox(height: 8),
+                                              const Text(
+                                                "Clique no botão com símbolo de QR code e adicione um cartão ou ponto.",
+                                                textAlign: TextAlign.center,
+                                                style: TextStyle(fontSize: 12),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
                                       ),
                             ),
                       ],
