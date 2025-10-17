@@ -1,3 +1,12 @@
+name: Bump version from PR title and generate changelog
+
+on:
+  pull_request:
+    types: [closed]
+
+permissions:
+  contents: write
+
 jobs:
   bump-version:
     if: ${{ github.event.pull_request.merged == true }}
@@ -9,11 +18,6 @@ jobs:
         with:
           ref: main
           persist-credentials: true
-
-      - name: Configure Git user
-        run: |
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "github-actions[bot]@users.noreply.github.com"
 
       - name: Setup Python
         uses: actions/setup-python@v4
@@ -27,5 +31,7 @@ jobs:
           PR_NUMBER: ${{ github.event.pull_request.number }}
           PR_USER: ${{ github.event.pull_request.user.login }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # opcional: você pode definir BUMP_TYPE a partir do título do PR
+          # BUMP_TYPE: patch
         run: |
           python3 scripts/bump.py
