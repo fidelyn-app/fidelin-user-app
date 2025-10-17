@@ -4,7 +4,6 @@ import re
 import subprocess
 from pathlib import Path
 from datetime import datetime
-import sys
 
 # -------------------------
 # Configurações
@@ -91,6 +90,22 @@ def update_changelog(version, build, bump_type, pr_number):
     CHANGELOG_FILE.write_text(entry + old_content)
     print("CHANGELOG.md atualizado.")
 
+def safe_git_commit(commit_msg):
+    # Configura Git caso não esteja configurado (CI)
+    try:
+        subprocess.run(["git", "config", "--global", "user.name"], check=True, capture_output=True)
+        subprocess.run(["git", "config", "--global", "user.email"], check=True, capture_output=True)
+    except subprocess.CalledProcessError:
+        subprocess.run(["git", "config", "--global", "user.name", "github-actions[bot]"], check=True)
+        subprocess.run(["git", "config", "--global", "user.email", "github-actions[bot]@users.noreply.github.com"], check=True)
+
+    subprocess.run(["git", "add", "."], check=True)
+    subprocess.run(["git", "commit", "-m", commit_msg], check=True)
+
+def safe_git_push(tag_name):
+    subprocess.run(["git", "push", "origin", "HEAD:main"], check=True)
+    subprocess.run(["git", "push", "origin", tag_name], check=True)
+
 # -------------------------
 # Execução principal
 # -------------------------
@@ -112,11 +127,12 @@ if __name__ == "__main__":
     update_android_gradle(new_version, new_build)
     update_changelog(new_version, new_build, bump_type, pr_number)
 
-    # Commit e tag
-    subprocess.run(["git", "add", "."], check=True)
+    # Commit e tag com segurança
     commit_msg = f"chore: bump version to {new_version}+{new_build} (BUMP={bump_type}) - PR #{pr_number} [ci skip]"
-    subprocess.run(["git", "commit", "-m", commit_msg], check=True)
+    safe_git_commit(commit_msg)
+
     tag_name = f"v{new_version}+{new_build}"
     subprocess.run(["git", "tag", tag_name], check=True)
-    subprocess.run(["git", "push", "origin", "HEAD:main"], check=True)
-    subprocess.run(["git", "push", "origin", tag_name], check=True)
+    safe_git_push(tag_name)
+
+    print(f"Version bumped and pushed: {new_version}+{new_build}")
