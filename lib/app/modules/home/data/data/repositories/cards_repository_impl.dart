@@ -9,14 +9,15 @@ class CardsRepositoryImpl implements CardsRepository {
   final CardsDataSource _dataSource;
 
   CardsRepositoryImpl({required CardsDataSource dataSource})
-      : _dataSource = dataSource;
+    : _dataSource = dataSource;
 
   @override
   Future<Either<Exception, List<UserCard>>> fetchCards() async {
     try {
       final result = await _dataSource.fetchCards();
       return right(
-          result.map((item) => UserCardMapper.toEntity(item)).toList());
+        result.map((item) => UserCardMapper.toEntity(item)).toList(),
+      );
     } on Failure catch (e) {
       return left(
         Failure(message: e.message, statusCode: e.statusCode, error: e.error),
@@ -41,10 +42,26 @@ class CardsRepositoryImpl implements CardsRepository {
   }
 
   @override
-  Future<Either<Exception, Unit>> addPoint(
-      {required String cardId, required String pointId}) async {
+  Future<Either<Exception, Unit>> addPoint({
+    required String cardId,
+    required String pointId,
+  }) async {
     try {
       await _dataSource.addPoint(cardId: cardId, pointId: pointId);
+      return right(unit);
+    } on Failure catch (e) {
+      return left(
+        Failure(message: e.message, statusCode: e.statusCode, error: e.error),
+      );
+    } on Exception {
+      return left(Exception("Erro Inesperado"));
+    }
+  }
+
+  @override
+  Future<Either<Exception, Unit>> deleteCard({required String cardId}) async {
+    try {
+      await _dataSource.deleteCard(cardId: cardId);
       return right(unit);
     } on Failure catch (e) {
       return left(

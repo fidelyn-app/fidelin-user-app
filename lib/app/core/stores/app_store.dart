@@ -22,6 +22,9 @@ abstract class _AppStoreBase with Store {
   @computed
   bool get isLogged => user != null;
 
+  final SharedLocalStorageService _sharedPreferences =
+      Modular.get<SharedLocalStorageService>();
+
   _AppStoreBase() {
     loadAppVersion();
   }
@@ -43,8 +46,8 @@ abstract class _AppStoreBase with Store {
     user = null;
     _token = null;
 
-    Modular.get<SharedLocalStorageService>().delete('fidelyn/user');
-    Modular.get<SharedLocalStorageService>().delete('fidelyn/token');
+    _sharedPreferences.delete('fidelyn/user');
+    _sharedPreferences.delete('fidelyn/token');
   }
 
   @action
@@ -72,7 +75,7 @@ abstract class _AppStoreBase with Store {
   void setToken(String newToken) {
     _token = newToken;
 
-    Modular.get<SharedLocalStorageService>().put('fidelyn/token', _token!);
+    _sharedPreferences.put('fidelyn/token', _token!);
   }
 
   String getToken() {
@@ -83,5 +86,18 @@ abstract class _AppStoreBase with Store {
   Future<void> loadAppVersion() async {
     final info = await PackageInfo.fromPlatform();
     appVersion = info.version;
+  }
+
+  @action
+  Future<bool> checkFirstRun() async {
+    final hasRunBefore =
+        await _sharedPreferences.get('fidelyn/hasRunBefore') ?? false;
+
+    if (!hasRunBefore) {
+      await _sharedPreferences.put('fidelyn/hasRunBefore', true);
+      return true;
+    } else {
+      return false;
+    }
   }
 }

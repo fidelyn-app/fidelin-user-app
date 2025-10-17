@@ -95,6 +95,14 @@ mixin _$AppStore on _AppStoreBase, Store {
     return _$loadAppVersionAsyncAction.run(() => super.loadAppVersion());
   }
 
+  late final _$checkFirstRunAsyncAction =
+      AsyncAction('_AppStoreBase.checkFirstRun', context: context);
+
+  @override
+  Future<bool> checkFirstRun() {
+    return _$checkFirstRunAsyncAction.run(() => super.checkFirstRun());
+  }
+
   late final _$_AppStoreBaseActionController =
       ActionController(name: '_AppStoreBase', context: context);
 

@@ -26,19 +26,21 @@ class HttpClient extends BaseClient {
     s = "⬇️ RESPONSE: ${request.method} ${request.url}";
     s += "\nheader: ${response.headers}";
 
-    // Simple request
     if (request is Request) {
       final List<int> bytes = await response.stream.toBytes();
       s += "\nbody: ${utf8.decode(bytes)}";
       _logger.d(s);
 
-      return StreamedResponse(ByteStream.fromBytes(bytes), response.statusCode,
-          contentLength: response.contentLength,
-          request: request,
-          headers: response.headers,
-          isRedirect: response.isRedirect,
-          persistentConnection: response.persistentConnection,
-          reasonPhrase: response.reasonPhrase);
+      return StreamedResponse(
+        ByteStream.fromBytes(bytes),
+        response.statusCode,
+        contentLength: response.contentLength,
+        request: request,
+        headers: response.headers,
+        isRedirect: response.isRedirect,
+        persistentConnection: response.persistentConnection,
+        reasonPhrase: response.reasonPhrase,
+      );
     }
 
     _logger.d(s);

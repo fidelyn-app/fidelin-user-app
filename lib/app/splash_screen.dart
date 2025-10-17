@@ -2,25 +2,49 @@ import 'package:fidelin_user_app/app/core/stores/app_store.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
-class SplashScreen extends StatelessWidget {
-  SplashScreen({super.key}) {
-    Modular.get<AppStore>()
-        .check()
-        .then((v) {
-          return Future.delayed(const Duration(seconds: 2));
-        })
-        .then((value) {
-          Modular.to.pushNamedAndRemoveUntil("/home/", (_) => false);
-        });
+class SplashScreen extends StatefulWidget {
+  const SplashScreen({super.key});
+
+  @override
+  State<SplashScreen> createState() => _SplashScreenState();
+}
+
+class _SplashScreenState extends State<SplashScreen> {
+  final AppStore _appStore = Modular.get<AppStore>();
+
+  @override
+  void initState() {
+    super.initState();
+    _init();
   }
+
+  Future<void> _init() async {
+    try {
+      final bool hasSavedCredentials = await _appStore.check();
+
+      final bool isFirstRun = await _appStore.checkFirstRun();
+
+      if (!mounted) return;
+
+      if (hasSavedCredentials) {
+        Modular.to.pushNamedAndRemoveUntil('/home/', (_) => false);
+        return;
+      }
+
+      if (isFirstRun == true) {
+        Modular.to.pushNamedAndRemoveUntil('/auth/intro', (_) => false);
+      } else {
+        Modular.to.pushNamedAndRemoveUntil('/auth/', (_) => false);
+      }
+    } catch (e) {
+      Modular.to.pushNamedAndRemoveUntil('/auth/', (_) => false);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    // mesma cor da splash nativa (use exatamente o hex)
     const bgColor = Color(0xFFF22F52);
-
     final width = MediaQuery.of(context).size.width;
-
-    // ajuste a porcentagem (0.20 a 0.30 geralmente funciona bem)
     final logoSize = width * 0.70;
 
     return Scaffold(
@@ -30,8 +54,6 @@ class SplashScreen extends StatelessWidget {
           'assets/app/splash-screen.png',
           fit: BoxFit.fill,
           width: logoSize,
-          // se a sua imagem tiver fundo transparente, é ok;
-          // se quiser, force um fundo com Container/Decoration antes do ClipOval.
         ),
       ),
     );

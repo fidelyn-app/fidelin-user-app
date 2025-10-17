@@ -1,8 +1,11 @@
 // ignore_for_file: unnecessary_null_comparison
 
 import 'package:fidelin_user_app/app/modules/home/domain/entities/user_card_entity.dart';
+import 'package:fidelin_user_app/app/modules/home/presentation/controllers/home_controller.dart';
+import 'package:fidelin_user_app/app/modules/home/presentation/widgets/bottom_sheet_widget.dart';
 import 'package:fidelin_user_app/app/modules/home/presentation/widgets/card/point_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_modular/flutter_modular.dart';
 import 'package:lottie/lottie.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'dart:math' as math;
@@ -252,7 +255,8 @@ Widget _header(UserCard userCard, BuildContext context) {
           alignment: Alignment.centerRight,
           child: PopupMenuButton(
             icon: Icon(MdiIcons.dotsVertical, color: Colors.white, size: 32),
-            itemBuilder: (ctx) => [_buildPopupMenuItem('Excluir')],
+            itemBuilder:
+                (ctx) => [_buildPopupMenuItem(context, 'Excluir', userCard.id)],
           ),
         ),
       ],
@@ -327,8 +331,30 @@ Widget _gridPoints(
   );
 }
 
-PopupMenuItem _buildPopupMenuItem(String title) {
-  return PopupMenuItem(child: Text(title));
+PopupMenuItem _buildPopupMenuItem(
+  BuildContext context,
+  String title,
+  String cardId,
+) {
+  final HomeController _homeController = Modular.get<HomeController>();
+
+  return PopupMenuItem(
+    child: Text(title),
+    onTap: () {
+      BottomSheetWidget.show(
+        context,
+        title: 'Excluir Cartão',
+        message:
+            'Você tem certeza que deseja excluir este cartão? Esta ação não pode ser desfeita.',
+        confirmButtonText: 'Sim, Excluir',
+        cancelButtonText: 'Não, Manter',
+        onConfirm: () {
+          _homeController.deleteCard(cardId: cardId);
+          Navigator.of(context).pop(); // Fecha o bottom sheet
+        },
+      );
+    },
+  );
 }
 
 double calculateMaxCrossAxisExtent(

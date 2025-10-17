@@ -117,4 +117,32 @@ class CardsDataSourceImpl implements CardsDataSource {
       rethrow;
     }
   }
+
+  @override
+  Future<void> deleteCard({required String cardId}) async {
+    try {
+      String token = Modular.get<AppStore>().getToken();
+
+      final url = Uri.parse('$_baseUrl/user/cards/$cardId');
+      final response = await http.delete(
+        url,
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+          'Authorization': 'Bearer $token',
+        },
+      );
+      if (response.statusCode != 200) {
+        final data = jsonDecode(response.body) as Map<String, dynamic>;
+
+        throw Failure(
+          error: data['error'] ?? '',
+          message: data['message'] ?? '',
+          statusCode: response.statusCode,
+        );
+      }
+    } on Failure catch (_) {
+      rethrow;
+    }
+  }
 }

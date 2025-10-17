@@ -6,6 +6,10 @@ abstract class CardsRepository {
 
   Future<Either<Exception, Unit>> addCard({required String cardId});
 
-  Future<Either<Exception, Unit>> addPoint(
-      {required String cardId, required String pointId});
+  Future<Either<Exception, Unit>> addPoint({
+    required String cardId,
+    required String pointId,
+  });
+
+  Future<Either<Exception, Unit>> deleteCard({required String cardId});
 }

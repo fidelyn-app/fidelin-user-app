@@ -102,7 +102,7 @@ abstract class _ForgotPasswordControllerBase with Store {
         (_) {
           AsukaSnackbar.success('Senha atualizada com sucesso!').show();
           Modular.to.popUntil((route) => route.isFirst);
-          reset(); // Limpa o estado após o sucesso
+          reset();
         },
       );
     } finally {
@@ -112,18 +112,15 @@ abstract class _ForgotPasswordControllerBase with Store {
 
   @action
   void reset() {
-    // Limpa os controladores de texto
     passwordTextController.clear();
     confirmPasswordTextController.clear();
     emailTextController.clear();
     codeTextController.clear();
 
-    // Reseta as flags de estado
     passwordVisible = false;
     confirmPasswordVisible = false;
     isLoading = false;
 
-    // Reseta o estado do formulário, se ele já foi construído
     formField.currentState?.reset();
   }
 }
