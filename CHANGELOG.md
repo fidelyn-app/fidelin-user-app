@@ -1,3 +1,6 @@
+## 1.0.1+3 - 2025-10-17
+- Bump type: patch (PR #10)
+
 ## 1.0.1+2 - 2025-10-04
 - Bump type: patch (PR #manual)
 
