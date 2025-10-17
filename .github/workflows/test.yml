@@ -1,0 +1,21 @@
+name: Bump version from PR title and generate changelog
+
+on:
+  pull_request:
+    types: [closed]
+
+jobs:
+  bump-version:
+    if: ${{ github.event.pull_request.merged == true }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Configure Git
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Say Hello
+        run: echo "PR was merged!"
