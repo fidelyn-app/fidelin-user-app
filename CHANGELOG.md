@@ -1,3 +1,8 @@
+## 1.1.1+4 - 2025-10-17
+- Bump type: patch (PR #13)
+
+- Alteração do arquivo bump.py
+
 ## 1.1.0+3 - 2025-10-17
 - Bump type: minor (PR #11)
 
