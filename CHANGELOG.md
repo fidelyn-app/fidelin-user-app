@@ -1,3 +1,9 @@
+## 1.1.1+4 - 2025-10-20
+- Bump type: patch (PR #16)
+
+- Foi removido do termos e privacidade o "Telefone"
+- Foi Corrigido a rota de PushNamedAndRemove para um PushNamedComum
+
 ## 1.1.0+3 - 2025-10-17
 - Bump type: minor (PR #15)
 
