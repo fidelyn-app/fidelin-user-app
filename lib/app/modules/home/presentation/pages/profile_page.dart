@@ -141,10 +141,7 @@ class _ProfilePageState extends State<ProfilePage>
                                 leading: const Icon(Icons.file_copy_outlined),
                                 title: const Text('Política de Privacidade'),
                                 onTap: () {
-                                  Modular.to.pushNamedAndRemoveUntil(
-                                    "/auth/privacy-policy",
-                                    (_) => false,
-                                  );
+                                  Modular.to.pushNamed("/auth/privacy-policy");
                                 },
                               ),
                             ),
