@@ -14,12 +14,12 @@ class PrivacyPolicyPage extends StatelessWidget {
     {
       'title': 'Controladora de dados',
       'body':
-          'A Fidelyn é a controladora dos Dados Pessoais coletados por meio do App, salvo quando informado expressamente que determinado processamento é realizado por parceiros ou fornecedores. Para questões relacionadas a dados, utilize o e-mail: suporte@fidelyn.com.',
+          'A Fidelyn é a controladora dos Dados Pessoais coletados por meio do App, salvo quando informado expressamente que determinado processamento é realizado por parceiros ou fornecedores. Para questões relacionadas a dados, utilize o e-mail: contato@fidelyn.com.',
     },
     {
       'title': 'Dados que coletamos',
       'body':
-          '- Dados de identificação: nome, e-mail, telefone.\n- Dados de uso: histórico de pontos, resgates, interações com lojas parceiras.\n- Dados técnicos: identificadores do dispositivo, versão do sistema operacional, logs de erro.\n- Dados de localização: quando você autoriza o App a acessar sua localização para facilitar promoções locais (opcional).',
+          '- Dados de identificação: nome, e-mail.\n- Dados de uso: histórico de pontos, resgates, interações com lojas parceiras.\n- Dados técnicos: identificadores do dispositivo, versão do sistema operacional, logs de erro.\n- Dados de localização: quando você autoriza o App a acessar sua localização para facilitar promoções locais (opcional).',
     },
     {
       'title': 'Finalidades do tratamento',
