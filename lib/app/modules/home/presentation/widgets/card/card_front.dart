@@ -74,7 +74,7 @@ class _CardFrontState extends State<CardFront>
   @override
   Widget build(BuildContext context) {
     final backgroundUrl = widget.userCard.card.style.backgroundUrl;
-    final isCardActive = widget.userCard.card.active;
+    //final isCardActive = widget.userCard.card.active;
 
     Widget backgroundWidget;
 
@@ -169,7 +169,7 @@ class _CardFrontState extends State<CardFront>
               ),
             ),
 
-            !isCardActive ? foreground() : const SizedBox(),
+            //!isCardActive ? foreground() : const SizedBox(),
           ],
         ),
       ),

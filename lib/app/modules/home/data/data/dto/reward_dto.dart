@@ -14,7 +14,7 @@ class RewardDTO {
   final TimeToExpireDTO? timeToExpire;
   final DateTime? dateToExpire;
   final String storeId;
-  final bool active;
+  //final bool active;
 
   RewardDTO({
     required this.id,
@@ -25,7 +25,7 @@ class RewardDTO {
     this.timeToExpire,
     this.dateToExpire,
     required this.storeId,
-    required this.active,
+    //required this.active,
   });
 
   factory RewardDTO.fromJson(Map<String, dynamic> json) =>

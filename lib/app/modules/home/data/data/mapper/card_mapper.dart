@@ -1,5 +1,4 @@
 import 'package:fidelin_user_app/app/modules/home/data/data/dto/card_dto.dart';
-import 'package:fidelin_user_app/app/modules/home/data/data/mapper/reward_mapper.dart';
 import 'package:fidelin_user_app/app/modules/home/data/data/mapper/store_mapper.dart';
 import 'package:fidelin_user_app/app/modules/home/data/data/mapper/style_mapper.dart';
 import 'package:fidelin_user_app/app/modules/home/domain/entities/card_entity.dart';
@@ -9,7 +8,7 @@ class CardMapper {
   static Card toEntity(CardDTO dto) {
     return Card(
       id: dto.id,
-      active: dto.active,
+      //active: dto.active,
       storeId: dto.storeId,
       timeToExpire:
           dto.timeToExpire == null
@@ -23,7 +22,7 @@ class CardMapper {
   static CardDTO toDto(Card entity) {
     return CardDTO(
       id: entity.id,
-      active: entity.active,
+      //active: entity.active,
       storeId: entity.storeId,
       timeToExpire:
           entity.timeToExpire == null

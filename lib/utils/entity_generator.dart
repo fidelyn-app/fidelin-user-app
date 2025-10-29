@@ -35,7 +35,7 @@ class EntityGenerator {
               ? faker.date.dateTime(minYear: 2025, maxYear: 2060)
               : null,
       storeId: storeId ?? faker.guid.guid(),
-      active: faker.randomGenerator.boolean(),
+      //active: faker.randomGenerator.boolean(),
     );
   }
 
@@ -80,7 +80,7 @@ class EntityGenerator {
     // Generate random values for Card properties
     return Card(
       id: faker.guid.guid(),
-      active: faker.randomGenerator.boolean(),
+      //active: faker.randomGenerator.boolean(),
       storeId: storeId,
       timeToExpire: TimeToExpire(months: faker.randomGenerator.integer(24)),
       store: generateStore(storeId: storeId),

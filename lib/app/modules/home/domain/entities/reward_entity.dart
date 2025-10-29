@@ -13,7 +13,7 @@ class Reward {
   final TimeToExpire? timeToExpire;
   final DateTime? dateToExpire;
   final String storeId;
-  final bool active;
+  //final bool active;
 
   Reward({
     required this.id,
@@ -24,7 +24,7 @@ class Reward {
     this.timeToExpire,
     this.dateToExpire,
     required this.storeId,
-    required this.active,
+    //required this.active,
   });
 
   @override
@@ -39,7 +39,6 @@ class Reward {
       timeToExpire: $timeToExpire,
       dateToExpire: $dateToExpire,
       storeId: $storeId,
-      active: $active,
     )
    ''';
   }

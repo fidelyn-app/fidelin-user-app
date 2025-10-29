@@ -18,7 +18,6 @@ class CardBack extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final backgroundUrl = userCard.card.style.backgroundUrl;
-    final isCardActive = userCard.card.active;
 
     Widget backgroundWidget;
 
@@ -75,7 +74,7 @@ class CardBack extends StatelessWidget {
                 _bottom(userCard),
               ],
             ),
-            !isCardActive ? foreground() : SizedBox(),
+            //!isCardActive ? foreground() : SizedBox(),
           ],
         ),
       ),
