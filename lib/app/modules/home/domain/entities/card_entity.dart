@@ -4,7 +4,6 @@ import 'time_to_expire_entity.dart';
 
 class Card {
   final String id;
-  final bool active;
   final String storeId;
   final TimeToExpire? timeToExpire;
   final Store store;
@@ -12,7 +11,6 @@ class Card {
 
   Card({
     required this.id,
-    required this.active,
     required this.storeId,
     required this.timeToExpire,
     required this.store,
@@ -24,7 +22,6 @@ class Card {
     return '''
       Card(
         id: $id,
-        active: $active,
         storeId: $storeId,
         timeToExpire: $timeToExpire,
         store: ${store.toString()},

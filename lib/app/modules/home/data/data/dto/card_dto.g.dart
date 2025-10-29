@@ -9,7 +9,6 @@ part of 'card_dto.dart';
 CardDTO _$CardDTOFromJson(Map<String, dynamic> json) => CardDTO(
       id: json['id'] as String,
       color: json['color'] as String?,
-      active: json['active'] as bool,
       storeId: json['storeId'] as String,
       timeToExpire: CardDTO._timeToExpireFromJson(
           json['timeToExpire'] as Map<String, dynamic>?),
@@ -20,7 +19,6 @@ CardDTO _$CardDTOFromJson(Map<String, dynamic> json) => CardDTO(
 Map<String, dynamic> _$CardDTOToJson(CardDTO instance) => <String, dynamic>{
       'id': instance.id,
       'color': instance.color,
-      'active': instance.active,
       'storeId': instance.storeId,
       'timeToExpire': CardDTO._timeToExpireToJson(instance.timeToExpire),
       'store': CardDTO._storeToJson(instance.store),

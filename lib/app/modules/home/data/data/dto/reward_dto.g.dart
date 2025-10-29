@@ -20,7 +20,6 @@ RewardDTO _$RewardDTOFromJson(Map<String, dynamic> json) => RewardDTO(
           ? null
           : DateTime.parse(json['dateToExpire'] as String),
       storeId: json['storeId'] as String,
-      active: json['active'] as bool,
     );
 
 Map<String, dynamic> _$RewardDTOToJson(RewardDTO instance) => <String, dynamic>{
@@ -32,5 +31,4 @@ Map<String, dynamic> _$RewardDTOToJson(RewardDTO instance) => <String, dynamic>{
       'timeToExpire': instance.timeToExpire,
       'dateToExpire': instance.dateToExpire?.toIso8601String(),
       'storeId': instance.storeId,
-      'active': instance.active,
     };

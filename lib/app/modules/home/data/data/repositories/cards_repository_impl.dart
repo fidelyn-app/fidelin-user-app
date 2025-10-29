@@ -23,7 +23,9 @@ class CardsRepositoryImpl implements CardsRepository {
         Failure(message: e.message, statusCode: e.statusCode, error: e.error),
       );
     } on Exception {
-      return left(Exception("Erro Inesperado"));
+      return left(
+        Failure(message: "Erro inesperado", statusCode: 500, error: null),
+      );
     }
   }
 

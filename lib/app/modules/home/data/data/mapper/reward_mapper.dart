@@ -19,7 +19,7 @@ class RewardMapper {
               : TimeToExpireMapper.toEntity(dto.timeToExpire!),
       dateToExpire: dto.dateToExpire,
       storeId: dto.storeId,
-      active: dto.active,
+      //active: dto.active,
     );
   }
 
@@ -36,7 +36,7 @@ class RewardMapper {
               : TimeToExpireMapper.toDto(entity.timeToExpire!),
       dateToExpire: entity.dateToExpire,
       storeId: entity.storeId,
-      active: entity.active,
+      //active: entity.active,
     );
   }
 }

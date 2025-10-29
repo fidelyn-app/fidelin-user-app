@@ -10,7 +10,7 @@ part 'card_dto.g.dart';
 class CardDTO {
   final String id;
   final String? color;
-  final bool active;
+  //final bool active;
   final String storeId;
   @JsonKey(fromJson: _timeToExpireFromJson, toJson: _timeToExpireToJson)
   final TimeToExpireDTO? timeToExpire;
@@ -24,7 +24,7 @@ class CardDTO {
   CardDTO({
     required this.id,
     this.color,
-    required this.active,
+    //required this.active,
     required this.storeId,
     required this.timeToExpire,
     required this.store,
