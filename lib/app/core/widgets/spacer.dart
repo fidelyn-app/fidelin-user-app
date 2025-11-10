@@ -1,43 +1,46 @@
+// lib/core/widgets/spacer.dart
 import 'package:flutter/material.dart';
 
 enum SpaceSize { xs, s, m, l, xl, xxl, xxxl }
 
-class Spacer {
-  static const double xs = 2.0;
-  static const double s = 4.0;
-  static const double m = 8.0;
-  static const double l = 16.0;
-  static const double xl = 32.0;
-  static const double xxl = 48.0;
-  static const double xxxl = 64.0;
+class AppSpacer {
+  const AppSpacer._();
 
   static double fromSize(SpaceSize size) {
     switch (size) {
       case SpaceSize.xs:
-        return xs;
+        return 2.0;
       case SpaceSize.s:
-        return s;
+        return 4.0;
       case SpaceSize.m:
-        return m;
+        return 8.0;
       case SpaceSize.l:
-        return l;
+        return 16.0;
       case SpaceSize.xl:
-        return xl;
+        return 32.0;
       case SpaceSize.xxl:
-        return xxl;
+        return 48.0;
       case SpaceSize.xxxl:
-        return xxxl;
+        return 64.0;
     }
   }
 }
 
+/// Widget para espaçamento. Por padrão é vertical (height),
+/// mas você pode passar axis: Axis.horizontal para usar largura.
 class SpaceWidget extends StatelessWidget {
   final SpaceSize size;
+  final Axis axis;
 
-  const SpaceWidget({super.key, required this.size});
+  const SpaceWidget({super.key, required this.size, this.axis = Axis.vertical});
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(height: Spacer.fromSize(size));
+    final value = AppSpacer.fromSize(size);
+
+    return SizedBox(
+      height: axis == Axis.vertical ? value : null,
+      width: axis == Axis.horizontal ? value : null,
+    );
   }
 }

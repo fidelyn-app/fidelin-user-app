@@ -1,6 +1,7 @@
 import 'package:asuka/asuka.dart';
 import 'package:fidelin_user_app/app/app_module.dart';
 import 'package:fidelin_user_app/app/app_widget.dart';
+import 'package:fidelin_user_app/app/core/stores/app_store.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_modular/flutter_modular.dart';
@@ -9,10 +10,13 @@ import 'package:mocktail/mocktail.dart';
 
 class MockModularNavigate extends Mock implements IModularNavigator {}
 
+class MockAppStore extends Mock implements AppStore {}
+
 void main() {
   late IModularNavigator modularNavigate;
 
   setUpAll(() {
+    TestWidgetsFlutterBinding.ensureInitialized();
     modularNavigate = MockModularNavigate();
     Modular.navigatorDelegate = modularNavigate;
     Modular.setInitialRoute('/splash');
@@ -20,6 +24,7 @@ void main() {
 
   setUp(() async {
     await dotenv.load(fileName: ".env");
+    Modular.replaceInstance<AppStore>(MockAppStore());
     Modular.init(AppModule());
   });
 

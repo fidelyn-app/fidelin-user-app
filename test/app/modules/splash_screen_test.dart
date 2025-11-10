@@ -16,16 +16,14 @@ void main() {
   late IModularNavigator modularNavigate;
 
   setUpAll(() {
+    TestWidgetsFlutterBinding.ensureInitialized();
     modularNavigate = MockModularNavigate();
     Modular.navigatorDelegate = modularNavigate;
   });
 
   setUp(() async {
-    modularNavigate = MockModularNavigate();
-    Modular.navigatorDelegate = modularNavigate;
-
     appStore = MockAppStore();
-    await dotenv.load(fileName: ".env");
+    await dotenv.load(fileName: '.env');
     Modular.replaceInstance<AppStore>(appStore);
     Modular.init(AppModule());
   });

@@ -66,6 +66,7 @@ class CardBack extends StatelessWidget {
 
                       _qrCode(userCard.id),
 
+                      //_rewardDescription(),
                       _rewardDescription2(),
                     ],
                   ),
@@ -120,23 +121,23 @@ class CardBack extends StatelessWidget {
   }
 }
 
-// Widget _rewardDescription() {
-//   return Padding(
-//     padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 24.0),
-//     child: Container(
-//       padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 12.0),
-//       decoration: BoxDecoration(
-//         color: Colors.white54,
-//         borderRadius: BorderRadius.circular(16.0),
-//       ),
-//       child: const Text(
-//         'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. ',
-//         textAlign: TextAlign.center,
-//         style: TextStyle(color: Colors.black),
-//       ),
-//     ),
-//   );
-// }
+Widget _rewardDescription() {
+  return Padding(
+    padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 24.0),
+    child: Container(
+      padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 12.0),
+      decoration: BoxDecoration(
+        color: Colors.white54,
+        borderRadius: BorderRadius.circular(16.0),
+      ),
+      child: const Text(
+        'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. ',
+        textAlign: TextAlign.center,
+        style: TextStyle(color: Colors.black),
+      ),
+    ),
+  );
+}
 
 Widget _rewardDescription2() {
   const text =
