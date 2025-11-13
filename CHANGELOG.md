@@ -1,3 +1,9 @@
+## 1.2.0+7 - 2025-11-13
+- Bump type: minor (PR #25)
+
+- Nova variável de ambiente: GOOGLE_OAUTH_KEY
+  - Feature de autenticação OAuth com google
+
 ## 1.1.3+6 - 2025-11-13
 - Bump type: patch (PR #24)
 
