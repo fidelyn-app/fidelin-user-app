@@ -4,8 +4,12 @@ import 'package:fidelin_user_app/app/core/domain/entities/user_entity.dart';
 import 'package:fidelin_user_app/app/core/errors/Failure.dart';
 import 'package:fidelin_user_app/app/core/stores/app_store.dart';
 import 'package:fidelin_user_app/app/modules/auth/domain/usecases/signin_with_email_usecase.dart';
+import 'package:fidelin_user_app/app/modules/auth/domain/usecases/signin_with_google_usecase.dart';
+import 'package:fidelin_user_app/env.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:mobx/mobx.dart';
 
 part 'signin_controller.g.dart';
@@ -14,13 +18,19 @@ class SignInController = _SignInControllerBase with _$SignInController;
 
 abstract class _SignInControllerBase with Store {
   late SignInWithEmailUseCase _signInWithEmailUseCase;
+  late SignInWithGoogleUseCase _signInWithGoogleUseCase;
 
   final AppStore _userStore = Modular.get<AppStore>();
 
+  final GoogleSignIn _googleSignIn = GoogleSignIn.instance;
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+
   _SignInControllerBase({
     required SignInWithEmailUseCase signInWithEmailUseCase,
+    required SignInWithGoogleUseCase signInWithGoogleUseCase,
   }) {
     _signInWithEmailUseCase = signInWithEmailUseCase;
+    _signInWithGoogleUseCase = signInWithGoogleUseCase;
   }
 
   final formField = GlobalKey<FormState>();
@@ -59,6 +69,60 @@ abstract class _SignInControllerBase with Store {
         },
       );
       loading = false;
+    }
+  }
+
+  @action
+  Future<void> signInWithGoogleFirebase() async {
+    try {
+      await _googleSignIn.initialize(serverClientId: Env.googleOauthKey);
+
+      final GoogleSignInAccount googleUser = await _googleSignIn.authenticate(
+        scopeHint: ['email', 'profile'],
+      );
+
+      final GoogleSignInAuthentication googleAuth = googleUser.authentication;
+
+      final AuthCredential credential = GoogleAuthProvider.credential(
+        accessToken: null, // Ignorando o accessToken conforme o erro
+        idToken: googleAuth.idToken, // Usando apenas o idToken
+      );
+
+      // 5. Faz login no Firebase com a credencial
+      final UserCredential userCredential = await _auth.signInWithCredential(
+        credential,
+      );
+      final User? firebaseUser = userCredential.user;
+
+      if (firebaseUser != null) {
+        final String? tokenParaBackend = await firebaseUser.getIdToken();
+
+        final Either<Failure, UserEntity> response =
+            await _signInWithGoogleUseCase.call(
+              firebaseToken: tokenParaBackend!,
+            );
+        response.fold(
+          (Failure e) {
+            AsukaSnackbar.alert(e.message).show();
+          },
+          (UserEntity user) {
+            //_userStore.setUser(user);
+            Modular.to.navigate('/home/');
+          },
+        );
+      }
+    } catch (error) {
+      debugPrint('Erro no login com Google: $error');
+      String errorMessage = 'Ocorreu um erro. Tente novamente.';
+      if (error is FirebaseException) {
+        errorMessage = error.message ?? errorMessage;
+      } else if (error is GoogleSignInException) {
+        if (error.code == GoogleSignInExceptionCode.canceled) {
+          return;
+        }
+        errorMessage = 'Erro de conexão. Verifique sua internet.';
+      }
+      AsukaSnackbar.alert(errorMessage).show();
     }
   }
 }

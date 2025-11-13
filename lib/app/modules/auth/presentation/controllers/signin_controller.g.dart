@@ -49,6 +49,16 @@ mixin _$SignInController on _SignInControllerBase, Store {
     return _$signInAsyncAction.run(() => super.signIn());
   }
 
+  late final _$signInWithGoogleFirebaseAsyncAction = AsyncAction(
+      '_SignInControllerBase.signInWithGoogleFirebase',
+      context: context);
+
+  @override
+  Future<void> signInWithGoogleFirebase() {
+    return _$signInWithGoogleFirebaseAsyncAction
+        .run(() => super.signInWithGoogleFirebase());
+  }
+
   late final _$_SignInControllerBaseActionController =
       ActionController(name: '_SignInControllerBase', context: context);
 

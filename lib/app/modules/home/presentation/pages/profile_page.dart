@@ -183,7 +183,7 @@ class _ProfilePageState extends State<ProfilePage>
                         ],
                       ),
                     ),
-                    Center(child: Text(appStore.appVersion!)),
+                    Center(child: Text('v${appStore.appVersion!}')),
                     const SizedBox(height: 32),
                   ],
                 ),

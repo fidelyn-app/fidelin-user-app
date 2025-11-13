@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:package_info_plus/package_info_plus.dart';
+import 'package:sign_in_button/sign_in_button.dart';
 
 class SignInPage extends StatefulWidget {
   const SignInPage({super.key});
@@ -173,6 +174,25 @@ class _SignInPageState extends State<SignInPage> {
                           ],
                         ),
                         SpaceWidget(size: SpaceSize.l),
+                        SizedBox(
+                          height: 50, // 1. Define a altura aqui
+                          child: SignInButton(
+                            Buttons.google,
+                            // 2. Define o Border Radius aqui
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            text: "Entrar com o Google",
+                            textStyle: TextStyle(
+                              fontSize: 16.0,
+                              //color: Theme.of(context).colorScheme.primary,
+                            ),
+                            onPressed:
+                                () => _controller.signInWithGoogleFirebase(),
+                          ),
+                        ),
+
+                        SpaceWidget(size: SpaceSize.l),
                         Container(
                           padding: EdgeInsets.all(10),
                           child: Center(
@@ -227,6 +247,6 @@ class _SignInPageState extends State<SignInPage> {
 
   Future<String> _getVersion() async {
     final info = await PackageInfo.fromPlatform();
-    return '${info.version}+${info.buildNumber}';
+    return 'v${info.version}';
   }
 }

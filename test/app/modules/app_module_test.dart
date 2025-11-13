@@ -1,20 +1,16 @@
 import 'package:fidelin_user_app/app/app_module.dart';
 import 'package:fidelin_user_app/app/core/core_module.dart';
-import 'package:fidelin_user_app/app/core/guards/auth_guard.dart';
-import 'package:fidelin_user_app/app/modules/auth/auth_module.dart';
-import 'package:fidelin_user_app/app/modules/home/home_module.dart';
-import 'package:fidelin_user_app/app/splash_screen.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
   late AppModule appModule;
   late RouteManager routeManager;
-  late List<ModularRoute> routes;
+  //late List<ModularRoute> routes;
 
   setUp(() {
     appModule = AppModule();
-    routes = [];
+    //routes = [];
     routeManager = RouteManager();
     appModule.routes(routeManager);
   });
