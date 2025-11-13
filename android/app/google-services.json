@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "458124611111",
+    "project_id": "fidelyn-app",
+    "storage_bucket": "fidelyn-app.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:458124611111:android:b522bc8c5b09fb77b68802",
+        "android_client_info": {
+          "package_name": "com.fidelyn.user"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA0pB-ZOLHOXzQ_DLLaHlfbOUhrfLLQ_Vc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

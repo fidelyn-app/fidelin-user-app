@@ -167,4 +167,36 @@ class AuthDataSourceImpl implements AuthDataSource {
       throw Failure(message: 'Falha ao atualizar a senha', statusCode: 500);
     }
   }
+
+  @override
+  Future<UserDTO> signInWithGoogle({required String firebaseToken}) async {
+    try {
+      final url = Uri.parse('$_baseUrl/user/oauth');
+      final response = await _httpClient.post(
+        url,
+        body: {'token': firebaseToken},
+      );
+
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body) as Map<String, dynamic>;
+        final user = UserDTO.fromMap(data['user']);
+        Modular.get<AppStore>().setToken(data['token']);
+        Modular.get<AppStore>().setUser(UserMapper.mapDTOtoEntity(user));
+        return user;
+      } else {
+        final data = jsonDecode(response.body) as Map<String, dynamic>;
+        throw Failure(
+          error: data['error'] ?? '',
+          message: data['message'] ?? 'Erro desconhecido',
+          statusCode: response.statusCode,
+        );
+      }
+    } catch (e, s) {
+      _logger.e('Erro inesperado em signInWithGoogle: $e', stackTrace: s);
+      throw Failure(
+        message: 'Falha ao fazer login com o Google',
+        statusCode: 500,
+      );
+    }
+  }
 }

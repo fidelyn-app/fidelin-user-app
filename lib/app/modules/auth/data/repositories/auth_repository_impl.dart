@@ -10,14 +10,18 @@ class AuthRepositoryImpl implements AuthRepository {
   final AuthDataSource _dataSource;
 
   AuthRepositoryImpl({required AuthDataSource dataSource})
-      : _dataSource = dataSource;
+    : _dataSource = dataSource;
 
   @override
-  Future<Either<Failure, UserEntity>> signInWithEmail(
-      {required String email, required String password}) async {
+  Future<Either<Failure, UserEntity>> signInWithEmail({
+    required String email,
+    required String password,
+  }) async {
     try {
-      final result =
-          await _dataSource.signInWithEmail(email: email, password: password);
+      final result = await _dataSource.signInWithEmail(
+        email: email,
+        password: password,
+      );
       UserEntity user = UserMapper.mapDTOtoEntity(result);
       return right(user);
     } on Failure catch (error) {
@@ -44,19 +48,39 @@ class AuthRepositoryImpl implements AuthRepository {
       return left(error);
     } on Exception catch (_) {
       return left(
-          const Failure(message: 'Unhandled exception!', statusCode: 500));
+        const Failure(message: 'Unhandled exception!', statusCode: 500),
+      );
     }
   }
 
   @override
-  Future<Either<Failure, Unit>> updatePassword(
-      {required String email,
-      required String code,
-      required String password}) async {
+  Future<Either<Failure, Unit>> updatePassword({
+    required String email,
+    required String code,
+    required String password,
+  }) async {
     try {
       await _dataSource.updatePassword(
-          email: email, code: code, password: password);
+        email: email,
+        code: code,
+        password: password,
+      );
       return right(unit);
+    } on Failure catch (error) {
+      return left(error);
+    }
+  }
+
+  @override
+  Future<Either<Failure, UserEntity>> signInWithGoogle({
+    required String firebaseToken,
+  }) async {
+    try {
+      final result = await _dataSource.signInWithGoogle(
+        firebaseToken: firebaseToken,
+      );
+      UserEntity user = UserMapper.mapDTOtoEntity(result);
+      return right(user);
     } on Failure catch (error) {
       return left(error);
     }
