@@ -174,7 +174,7 @@ class AuthDataSourceImpl implements AuthDataSource {
       final url = Uri.parse('$_baseUrl/user/oauth');
       final response = await _httpClient.post(
         url,
-        body: {'firebaseToken': firebaseToken},
+        body: {'token': firebaseToken},
       );
 
       if (response.statusCode == 200) {
