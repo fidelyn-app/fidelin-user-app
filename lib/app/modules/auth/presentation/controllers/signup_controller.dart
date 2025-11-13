@@ -65,7 +65,7 @@ abstract class _SignUpControllerBase with Store {
         },
         (_) {
           AsukaSnackbar.success("Usuário cadastrado!").show();
-          Modular.to.pop();
+          Modular.to.pushNamed('/auth/email-active-user');
         },
       );
     }

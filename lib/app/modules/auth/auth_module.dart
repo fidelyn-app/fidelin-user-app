@@ -4,12 +4,14 @@ import 'package:fidelin_user_app/app/modules/auth/data/repositories/auth_reposit
 import 'package:fidelin_user_app/app/modules/auth/domain/repositories/auth_repository.dart';
 import 'package:fidelin_user_app/app/modules/auth/domain/usecases/forgot_password_usecase.dart';
 import 'package:fidelin_user_app/app/modules/auth/domain/usecases/signin_with_email_usecase.dart';
+import 'package:fidelin_user_app/app/modules/auth/domain/usecases/signin_with_google_usecase.dart';
 import 'package:fidelin_user_app/app/modules/auth/domain/usecases/signup_with_email_usercase.dart';
 import 'package:fidelin_user_app/app/modules/auth/domain/usecases/update_password_usecase.dart';
 import 'package:fidelin_user_app/app/modules/auth/presentation/controllers/forgot_password_controller.dart';
 import 'package:fidelin_user_app/app/modules/auth/presentation/controllers/signin_controller.dart';
 import 'package:fidelin_user_app/app/modules/auth/presentation/controllers/signup_controller.dart';
 import 'package:fidelin_user_app/app/modules/auth/presentation/pages/check_email_page.dart';
+import 'package:fidelin_user_app/app/modules/auth/presentation/pages/email_active_user_page.dart';
 import 'package:fidelin_user_app/app/modules/auth/presentation/pages/forgot_password_page.dart';
 import 'package:fidelin_user_app/app/modules/auth/presentation/pages/intro_page.dart';
 import 'package:fidelin_user_app/app/modules/auth/presentation/pages/privacy_policy_page.dart';
@@ -33,6 +35,7 @@ class AuthModule extends Module {
     i.add<SignUpWithEmailUseCase>(SignUpWithEmailUseCaseImpl.new);
     i.add<ForgotPasswordUseCase>(ForgotPasswordUseCaseImpl.new);
     i.add<UpdatePasswordUseCase>(UpdatePasswordUseCaseImpl.new);
+    i.add<SignInWithGoogleUseCase>(SignInWithGoogleUseCaseImpl.new);
 
     i.addSingleton(SignInController.new);
     i.addSingleton(SignUpController.new);
@@ -51,5 +54,9 @@ class AuthModule extends Module {
     );
     r.child('/privacy-policy', child: (context) => const PrivacyPolicyPage());
     r.child('/intro', child: (context) => const IntroPage());
+    r.child(
+      '/email-active-user',
+      child: (context) => const EmailActiveUserPage(),
+    );
   }
 }

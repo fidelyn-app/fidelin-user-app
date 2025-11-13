@@ -18,4 +18,10 @@ class Env {
     if (b.isNotEmpty) return b;
     return dotenv.env['BASE_URL'] ?? '';
   }
+
+  static String get googleOauthKey {
+    const g = String.fromEnvironment('GOOGLE_OAUTH_KEY');
+    if (g.isNotEmpty) return g;
+    return dotenv.env['GOOGLE_OAUTH_KEY'] ?? '';
+  }
 }
