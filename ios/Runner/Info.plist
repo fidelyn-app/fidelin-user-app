@@ -19,11 +19,11 @@
 		<key>CFBundlePackageType</key>
 		<string>APPL</string>
 		<key>CFBundleShortVersionString</key>
-	<string>1.2.0</string>
+		<string>1.2.0</string>
 		<key>CFBundleSignature</key>
 		<string>????</string>
 		<key>CFBundleVersion</key>
-	<string>7</string>
+		<string>7</string>
 		<key>LSRequiresIPhoneOS</key>
 		<true/>
 		<key>UIApplicationSupportsIndirectInputEvents</key>
@@ -48,6 +48,8 @@
 		<key>NSCameraUsageDescription</key>
 		<string>Este aplicativo precisa acessar a câmera para permitir que você capture fotos e vídeos.</string>
 		<key>UIStatusBarHidden</key>
+		<false/>
+		<key>FirebaseAppDelegateProxyEnabled</key>
 		<false/>
 	</dict>
 </plist>
