@@ -33,7 +33,30 @@ class AppWidget extends StatelessWidget {
       builder: Asuka.builder,
       title: 'Fidelyn User',
       debugShowCheckedModeBanner: true,
+
       theme: ThemeData(
+        scaffoldBackgroundColor: Colors.white,
+        dialogTheme: DialogThemeData(backgroundColor: Colors.white),
+        textTheme: const TextTheme(
+          headlineLarge: TextStyle(
+            fontSize: 32,
+            fontWeight: FontWeight.w600,
+            color: Color(0xFFF22F52),
+          ),
+          headlineMedium: TextStyle(
+            fontSize: 22,
+            fontWeight: FontWeight.w600,
+            color: Colors.black,
+          ),
+          bodyLarge: TextStyle(fontSize: 16, color: Colors.black87),
+          bodyMedium: TextStyle(fontSize: 14, color: Colors.black87),
+          labelLarge: TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.bold,
+            color: Colors.white,
+          ),
+        ),
+
         colorScheme: ColorScheme.fromSeed(
           seedColor: const Color(0xFFF22F52),
           primary: const Color(0xFFF22F52),

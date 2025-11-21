@@ -73,4 +73,18 @@ class CardsRepositoryImpl implements CardsRepository {
       return left(Exception("Erro Inesperado"));
     }
   }
+
+  @override
+  Future<Either<Failure, Unit>> deleteAccount({required String userId}) async {
+    try {
+      await _dataSource.deleteAccount(userId: userId);
+      return right(unit);
+    } on Failure catch (e) {
+      return left(
+        Failure(message: e.message, statusCode: e.statusCode, error: e.error),
+      );
+    } catch (e) {
+      return left(Failure(message: 'Erro inesperado', statusCode: 500));
+    }
+  }
 }

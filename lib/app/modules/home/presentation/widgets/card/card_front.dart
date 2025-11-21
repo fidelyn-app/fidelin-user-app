@@ -9,6 +9,8 @@ import 'package:flutter_modular/flutter_modular.dart';
 import 'package:lottie/lottie.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'dart:math' as math;
+import 'package:shimmer/shimmer.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 class CardFront extends StatefulWidget {
   final UserCard userCard;
@@ -85,7 +87,17 @@ class _CardFrontState extends State<CardFront>
         );
       } else {
         backgroundWidget = Positioned.fill(
-          child: Image.network(backgroundUrl, fit: BoxFit.cover),
+          child: CachedNetworkImage(
+            imageUrl: backgroundUrl,
+            fit: BoxFit.cover,
+            placeholder:
+                (context, url) => Shimmer.fromColors(
+                  baseColor: Colors.grey.shade300,
+                  highlightColor: Colors.grey.shade100,
+                  child: Container(color: Colors.grey),
+                ),
+            errorWidget: (context, url, error) => Icon(Icons.error),
+          ),
         );
       }
     } else {
