@@ -1,3 +1,9 @@
+## 1.3.0+9 - 2025-11-21
+- Bump type: minor (PR #27)
+
+- Permitir que usuário delete própria conta
+ - Cachê e Skeleton nos cartões com background image
+
 ## 1.2.1+8 - 2025-11-21
 - Bump type: patch (PR #26)
 
