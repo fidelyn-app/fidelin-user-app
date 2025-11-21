@@ -7,3 +7,7 @@ mixin HomeMixin<T extends StatefulWidget> on State<T> {
   InputCodeController inputCodeController = Modular.get<InputCodeController>();
   AppStore appStore = Modular.get<AppStore>();
 }
+
+mixin HomeMixinStateless<T extends StatelessWidget> {
+  AppStore appStore = Modular.get<AppStore>();
+}
