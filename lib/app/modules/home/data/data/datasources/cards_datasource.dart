@@ -8,4 +8,6 @@ abstract class CardsDataSource {
   Future<void> addPoint({required String cardId, required String pointId});
 
   Future<void> deleteCard({required String cardId});
+
+  Future<void> deleteAccount({required String userId});
 }

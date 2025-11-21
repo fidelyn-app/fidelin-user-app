@@ -4,12 +4,15 @@ import 'package:fidelin_user_app/app/modules/home/data/data/repositories/cards_r
 import 'package:fidelin_user_app/app/modules/home/domain/repositories/cards_repository.dart';
 import 'package:fidelin_user_app/app/modules/home/domain/usecases/add_card_usecase.dart';
 import 'package:fidelin_user_app/app/modules/home/domain/usecases/add_point_usecase.dart';
+import 'package:fidelin_user_app/app/modules/home/domain/usecases/delete_account_usecase.dart';
 import 'package:fidelin_user_app/app/modules/home/domain/usecases/delete_card_usecase.dart';
 import 'package:fidelin_user_app/app/modules/home/domain/usecases/fetch_cards_usecase.dart';
 import 'package:fidelin_user_app/app/modules/home/home_page.dart';
+import 'package:fidelin_user_app/app/modules/home/presentation/controllers/delete_account_controller.dart';
 import 'package:fidelin_user_app/app/modules/home/presentation/controllers/home_controller.dart';
 import 'package:fidelin_user_app/app/modules/home/presentation/controllers/input_code_controller.dart';
 import 'package:fidelin_user_app/app/modules/home/presentation/pages/cards_page.dart';
+import 'package:fidelin_user_app/app/modules/home/presentation/pages/delete_account_page.dart';
 import 'package:fidelin_user_app/app/modules/home/presentation/pages/error_page.dart';
 import 'package:fidelin_user_app/app/modules/home/presentation/pages/input_code.dart';
 import 'package:fidelin_user_app/app/modules/home/presentation/pages/profile_page.dart';
@@ -31,9 +34,11 @@ class HomeModule extends Module {
     i.add<AddCardUseCase>(AddCardUseCaseImpl.new);
     i.add<AddPointUseCase>(AddPointUseCaseImpl.new);
     i.add<DeleteCardUseCase>(DeleteCardUseCase.new);
+    i.add<DeleteAccountUseCase>(DeleteAccountUseCase.new);
 
     i.addSingleton(HomeController.new);
     i.add(InputCodeController.new);
+    i.add(DeleteAccountController.new);
   }
 
   @override
@@ -45,6 +50,7 @@ class HomeModule extends Module {
     r.child('/qr', child: (context) => const QRScannerPage());
     r.child('/success', child: (context) => const SuccessPage());
     r.child('/error', child: (context) => const ErrorPage());
+    r.child('/delete_account', child: (context) => DeleteAccountPage());
     r.child(
       '/',
       child: (context) => const HomePage(),

@@ -105,14 +105,13 @@ class _ProfilePageState extends State<ProfilePage>
                                     '/auth/forgot-password',
                                   );
                                 },
-                                leading: Icon(Icons.lock),
+                                leading: Icon(Icons.lock_outlined),
                                 title: Text('Mudar Senha'),
                               ),
                             ),
                           ),
-                          const Divider(height: 1),
                           Visibility(
-                            visible: true,
+                            visible: false,
                             child: Padding(
                               padding: const EdgeInsets.symmetric(
                                 horizontal: 15,
@@ -146,8 +145,26 @@ class _ProfilePageState extends State<ProfilePage>
                               ),
                             ),
                           ),
+                          const Divider(height: 1),
                           Visibility(
-                            visible: false,
+                            visible: true,
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 15,
+                              ),
+                              child: ListTile(
+                                leading: const Icon(Icons.delete_outline),
+                                title: const Text('Deletar Conta'),
+                                onTap: () {
+                                  Modular.to.pushNamed("/home/delete_account");
+                                },
+                              ),
+                            ),
+                          ),
+                          const Divider(height: 1),
+                          SizedBox(height: 48.0),
+                          Visibility(
+                            visible: true,
                             child: ElevatedButton.icon(
                               onPressed: () async {
                                 await _userStore.removeUser();

@@ -1,4 +1,5 @@
 import 'package:dartz/dartz.dart';
+import 'package:fidelin_user_app/app/core/errors/Failure.dart';
 import 'package:fidelin_user_app/app/modules/home/domain/entities/user_card_entity.dart';
 
 abstract class CardsRepository {
@@ -12,4 +13,6 @@ abstract class CardsRepository {
   });
 
   Future<Either<Exception, Unit>> deleteCard({required String cardId});
+
+  Future<Either<Failure, Unit>> deleteAccount({required String userId});
 }

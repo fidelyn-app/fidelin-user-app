@@ -1,9 +1,11 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:fidelin_user_app/app/modules/home/domain/entities/user_card_entity.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:lottie/lottie.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:qr_flutter/qr_flutter.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 
@@ -28,7 +30,17 @@ class CardBack extends StatelessWidget {
         );
       } else {
         backgroundWidget = Positioned.fill(
-          child: Image.network(backgroundUrl, fit: BoxFit.cover),
+          child: CachedNetworkImage(
+            imageUrl: backgroundUrl,
+            fit: BoxFit.cover,
+            placeholder:
+                (context, url) => Shimmer.fromColors(
+                  baseColor: Colors.grey.shade300,
+                  highlightColor: Colors.grey.shade100,
+                  child: Container(color: Colors.grey),
+                ),
+            errorWidget: (context, url, error) => Icon(Icons.error),
+          ),
         );
       }
     } else {
@@ -62,12 +74,9 @@ class CardBack extends StatelessWidget {
                 Expanded(
                   child: Column(
                     children: [
-                      _header(userCard, context),
-
+                      _header(context, userCard),
                       _qrCode(userCard.id),
-
-                      //_rewardDescription(),
-                      _rewardDescription2(),
+                      _rewardDescription(context, userCard),
                     ],
                   ),
                 ),
@@ -89,7 +98,7 @@ class CardBack extends StatelessWidget {
     }
 
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8.0),
+      padding: const EdgeInsets.symmetric(vertical: 0.0),
       child: CountdownTimer(
         expiration: expiration,
         onExpired: () {
@@ -121,38 +130,39 @@ class CardBack extends StatelessWidget {
   }
 }
 
-Widget _rewardDescription() {
-  return Padding(
-    padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 24.0),
-    child: Container(
-      padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 12.0),
-      decoration: BoxDecoration(
-        color: Colors.white54,
-        borderRadius: BorderRadius.circular(16.0),
+Widget _rewardDescription(BuildContext context, UserCard userCard) {
+  return Expanded(
+    child: Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 16.0),
+      child: Container(
+        width: double.infinity,
+        padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 12.0),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(16.0),
+        ),
+        child:
+            userCard.reward.description != null
+                ? SingleChildScrollView(
+                  child: Text(
+                    userCard.reward.description ?? '',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      color: userCard.card.style.colorPrimary,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                )
+                : Center(
+                  child: Text(
+                    'Sem descrição',
+                    style: TextStyle(
+                      color: Colors.grey,
+                      fontStyle: FontStyle.italic,
+                    ),
+                  ),
+                ),
       ),
-      child: const Text(
-        'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. ',
-        textAlign: TextAlign.center,
-        style: TextStyle(color: Colors.black),
-      ),
-    ),
-  );
-}
-
-Widget _rewardDescription2() {
-  const text =
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.';
-
-  return Padding(
-    padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 16.0),
-    child: AutoSizeText(
-      text,
-      textAlign: TextAlign.center,
-      style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-      maxLines: 6, // limite de linhas (ajuste conforme desejar)
-      minFontSize: 10, // menor tamanho permitido
-      maxFontSize: 18, // tamanho inicial / máximo
-      overflow: TextOverflow.ellipsis,
     ),
   );
 }
@@ -230,7 +240,7 @@ Widget _bottom(UserCard userCard) {
   );
 }
 
-Widget _header(UserCard userCard, BuildContext context) {
+Widget _header(BuildContext context, UserCard userCard) {
   return SizedBox(
     width: double.infinity,
     height: 56, // ajuste se quiser
