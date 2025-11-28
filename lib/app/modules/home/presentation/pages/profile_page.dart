@@ -153,6 +153,22 @@ class _ProfilePageState extends State<ProfilePage>
                                 horizontal: 15,
                               ),
                               child: ListTile(
+                                leading: const Icon(Icons.map_outlined),
+                                title: const Text('Mapa'),
+                                onTap: () {
+                                  Modular.to.pushNamed("/home/stores_map");
+                                },
+                              ),
+                            ),
+                          ),
+                          const Divider(height: 1),
+                          Visibility(
+                            visible: true,
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 15,
+                              ),
+                              child: ListTile(
                                 leading: const Icon(Icons.delete_outline),
                                 title: const Text('Deletar Conta'),
                                 onTap: () {

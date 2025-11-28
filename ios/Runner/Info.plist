@@ -28,6 +28,8 @@
 		<true/>
 		<key>UIApplicationSupportsIndirectInputEvents</key>
 		<true/>
+		<key>NSLocationWhenInUseUsageDescription</key>
+		<string>Este aplicativo precisa acessar a localização para permitir que você capture fotos e vídeos.</string>
 		<key>UILaunchStoryboardName</key>
 		<string>LaunchScreen</string>
 		<key>UIMainStoryboardFile</key>

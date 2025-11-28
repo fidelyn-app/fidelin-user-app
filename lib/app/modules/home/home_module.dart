@@ -17,6 +17,7 @@ import 'package:fidelin_user_app/app/modules/home/presentation/pages/error_page.
 import 'package:fidelin_user_app/app/modules/home/presentation/pages/input_code.dart';
 import 'package:fidelin_user_app/app/modules/home/presentation/pages/profile_page.dart';
 import 'package:fidelin_user_app/app/modules/home/presentation/pages/qr_scanner_page.dart';
+import 'package:fidelin_user_app/app/modules/home/presentation/pages/stores_map.dart';
 import 'package:fidelin_user_app/app/modules/home/presentation/pages/sucess_page.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_modular/flutter_modular.dart';
@@ -59,5 +60,6 @@ class HomeModule extends Module {
         ChildRoute('/profile', child: (context) => const ProfilePage()),
       ],
     );
+    r.child('/stores_map', child: (context) => const StoresMapPage());
   }
 }

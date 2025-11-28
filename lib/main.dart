@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_modular/flutter_modular.dart';
+import 'package:mapbox_maps_flutter/mapbox_maps_flutter.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -15,6 +16,9 @@ void main() async {
   await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
 
   await dotenv.load(fileName: ".env");
+
+  final accessToken = dotenv.env['MAPBOX_ACCESS_TOKEN']!;
+  MapboxOptions.setAccessToken(accessToken);
 
   Modular.setInitialRoute('/splash');
 
