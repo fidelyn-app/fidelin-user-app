@@ -1,5 +1,7 @@
 import 'package:fidelyn_user_app/app/modules/home/presentation/pages/cards_page.dart';
+import 'package:fidelyn_user_app/app/modules/home/presentation/pages/history_page.dart';
 import 'package:fidelyn_user_app/app/modules/home/presentation/pages/profile_page.dart';
+import 'package:fidelyn_user_app/app/modules/home/presentation/pages/stores_map.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
@@ -19,7 +21,12 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
     _selectedPageIndex = 0;
-    _pages = [CardsPage(), const ProfilePage()];
+    _pages = [
+      const CardsPage(),
+      const HistoryPage(),
+      const StoresMapPage(),
+      const ProfilePage(),
+    ];
 
     _pageController = PageController(initialPage: _selectedPageIndex);
   }
@@ -34,11 +41,13 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: PageView(
-        onPageChanged: _scrollHandler,
-        physics: const NeverScrollableScrollPhysics(),
-        controller: _pageController,
-        children: _pages,
+      body: SafeArea(
+        child: PageView(
+          onPageChanged: _scrollHandler,
+          physics: const NeverScrollableScrollPhysics(),
+          controller: _pageController,
+          children: _pages,
+        ),
       ),
       bottomNavigationBar: bottomNavigationBar(),
     );
@@ -120,6 +129,22 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ),
                 InkWell(
+                  onTap: () => _tapHandler(1),
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 25,
+                      vertical: 8,
+                    ),
+                    child: Icon(
+                      Icons.history,
+                      color:
+                          _selectedPageIndex == 1
+                              ? Theme.of(context).colorScheme.primary
+                              : Colors.black45,
+                    ),
+                  ),
+                ),
+                InkWell(
                   onTap: () async {
                     // final result = await Navigator.of(context).push<String>(
                     //   MaterialPageRoute(builder: (_) => const QRScannerPage()),
@@ -156,14 +181,31 @@ class _HomePageState extends State<HomePage> {
                       borderRadius: BorderRadius.all(Radius.circular(25)),
                     ),
                     padding: const EdgeInsets.symmetric(
-                      horizontal: 28,
-                      vertical: 12,
+                      horizontal: 14,
+                      vertical: 14,
                     ),
                     child: const Icon(Icons.qr_code, color: Colors.white),
                   ),
                 ),
                 InkWell(
-                  onTap: () => _tapHandler(1),
+                  onTap: () => _tapHandler(2),
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 25,
+                      vertical: 8,
+                    ),
+                    child: Icon(
+                      Icons.search,
+                      color:
+                          _selectedPageIndex == 2
+                              ? Theme.of(context).colorScheme.primary
+                              : Colors.black45,
+                    ),
+                  ),
+                ),
+
+                InkWell(
+                  onTap: () => _tapHandler(3),
                   child: Container(
                     padding: const EdgeInsets.symmetric(
                       horizontal: 25,
@@ -172,7 +214,7 @@ class _HomePageState extends State<HomePage> {
                     child: Icon(
                       Icons.person,
                       color:
-                          _selectedPageIndex == 1
+                          _selectedPageIndex == 3
                               ? Theme.of(context).colorScheme.primary
                               : Colors.black45,
                     ),

@@ -14,6 +14,7 @@ import 'package:fidelyn_user_app/app/modules/home/presentation/controllers/input
 import 'package:fidelyn_user_app/app/modules/home/presentation/pages/cards_page.dart';
 import 'package:fidelyn_user_app/app/modules/home/presentation/pages/delete_account_page.dart';
 import 'package:fidelyn_user_app/app/modules/home/presentation/pages/error_page.dart';
+import 'package:fidelyn_user_app/app/modules/home/presentation/pages/history_page.dart';
 import 'package:fidelyn_user_app/app/modules/home/presentation/pages/input_code.dart';
 import 'package:fidelyn_user_app/app/modules/home/presentation/pages/profile_page.dart';
 import 'package:fidelyn_user_app/app/modules/home/presentation/pages/qr_scanner_page.dart';
@@ -61,5 +62,6 @@ class HomeModule extends Module {
       ],
     );
     r.child('/stores_map', child: (context) => const StoresMapPage());
+    r.child('/history', child: (context) => const HistoryPage());
   }
 }

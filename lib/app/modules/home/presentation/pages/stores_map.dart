@@ -2,13 +2,14 @@ import 'dart:async';
 import 'dart:math';
 import 'dart:typed_data';
 import 'dart:ui' as ui;
-import 'package:flutter/material.dart';
-import 'package:geolocator/geolocator.dart' as geo;
-import 'package:mapbox_maps_flutter/mapbox_maps_flutter.dart';
+
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:fidelyn_user_app/app/modules/home/domain/entities/store_entity.dart';
 import 'package:fidelyn_user_app/utils/entity_generator.dart';
-import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart' as geo;
 import 'package:http/http.dart' as http;
+import 'package:mapbox_maps_flutter/mapbox_maps_flutter.dart';
 
 class StoresMapPage extends StatefulWidget {
   const StoresMapPage({super.key});
@@ -22,21 +23,22 @@ class _StoresMapPageState extends State<StoresMapPage> {
   PointAnnotationManager? pointAnnotationManager;
   geo.Position? userPosition;
   PointAnnotation? userLocationAnnotation;
-  
+
   // Lista de stores e annotations
   final List<Store> stores = [];
   final List<PointAnnotation> storeAnnotations = [];
-  
+
   // Controle do botão de pesquisa
   bool showSearchButton = false;
   double currentZoom = 14.0;
   Point? lastCameraCenter;
   Timer? _cameraCheckTimer;
-  
+
   // Constantes
   static const int numberOfStores = 20;
-  static const double minZoomForStores = 12.0; // Zoom mínimo para mostrar stores (zoom out muito alto = zoom baixo)
-  
+  static const double minZoomForStores =
+      12.0; // Zoom mínimo para mostrar stores (zoom out muito alto = zoom baixo)
+
   final Random _random = Random();
 
   @override
@@ -116,7 +118,9 @@ class _StoresMapPageState extends State<StoresMapPage> {
 
   void _startCameraMonitoring() {
     _cameraCheckTimer?.cancel();
-    _cameraCheckTimer = Timer.periodic(const Duration(milliseconds: 500), (timer) async {
+    _cameraCheckTimer = Timer.periodic(const Duration(milliseconds: 500), (
+      timer,
+    ) async {
       if (mapboxMap == null) return;
 
       try {
@@ -129,9 +133,12 @@ class _StoresMapPageState extends State<StoresMapPage> {
 
         // Verifica se houve mudança significativa
         final zoomChanged = (zoom - previousZoom).abs() > 0.1;
-        final centerChanged = previousCenter == null ||
-            (center.coordinates[0]?.toDouble() ?? 0.0) != (previousCenter.coordinates[0]?.toDouble() ?? 0.0) ||
-            (center.coordinates[1]?.toDouble() ?? 0.0) != (previousCenter.coordinates[1]?.toDouble() ?? 0.0);
+        final centerChanged =
+            previousCenter == null ||
+            (center.coordinates[0]?.toDouble() ?? 0.0) !=
+                (previousCenter.coordinates[0]?.toDouble() ?? 0.0) ||
+            (center.coordinates[1]?.toDouble() ?? 0.0) !=
+                (previousCenter.coordinates[1]?.toDouble() ?? 0.0);
 
         if (zoomChanged || centerChanged) {
           setState(() {
@@ -197,7 +204,7 @@ class _StoresMapPageState extends State<StoresMapPage> {
     // Gera 20 stores com posições aleatórias
     for (int i = 0; i < numberOfStores; i++) {
       final store = EntityGenerator.generateStore();
-      
+
       // Gera uma posição aleatória próxima ao usuário (raio de ~5km)
       final latOffset = (_random.nextDouble() - 0.5) * 0.05; // ~5km
       final lonOffset = (_random.nextDouble() - 0.5) * 0.05;
@@ -206,29 +213,31 @@ class _StoresMapPageState extends State<StoresMapPage> {
       final storeLon = userPosition!.longitude + lonOffset;
 
       // Cria o pin com imagem da loja
-      final imageUrl = store.avatarUrl ?? 
-          'https://picsum.photos/seed/${store.id}/200';
+      final imageUrl =
+          store.avatarUrl ?? 'https://picsum.photos/seed/${store.id}/200';
 
-        try {
-          final annotation = PointAnnotationOptions(
-            geometry: Point(coordinates: Position(storeLon, storeLat)),
-            image: await _createStorePinIcon(imageUrl, store),
-          );
+      try {
+        final annotation = PointAnnotationOptions(
+          geometry: Point(coordinates: Position(storeLon, storeLat)),
+          image: await _createStorePinIcon(imageUrl, store),
+        );
 
-          final createdAnnotation = await pointAnnotationManager!.create(annotation);
-          
-          // Armazena a store e a annotation
-          stores.add(store);
-          storeAnnotations.add(createdAnnotation);
-        } catch (e) {
-          debugPrint('Erro ao criar annotation para store ${store.id}: $e');
-        }
+        final createdAnnotation = await pointAnnotationManager!.create(
+          annotation,
+        );
+
+        // Armazena a store e a annotation
+        stores.add(store);
+        storeAnnotations.add(createdAnnotation);
+      } catch (e) {
+        debugPrint('Erro ao criar annotation para store ${store.id}: $e');
+      }
     }
   }
 
   Future<void> _clearStores() async {
     if (pointAnnotationManager == null) return;
-    
+
     // Remove todas as annotations
     for (final annotation in storeAnnotations) {
       try {
@@ -237,7 +246,7 @@ class _StoresMapPageState extends State<StoresMapPage> {
         debugPrint('Erro ao deletar annotation: $e');
       }
     }
-    
+
     // Limpa as listas
     stores.clear();
     storeAnnotations.clear();
@@ -245,7 +254,7 @@ class _StoresMapPageState extends State<StoresMapPage> {
 
   Future<void> _searchInCurrentArea() async {
     if (mapboxMap == null || lastCameraCenter == null) return;
-    
+
     setState(() {
       showSearchButton = false;
     });
@@ -274,10 +283,10 @@ class _StoresMapPageState extends State<StoresMapPage> {
     // Usa potência de 2 para compatibilidade com Mapbox (128 = 2^7)
     const size = 128.0;
     const circleRadius = size * 0.4; // Círculo maior, centralizado
-    
+
     final recorder = ui.PictureRecorder();
     final canvas = Canvas(recorder);
-    
+
     final centerX = size / 2;
     final centerY = size / 2;
 
@@ -291,11 +300,13 @@ class _StoresMapPageState extends State<StoresMapPage> {
         final storeImage = frame.image;
 
         // Cria um círculo para clipar a imagem
-        final clipPath = Path()
-          ..addOval(Rect.fromCircle(
-            center: Offset(centerX, centerY),
-            radius: circleRadius,
-          ));
+        final clipPath =
+            Path()..addOval(
+              Rect.fromCircle(
+                center: Offset(centerX, centerY),
+                radius: circleRadius,
+              ),
+            );
 
         canvas.save();
         canvas.clipPath(clipPath);
@@ -305,14 +316,19 @@ class _StoresMapPageState extends State<StoresMapPage> {
           center: Offset(centerX, centerY),
           radius: circleRadius,
         );
-        
+
         canvas.drawImageRect(
           storeImage,
-          Rect.fromLTWH(0, 0, storeImage.width.toDouble(), storeImage.height.toDouble()),
+          Rect.fromLTWH(
+            0,
+            0,
+            storeImage.width.toDouble(),
+            storeImage.height.toDouble(),
+          ),
           imageRect,
           Paint(),
         );
-        
+
         canvas.restore();
 
         // Borda branca ao redor da imagem
@@ -328,10 +344,11 @@ class _StoresMapPageState extends State<StoresMapPage> {
     } catch (e) {
       debugPrint('Erro ao carregar imagem da loja: $e');
       // Se falhar, desenha um círculo com inicial
-      final initial = store.businessName.isNotEmpty
-          ? store.businessName[0].toUpperCase()
-          : '?';
-      
+      final initial =
+          store.businessName.isNotEmpty
+              ? store.businessName[0].toUpperCase()
+              : '?';
+
       final textPainter = TextPainter(
         text: TextSpan(
           text: initial,
@@ -344,13 +361,13 @@ class _StoresMapPageState extends State<StoresMapPage> {
         textDirection: TextDirection.ltr,
       );
       textPainter.layout();
-      
+
       canvas.drawCircle(
         Offset(centerX, centerY),
         circleRadius,
         Paint()..color = Colors.grey,
       );
-      
+
       textPainter.paint(
         canvas,
         Offset(
@@ -363,17 +380,17 @@ class _StoresMapPageState extends State<StoresMapPage> {
     final picture = recorder.endRecording();
     final image = await picture.toImage(size.toInt(), size.toInt());
     final byteData = await image.toByteData(format: ui.ImageByteFormat.png);
-    
+
     if (byteData == null) {
       throw Exception('Falha ao converter imagem para bytes');
     }
-    
+
     // Garante que o tamanho seja válido (potência de 2)
     final imageSize = size.toInt();
     if (imageSize <= 0 || (imageSize & (imageSize - 1)) != 0) {
       throw Exception('Tamanho da imagem deve ser uma potência de 2');
     }
-    
+
     return byteData.buffer.asUint8List();
   }
 
@@ -392,14 +409,14 @@ class _StoresMapPageState extends State<StoresMapPage> {
       for (int i = 0; i < storeAnnotations.length && i < stores.length; i++) {
         final annotation = storeAnnotations[i];
         final store = stores[i];
-        
+
         try {
           // Obtém a posição da annotation
           final annotationGeometry = annotation.geometry;
           final annotationCoords = annotationGeometry.coordinates;
           final annotationLat = annotationCoords[1]?.toDouble() ?? 0.0;
           final annotationLon = annotationCoords[0]?.toDouble() ?? 0.0;
-          
+
           final distance = _calculateDistance(
             clickLat,
             clickLon,
@@ -446,7 +463,6 @@ class _StoresMapPageState extends State<StoresMapPage> {
   }
 
   void _showStoreInfoDialog(Store store) {
-
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -470,18 +486,20 @@ class _StoresMapPageState extends State<StoresMapPage> {
                       width: double.infinity,
                       height: 150,
                       fit: BoxFit.cover,
-                      placeholder: (context, url) => Container(
-                        height: 150,
-                        color: Colors.grey[200],
-                        child: const Center(
-                          child: CircularProgressIndicator(),
-                        ),
-                      ),
-                      errorWidget: (context, url, error) => Container(
-                        height: 150,
-                        color: Colors.grey[200],
-                        child: const Icon(Icons.store, size: 50),
-                      ),
+                      placeholder:
+                          (context, url) => Container(
+                            height: 150,
+                            color: Colors.grey[200],
+                            child: const Center(
+                              child: CircularProgressIndicator(),
+                            ),
+                          ),
+                      errorWidget:
+                          (context, url, error) => Container(
+                            height: 150,
+                            color: Colors.grey[200],
+                            child: const Icon(Icons.store, size: 50),
+                          ),
                     ),
                   )
                 else
@@ -492,7 +510,11 @@ class _StoresMapPageState extends State<StoresMapPage> {
                       color: Colors.grey[200],
                       borderRadius: BorderRadius.circular(12),
                     ),
-                    child: const Icon(Icons.store, size: 50, color: Colors.grey),
+                    child: const Icon(
+                      Icons.store,
+                      size: 50,
+                      color: Colors.grey,
+                    ),
                   ),
                 const SizedBox(height: 16),
                 // Nome da loja
@@ -508,28 +530,17 @@ class _StoresMapPageState extends State<StoresMapPage> {
                   const SizedBox(height: 4),
                   Text(
                     store.legalName!,
-                    style: TextStyle(
-                      fontSize: 14,
-                      color: Colors.grey[600],
-                    ),
+                    style: TextStyle(fontSize: 14, color: Colors.grey[600]),
                   ),
                 ],
                 const SizedBox(height: 16),
                 // Informações de contato
                 if (store.phone != null) ...[
-                  _buildInfoRow(
-                    Icons.phone,
-                    store.phone!,
-                    context,
-                  ),
+                  _buildInfoRow(Icons.phone, store.phone!, context),
                   const SizedBox(height: 8),
                 ],
                 if (store.email.isNotEmpty) ...[
-                  _buildInfoRow(
-                    Icons.email,
-                    store.email,
-                    context,
-                  ),
+                  _buildInfoRow(Icons.email, store.email, context),
                   const SizedBox(height: 8),
                 ],
                 if (store.contacts.instagram != null) ...[
@@ -541,11 +552,7 @@ class _StoresMapPageState extends State<StoresMapPage> {
                   const SizedBox(height: 8),
                 ],
                 if (store.contacts.site != null) ...[
-                  _buildInfoRow(
-                    Icons.language,
-                    store.contacts.site!,
-                    context,
-                  ),
+                  _buildInfoRow(Icons.language, store.contacts.site!, context),
                 ],
                 const SizedBox(height: 16),
                 // Botão de fechar
@@ -631,7 +638,7 @@ class _StoresMapPageState extends State<StoresMapPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Mapa de Lojas')),
+      //appBar: AppBar(title: const Text('Mapa de Lojas')),
       body: Stack(
         children: [
           GestureDetector(
@@ -656,7 +663,7 @@ class _StoresMapPageState extends State<StoresMapPage> {
           // Botão "Pesquisar nesta área"
           if (showSearchButton)
             Positioned(
-              top: 16,
+              top: 64,
               left: 16,
               right: 16,
               child: Material(
