@@ -1,6 +1,6 @@
-import 'package:fidelin_user_app/app/core/utils/text_validators.dart';
-import 'package:fidelin_user_app/app/core/widgets/spacer.dart';
-import 'package:fidelin_user_app/app/modules/auth/presentation/controllers/signin_controller.dart';
+import 'package:fidelyn_user_app/app/core/utils/text_validators.dart';
+import 'package:fidelyn_user_app/app/core/widgets/spacer.dart';
+import 'package:fidelyn_user_app/app/modules/auth/presentation/controllers/signin_controller.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';

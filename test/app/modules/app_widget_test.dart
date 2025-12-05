@@ -1,7 +1,7 @@
 import 'package:asuka/asuka.dart';
-import 'package:fidelin_user_app/app/app_module.dart';
-import 'package:fidelin_user_app/app/app_widget.dart';
-import 'package:fidelin_user_app/app/core/stores/app_store.dart';
+import 'package:fidelyn_user_app/app/app_module.dart';
+import 'package:fidelyn_user_app/app/app_widget.dart';
+import 'package:fidelyn_user_app/app/core/stores/app_store.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_modular/flutter_modular.dart';

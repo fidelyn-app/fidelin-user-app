@@ -1,6 +1,6 @@
-import 'package:fidelin_user_app/app/modules/home/data/data/dto/reward_dto.dart';
-import 'package:fidelin_user_app/app/modules/home/data/data/mapper/card_mapper.dart';
-import 'package:fidelin_user_app/app/modules/home/domain/entities/reward_entity.dart';
+import 'package:fidelyn_user_app/app/modules/home/data/data/dto/reward_dto.dart';
+import 'package:fidelyn_user_app/app/modules/home/data/data/mapper/card_mapper.dart';
+import 'package:fidelyn_user_app/app/modules/home/domain/entities/reward_entity.dart';
 
 class RewardMapper {
   static Reward toEntity(RewardDTO dto) {

@@ -1,6 +1,6 @@
-import 'package:fidelin_user_app/app/modules/home/data/data/dto/style_dto.dart';
-import 'package:fidelin_user_app/app/modules/home/domain/entities/style_entity.dart';
-import 'package:fidelin_user_app/utils/color_mapper.dart';
+import 'package:fidelyn_user_app/app/modules/home/data/data/dto/style_dto.dart';
+import 'package:fidelyn_user_app/app/modules/home/domain/entities/style_entity.dart';
+import 'package:fidelyn_user_app/utils/color_mapper.dart';
 
 class StyleMapper {
   static Style toEntity(StyleDTO dto) {

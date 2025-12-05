@@ -1,9 +1,9 @@
 import 'package:configcat_client/configcat_client.dart';
-import 'package:fidelin_user_app/app/core/services/config_service.dart';
-import 'package:fidelin_user_app/app/core/services/shared_local_storage_service.dart';
-import 'package:fidelin_user_app/app/core/stores/app_store.dart';
+import 'package:fidelyn_user_app/app/core/services/config_service.dart';
+import 'package:fidelyn_user_app/app/core/services/shared_local_storage_service.dart';
+import 'package:fidelyn_user_app/app/core/stores/app_store.dart';
 import 'package:flutter_modular/flutter_modular.dart';
-import 'package:fidelin_user_app/env.dart';
+import 'package:fidelyn_user_app/env.dart';
 import 'package:http/http.dart' as http;
 import 'package:logger/logger.dart' as L;
 

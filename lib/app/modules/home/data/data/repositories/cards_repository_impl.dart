@@ -1,9 +1,9 @@
 import 'package:dartz/dartz.dart';
-import 'package:fidelin_user_app/app/core/errors/Failure.dart';
-import 'package:fidelin_user_app/app/modules/home/data/data/datasources/cards_datasource.dart';
-import 'package:fidelin_user_app/app/modules/home/data/data/mapper/user_card_mapper.dart';
-import 'package:fidelin_user_app/app/modules/home/domain/entities/user_card_entity.dart';
-import 'package:fidelin_user_app/app/modules/home/domain/repositories/cards_repository.dart';
+import 'package:fidelyn_user_app/app/core/errors/Failure.dart';
+import 'package:fidelyn_user_app/app/modules/home/data/data/datasources/cards_datasource.dart';
+import 'package:fidelyn_user_app/app/modules/home/data/data/mapper/user_card_mapper.dart';
+import 'package:fidelyn_user_app/app/modules/home/domain/entities/user_card_entity.dart';
+import 'package:fidelyn_user_app/app/modules/home/domain/repositories/cards_repository.dart';
 
 class CardsRepositoryImpl implements CardsRepository {
   final CardsDataSource _dataSource;

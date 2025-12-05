@@ -1,9 +1,9 @@
 // ignore_for_file: must_be_immutable
 
-import 'package:fidelin_user_app/app/core/widgets/spacer.dart';
-import 'package:fidelin_user_app/app/modules/home/presentation/controllers/delete_account_controller.dart';
-import 'package:fidelin_user_app/app/modules/home/presentation/mixins/home_mixin.dart';
-import 'package:fidelin_user_app/utils/buttons_theme.dart';
+import 'package:fidelyn_user_app/app/core/widgets/spacer.dart';
+import 'package:fidelyn_user_app/app/modules/home/presentation/controllers/delete_account_controller.dart';
+import 'package:fidelyn_user_app/app/modules/home/presentation/mixins/home_mixin.dart';
+import 'package:fidelyn_user_app/utils/buttons_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';

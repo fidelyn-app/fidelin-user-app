@@ -1,4 +1,4 @@
-import 'package:fidelin_user_app/app/modules/home/data/data/dto/style_dto.dart';
+import 'package:fidelyn_user_app/app/modules/home/data/data/dto/style_dto.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 import 'reward_dto.dart';

@@ -3,14 +3,14 @@
 import 'dart:math' as math;
 
 import 'package:faker/faker.dart';
-import 'package:fidelin_user_app/app/modules/home/domain/entities/card_entity.dart';
-import 'package:fidelin_user_app/app/modules/home/domain/entities/point_entity.dart';
-import 'package:fidelin_user_app/app/modules/home/domain/entities/reward_entity.dart';
-import 'package:fidelin_user_app/app/modules/home/domain/entities/store_entity.dart';
-import 'package:fidelin_user_app/app/modules/home/domain/entities/style_entity.dart';
-import 'package:fidelin_user_app/app/modules/home/domain/entities/time_to_expire_entity.dart';
-import 'package:fidelin_user_app/app/modules/home/domain/entities/user_card_entity.dart';
-import 'package:fidelin_user_app/utils/color_mapper.dart';
+import 'package:fidelyn_user_app/app/modules/home/domain/entities/card_entity.dart';
+import 'package:fidelyn_user_app/app/modules/home/domain/entities/point_entity.dart';
+import 'package:fidelyn_user_app/app/modules/home/domain/entities/reward_entity.dart';
+import 'package:fidelyn_user_app/app/modules/home/domain/entities/store_entity.dart';
+import 'package:fidelyn_user_app/app/modules/home/domain/entities/style_entity.dart';
+import 'package:fidelyn_user_app/app/modules/home/domain/entities/time_to_expire_entity.dart';
+import 'package:fidelyn_user_app/app/modules/home/domain/entities/user_card_entity.dart';
+import 'package:fidelyn_user_app/utils/color_mapper.dart';
 
 class EntityGenerator {
   static Reward generateReward({String? storeId}) {

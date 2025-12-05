@@ -1,4 +1,4 @@
-import 'package:fidelin_user_app/app/core/widgets/spacer.dart';
+import 'package:fidelyn_user_app/app/core/widgets/spacer.dart';
 import 'package:flutter/material.dart' hide Spacer;
 import 'package:flutter_test/flutter_test.dart';
 

@@ -1,5 +1,5 @@
-import 'package:fidelin_user_app/app/core/utils/text_validators.dart';
-import 'package:fidelin_user_app/app/core/widgets/spacer.dart';
+import 'package:fidelyn_user_app/app/core/utils/text_validators.dart';
+import 'package:fidelyn_user_app/app/core/widgets/spacer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';

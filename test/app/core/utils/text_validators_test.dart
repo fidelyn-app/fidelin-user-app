@@ -1,4 +1,4 @@
-import 'package:fidelin_user_app/app/core/utils/text_validators.dart';
+import 'package:fidelyn_user_app/app/core/utils/text_validators.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {

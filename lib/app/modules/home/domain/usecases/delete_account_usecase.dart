@@ -1,6 +1,6 @@
 import 'package:dartz/dartz.dart';
-import 'package:fidelin_user_app/app/core/errors/Failure.dart';
-import 'package:fidelin_user_app/app/modules/home/domain/repositories/cards_repository.dart';
+import 'package:fidelyn_user_app/app/core/errors/Failure.dart';
+import 'package:fidelyn_user_app/app/modules/home/domain/repositories/cards_repository.dart';
 
 class DeleteAccountUseCase {
   final CardsRepository _repository;

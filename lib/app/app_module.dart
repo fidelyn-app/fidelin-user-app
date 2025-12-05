@@ -1,8 +1,8 @@
-import 'package:fidelin_user_app/app/core/core_module.dart';
-import 'package:fidelin_user_app/app/core/guards/auth_guard.dart';
-import 'package:fidelin_user_app/app/modules/auth/auth_module.dart';
-import 'package:fidelin_user_app/app/modules/home/home_module.dart';
-import 'package:fidelin_user_app/app/splash_screen.dart';
+import 'package:fidelyn_user_app/app/core/core_module.dart';
+import 'package:fidelyn_user_app/app/core/guards/auth_guard.dart';
+import 'package:fidelyn_user_app/app/modules/auth/auth_module.dart';
+import 'package:fidelyn_user_app/app/modules/home/home_module.dart';
+import 'package:fidelyn_user_app/app/splash_screen.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
 class AppModule extends Module {

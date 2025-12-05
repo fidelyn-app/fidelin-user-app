@@ -1,4 +1,4 @@
-import 'package:fidelin_user_app/app/core/domain/entities/user_entity.dart';
+import 'package:fidelyn_user_app/app/core/domain/entities/user_entity.dart';
 
 import '../dto/user_dto.dart';
 

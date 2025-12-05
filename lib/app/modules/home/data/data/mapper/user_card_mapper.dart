@@ -1,7 +1,7 @@
-import 'package:fidelin_user_app/app/modules/home/data/data/mapper/card_mapper.dart';
-import 'package:fidelin_user_app/app/modules/home/data/data/mapper/point_mapper.dart';
-import 'package:fidelin_user_app/app/modules/home/data/data/mapper/reward_mapper.dart';
-import 'package:fidelin_user_app/app/modules/home/domain/entities/user_card_entity.dart';
+import 'package:fidelyn_user_app/app/modules/home/data/data/mapper/card_mapper.dart';
+import 'package:fidelyn_user_app/app/modules/home/data/data/mapper/point_mapper.dart';
+import 'package:fidelyn_user_app/app/modules/home/data/data/mapper/reward_mapper.dart';
+import 'package:fidelyn_user_app/app/modules/home/domain/entities/user_card_entity.dart';
 
 import '../dto/user_card_dto.dart';
 

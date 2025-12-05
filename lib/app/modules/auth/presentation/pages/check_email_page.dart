@@ -1,6 +1,6 @@
-import 'package:fidelin_user_app/app/core/widgets/spacer.dart';
-import 'package:fidelin_user_app/app/modules/auth/presentation/controllers/forgot_password_controller.dart';
-import 'package:fidelin_user_app/app/modules/auth/presentation/mixins/auth_mixin.dart';
+import 'package:fidelyn_user_app/app/core/widgets/spacer.dart';
+import 'package:fidelyn_user_app/app/modules/auth/presentation/controllers/forgot_password_controller.dart';
+import 'package:fidelyn_user_app/app/modules/auth/presentation/mixins/auth_mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';

@@ -1,11 +1,11 @@
 import 'package:asuka/asuka.dart';
 import 'package:dartz/dartz.dart';
-import 'package:fidelin_user_app/app/core/domain/entities/user_entity.dart';
-import 'package:fidelin_user_app/app/core/errors/Failure.dart';
-import 'package:fidelin_user_app/app/core/stores/app_store.dart';
-import 'package:fidelin_user_app/app/modules/auth/domain/usecases/signin_with_email_usecase.dart';
-import 'package:fidelin_user_app/app/modules/auth/domain/usecases/signin_with_google_usecase.dart';
-import 'package:fidelin_user_app/env.dart';
+import 'package:fidelyn_user_app/app/core/domain/entities/user_entity.dart';
+import 'package:fidelyn_user_app/app/core/errors/Failure.dart';
+import 'package:fidelyn_user_app/app/core/stores/app_store.dart';
+import 'package:fidelyn_user_app/app/modules/auth/domain/usecases/signin_with_email_usecase.dart';
+import 'package:fidelyn_user_app/app/modules/auth/domain/usecases/signin_with_google_usecase.dart';
+import 'package:fidelyn_user_app/env.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:firebase_auth/firebase_auth.dart';

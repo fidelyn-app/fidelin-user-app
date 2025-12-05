@@ -1,10 +1,10 @@
 import 'package:dartz/dartz.dart';
-import 'package:fidelin_user_app/app/core/domain/entities/user_entity.dart';
-import 'package:fidelin_user_app/app/core/errors/Failure.dart';
-import 'package:fidelin_user_app/app/modules/auth/data/datasources/auth_datasource.dart';
-import 'package:fidelin_user_app/app/modules/auth/data/dto/create_user_dto.dart';
-import 'package:fidelin_user_app/app/modules/auth/data/mapper/user_mapper.dart';
-import 'package:fidelin_user_app/app/modules/auth/domain/repositories/auth_repository.dart';
+import 'package:fidelyn_user_app/app/core/domain/entities/user_entity.dart';
+import 'package:fidelyn_user_app/app/core/errors/Failure.dart';
+import 'package:fidelyn_user_app/app/modules/auth/data/datasources/auth_datasource.dart';
+import 'package:fidelyn_user_app/app/modules/auth/data/dto/create_user_dto.dart';
+import 'package:fidelyn_user_app/app/modules/auth/data/mapper/user_mapper.dart';
+import 'package:fidelyn_user_app/app/modules/auth/domain/repositories/auth_repository.dart';
 
 class AuthRepositoryImpl implements AuthRepository {
   final AuthDataSource _dataSource;

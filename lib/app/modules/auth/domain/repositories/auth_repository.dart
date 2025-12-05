@@ -1,7 +1,7 @@
 import 'package:dartz/dartz.dart';
-import 'package:fidelin_user_app/app/core/domain/entities/user_entity.dart';
-import 'package:fidelin_user_app/app/core/errors/Failure.dart';
-import 'package:fidelin_user_app/app/modules/auth/data/dto/create_user_dto.dart';
+import 'package:fidelyn_user_app/app/core/domain/entities/user_entity.dart';
+import 'package:fidelyn_user_app/app/core/errors/Failure.dart';
+import 'package:fidelyn_user_app/app/modules/auth/data/dto/create_user_dto.dart';
 
 abstract class AuthRepository {
   Future<Either<Failure, UserEntity>> signInWithEmail({

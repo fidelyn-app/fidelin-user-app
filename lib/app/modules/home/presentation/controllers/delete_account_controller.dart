@@ -1,6 +1,6 @@
 import 'package:asuka/snackbars/asuka_snack_bar.dart';
-import 'package:fidelin_user_app/app/core/stores/app_store.dart';
-import 'package:fidelin_user_app/app/modules/home/domain/usecases/delete_account_usecase.dart';
+import 'package:fidelyn_user_app/app/core/stores/app_store.dart';
+import 'package:fidelyn_user_app/app/modules/home/domain/usecases/delete_account_usecase.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:mobx/mobx.dart';
 

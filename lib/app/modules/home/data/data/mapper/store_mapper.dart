@@ -1,5 +1,5 @@
-import 'package:fidelin_user_app/app/modules/home/data/data/dto/store_dto.dart';
-import 'package:fidelin_user_app/app/modules/home/domain/entities/store_entity.dart';
+import 'package:fidelyn_user_app/app/modules/home/data/data/dto/store_dto.dart';
+import 'package:fidelyn_user_app/app/modules/home/domain/entities/store_entity.dart';
 
 class StoreMapper {
   static Store toEntity(StoreDTO dto) {

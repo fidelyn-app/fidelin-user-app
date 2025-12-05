@@ -1,5 +1,5 @@
 import 'package:dartz/dartz.dart';
-import 'package:fidelin_user_app/app/modules/home/domain/repositories/cards_repository.dart';
+import 'package:fidelyn_user_app/app/modules/home/domain/repositories/cards_repository.dart';
 
 abstract class AddCardUseCase {
   Future<Either<Exception, Unit>> call({required String cardId});

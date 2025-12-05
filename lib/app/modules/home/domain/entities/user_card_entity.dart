@@ -1,4 +1,4 @@
-import 'package:fidelin_user_app/app/modules/home/domain/entities/reward_entity.dart';
+import 'package:fidelyn_user_app/app/modules/home/domain/entities/reward_entity.dart';
 
 import 'card_entity.dart';
 import 'point_entity.dart';
