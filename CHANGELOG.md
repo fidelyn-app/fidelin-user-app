@@ -1,3 +1,9 @@
+## 1.4.0+11 - 2025-12-05
+- Bump type: minor (PR #29)
+
+## 1.3.1+10 - 2025-12-05
+- Bump type: patch (PR #28)
+
 ## 1.3.0+9 - 2025-11-21
 - Bump type: minor (PR #27)
 

@@ -9,8 +9,10 @@ part of 'input_code_controller.dart';
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic, no_leading_underscores_for_local_identifiers
 
 mixin _$InputCodeController on _InputCodeControllerBase, Store {
-  late final _$isLoadingAtom =
-      Atom(name: '_InputCodeControllerBase.isLoading', context: context);
+  late final _$isLoadingAtom = Atom(
+    name: '_InputCodeControllerBase.isLoading',
+    context: context,
+  );
 
   @override
   bool get isLoading {
@@ -25,8 +27,10 @@ mixin _$InputCodeController on _InputCodeControllerBase, Store {
     });
   }
 
-  late final _$successAtom =
-      Atom(name: '_InputCodeControllerBase.success', context: context);
+  late final _$successAtom = Atom(
+    name: '_InputCodeControllerBase.success',
+    context: context,
+  );
 
   @override
   bool get success {
@@ -41,8 +45,10 @@ mixin _$InputCodeController on _InputCodeControllerBase, Store {
     });
   }
 
-  late final _$errorAtom =
-      Atom(name: '_InputCodeControllerBase.error', context: context);
+  late final _$errorAtom = Atom(
+    name: '_InputCodeControllerBase.error',
+    context: context,
+  );
 
   @override
   bool get error {
@@ -57,22 +63,28 @@ mixin _$InputCodeController on _InputCodeControllerBase, Store {
     });
   }
 
-  late final _$addPointAsyncAction =
-      AsyncAction('_InputCodeControllerBase.addPoint', context: context);
+  late final _$addPointAsyncAction = AsyncAction(
+    '_InputCodeControllerBase.addPoint',
+    context: context,
+  );
 
   @override
   Future<void> addPoint({required String shortCodeId}) {
-    return _$addPointAsyncAction
-        .run(() => super.addPoint(shortCodeId: shortCodeId));
+    return _$addPointAsyncAction.run(
+      () => super.addPoint(shortCodeId: shortCodeId),
+    );
   }
 
-  late final _$addCardAsyncAction =
-      AsyncAction('_InputCodeControllerBase.addCard', context: context);
+  late final _$addCardAsyncAction = AsyncAction(
+    '_InputCodeControllerBase.addCard',
+    context: context,
+  );
 
   @override
   Future<void> addCard({required String shortCodeId}) {
-    return _$addCardAsyncAction
-        .run(() => super.addCard(shortCodeId: shortCodeId));
+    return _$addCardAsyncAction.run(
+      () => super.addCard(shortCodeId: shortCodeId),
+    );
   }
 
   @override

@@ -32,8 +32,7 @@ class AppWidget extends StatelessWidget {
     return MaterialApp.router(
       builder: Asuka.builder,
       title: 'Fidelyn User',
-      debugShowCheckedModeBanner: true,
-
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
         scaffoldBackgroundColor: Colors.white,
         dialogTheme: DialogThemeData(backgroundColor: Colors.white),

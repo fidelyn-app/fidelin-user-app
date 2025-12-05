@@ -12,9 +12,12 @@ mixin _$AppStore on _AppStoreBase, Store {
   Computed<bool>? _$isLoggedComputed;
 
   @override
-  bool get isLogged => (_$isLoggedComputed ??=
-          Computed<bool>(() => super.isLogged, name: '_AppStoreBase.isLogged'))
-      .value;
+  bool get isLogged =>
+      (_$isLoggedComputed ??= Computed<bool>(
+            () => super.isLogged,
+            name: '_AppStoreBase.isLogged',
+          ))
+          .value;
 
   late final _$userAtom = Atom(name: '_AppStoreBase.user', context: context);
 
@@ -31,8 +34,10 @@ mixin _$AppStore on _AppStoreBase, Store {
     });
   }
 
-  late final _$_tokenAtom =
-      Atom(name: '_AppStoreBase._token', context: context);
+  late final _$_tokenAtom = Atom(
+    name: '_AppStoreBase._token',
+    context: context,
+  );
 
   @override
   String? get _token {
@@ -47,8 +52,10 @@ mixin _$AppStore on _AppStoreBase, Store {
     });
   }
 
-  late final _$appVersionAtom =
-      Atom(name: '_AppStoreBase.appVersion', context: context);
+  late final _$appVersionAtom = Atom(
+    name: '_AppStoreBase.appVersion',
+    context: context,
+  );
 
   @override
   String? get appVersion {
@@ -63,53 +70,66 @@ mixin _$AppStore on _AppStoreBase, Store {
     });
   }
 
-  late final _$setUserAsyncAction =
-      AsyncAction('_AppStoreBase.setUser', context: context);
+  late final _$setUserAsyncAction = AsyncAction(
+    '_AppStoreBase.setUser',
+    context: context,
+  );
 
   @override
   Future<void> setUser(UserEntity userEntity) {
     return _$setUserAsyncAction.run(() => super.setUser(userEntity));
   }
 
-  late final _$removeUserAsyncAction =
-      AsyncAction('_AppStoreBase.removeUser', context: context);
+  late final _$removeUserAsyncAction = AsyncAction(
+    '_AppStoreBase.removeUser',
+    context: context,
+  );
 
   @override
   Future<void> removeUser() {
     return _$removeUserAsyncAction.run(() => super.removeUser());
   }
 
-  late final _$checkAsyncAction =
-      AsyncAction('_AppStoreBase.check', context: context);
+  late final _$checkAsyncAction = AsyncAction(
+    '_AppStoreBase.check',
+    context: context,
+  );
 
   @override
   Future<bool> check() {
     return _$checkAsyncAction.run(() => super.check());
   }
 
-  late final _$loadAppVersionAsyncAction =
-      AsyncAction('_AppStoreBase.loadAppVersion', context: context);
+  late final _$loadAppVersionAsyncAction = AsyncAction(
+    '_AppStoreBase.loadAppVersion',
+    context: context,
+  );
 
   @override
   Future<void> loadAppVersion() {
     return _$loadAppVersionAsyncAction.run(() => super.loadAppVersion());
   }
 
-  late final _$checkFirstRunAsyncAction =
-      AsyncAction('_AppStoreBase.checkFirstRun', context: context);
+  late final _$checkFirstRunAsyncAction = AsyncAction(
+    '_AppStoreBase.checkFirstRun',
+    context: context,
+  );
 
   @override
   Future<bool> checkFirstRun() {
     return _$checkFirstRunAsyncAction.run(() => super.checkFirstRun());
   }
 
-  late final _$_AppStoreBaseActionController =
-      ActionController(name: '_AppStoreBase', context: context);
+  late final _$_AppStoreBaseActionController = ActionController(
+    name: '_AppStoreBase',
+    context: context,
+  );
 
   @override
   void setToken(String newToken) {
     final _$actionInfo = _$_AppStoreBaseActionController.startAction(
-        name: '_AppStoreBase.setToken');
+      name: '_AppStoreBase.setToken',
+    );
     try {
       return super.setToken(newToken);
     } finally {
