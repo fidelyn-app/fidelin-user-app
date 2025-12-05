@@ -1,9 +1,9 @@
 // ignore_for_file: unnecessary_null_comparison
 
-import 'package:fidelin_user_app/app/modules/home/domain/entities/user_card_entity.dart';
-import 'package:fidelin_user_app/app/modules/home/presentation/controllers/home_controller.dart';
-import 'package:fidelin_user_app/app/modules/home/presentation/widgets/bottom_sheet_widget.dart';
-import 'package:fidelin_user_app/app/modules/home/presentation/widgets/card/point_widget.dart';
+import 'package:fidelyn_user_app/app/modules/home/domain/entities/user_card_entity.dart';
+import 'package:fidelyn_user_app/app/modules/home/presentation/controllers/home_controller.dart';
+import 'package:fidelyn_user_app/app/modules/home/presentation/widgets/bottom_sheet_widget.dart';
+import 'package:fidelyn_user_app/app/modules/home/presentation/widgets/card/point_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:lottie/lottie.dart';

@@ -5,18 +5,18 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "fidelin_user_app",
+            "name": "fidelyn_user_app",
             "request": "launch",
             "type": "dart"
         },
         {
-            "name": "fidelin_user_app (profile mode)",
+            "name": "fidelyn_user_app (profile mode)",
             "request": "launch",
             "type": "dart",
             "flutterMode": "profile"
         },
         {
-            "name": "fidelin_user_app (release mode)",
+            "name": "fidelyn_user_app (release mode)",
             "request": "launch",
             "type": "dart",
             "flutterMode": "release"

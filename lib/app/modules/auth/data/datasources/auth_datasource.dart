@@ -1,5 +1,5 @@
-import 'package:fidelin_user_app/app/modules/auth/data/dto/create_user_dto.dart';
-import 'package:fidelin_user_app/app/modules/auth/data/dto/user_dto.dart';
+import 'package:fidelyn_user_app/app/modules/auth/data/dto/create_user_dto.dart';
+import 'package:fidelyn_user_app/app/modules/auth/data/dto/user_dto.dart';
 
 abstract class AuthDataSource {
   Future<UserDTO> signInWithEmail({

@@ -1,4 +1,4 @@
-# fidelin_user_app
+# fidelyn_user_app
 
 A new Flutter project.
 

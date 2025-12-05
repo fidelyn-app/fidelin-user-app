@@ -1,7 +1,7 @@
-import 'package:fidelin_user_app/app/core/domain/entities/user_entity.dart';
-import 'package:fidelin_user_app/app/core/services/shared_local_storage_service.dart';
-import 'package:fidelin_user_app/app/modules/auth/data/dto/user_dto.dart';
-import 'package:fidelin_user_app/app/modules/auth/data/mapper/user_mapper.dart';
+import 'package:fidelyn_user_app/app/core/domain/entities/user_entity.dart';
+import 'package:fidelyn_user_app/app/core/services/shared_local_storage_service.dart';
+import 'package:fidelyn_user_app/app/modules/auth/data/dto/user_dto.dart';
+import 'package:fidelyn_user_app/app/modules/auth/data/mapper/user_mapper.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:mobx/mobx.dart';
 import 'package:package_info_plus/package_info_plus.dart';

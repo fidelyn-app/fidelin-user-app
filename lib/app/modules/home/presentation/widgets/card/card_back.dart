@@ -1,5 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:fidelin_user_app/app/modules/home/domain/entities/user_card_entity.dart';
+import 'package:fidelyn_user_app/app/modules/home/domain/entities/user_card_entity.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:lottie/lottie.dart';

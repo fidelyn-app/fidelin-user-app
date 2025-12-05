@@ -1,4 +1,4 @@
-import 'package:fidelin_user_app/app/core/interfaces/local_storage_interface.dart';
+import 'package:fidelyn_user_app/app/core/interfaces/local_storage_interface.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SharedLocalStorageService implements ILocalStorage {

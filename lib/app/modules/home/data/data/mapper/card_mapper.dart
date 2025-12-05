@@ -1,8 +1,8 @@
-import 'package:fidelin_user_app/app/modules/home/data/data/dto/card_dto.dart';
-import 'package:fidelin_user_app/app/modules/home/data/data/mapper/store_mapper.dart';
-import 'package:fidelin_user_app/app/modules/home/data/data/mapper/style_mapper.dart';
-import 'package:fidelin_user_app/app/modules/home/domain/entities/card_entity.dart';
-import 'package:fidelin_user_app/app/modules/home/domain/entities/time_to_expire_entity.dart';
+import 'package:fidelyn_user_app/app/modules/home/data/data/dto/card_dto.dart';
+import 'package:fidelyn_user_app/app/modules/home/data/data/mapper/store_mapper.dart';
+import 'package:fidelyn_user_app/app/modules/home/data/data/mapper/style_mapper.dart';
+import 'package:fidelyn_user_app/app/modules/home/domain/entities/card_entity.dart';
+import 'package:fidelyn_user_app/app/modules/home/domain/entities/time_to_expire_entity.dart';
 
 class CardMapper {
   static Card toEntity(CardDTO dto) {

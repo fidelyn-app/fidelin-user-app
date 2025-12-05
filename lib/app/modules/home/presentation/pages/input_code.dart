@@ -1,5 +1,5 @@
-import 'package:fidelin_user_app/app/modules/home/presentation/mixins/home_mixin.dart';
-import 'package:fidelin_user_app/app/modules/home/utils/formatters/uppercase_text_formatter.dart';
+import 'package:fidelyn_user_app/app/modules/home/presentation/mixins/home_mixin.dart';
+import 'package:fidelyn_user_app/app/modules/home/utils/formatters/uppercase_text_formatter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';

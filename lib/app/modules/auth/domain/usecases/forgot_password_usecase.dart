@@ -1,6 +1,6 @@
 import 'package:dartz/dartz.dart';
-import 'package:fidelin_user_app/app/core/errors/Failure.dart';
-import 'package:fidelin_user_app/app/modules/auth/domain/repositories/auth_repository.dart';
+import 'package:fidelyn_user_app/app/core/errors/Failure.dart';
+import 'package:fidelyn_user_app/app/modules/auth/domain/repositories/auth_repository.dart';
 
 abstract class ForgotPasswordUseCase {
   Future<Either<Failure, Unit>> call({required String email});

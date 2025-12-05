@@ -1,7 +1,7 @@
 import 'package:dartz/dartz.dart';
-import 'package:fidelin_user_app/app/modules/home/domain/usecases/add_card_usecase.dart';
-import 'package:fidelin_user_app/app/modules/home/domain/usecases/add_point_usecase.dart';
-import 'package:fidelin_user_app/app/modules/home/presentation/controllers/home_controller.dart';
+import 'package:fidelyn_user_app/app/modules/home/domain/usecases/add_card_usecase.dart';
+import 'package:fidelyn_user_app/app/modules/home/domain/usecases/add_point_usecase.dart';
+import 'package:fidelyn_user_app/app/modules/home/presentation/controllers/home_controller.dart';
 import 'package:mobx/mobx.dart';
 
 part 'input_code_controller.g.dart';

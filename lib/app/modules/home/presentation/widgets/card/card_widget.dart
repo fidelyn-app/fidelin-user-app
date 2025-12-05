@@ -1,9 +1,9 @@
 import 'dart:math' as math;
 
-import 'package:fidelin_user_app/app/modules/home/domain/entities/user_card_entity.dart';
-import 'package:fidelin_user_app/app/modules/home/presentation/controllers/home_controller.dart';
-import 'package:fidelin_user_app/app/modules/home/presentation/widgets/card/card_back.dart';
-import 'package:fidelin_user_app/app/modules/home/presentation/widgets/card/card_front.dart';
+import 'package:fidelyn_user_app/app/modules/home/domain/entities/user_card_entity.dart';
+import 'package:fidelyn_user_app/app/modules/home/presentation/controllers/home_controller.dart';
+import 'package:fidelyn_user_app/app/modules/home/presentation/widgets/card/card_back.dart';
+import 'package:fidelyn_user_app/app/modules/home/presentation/widgets/card/card_front.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 

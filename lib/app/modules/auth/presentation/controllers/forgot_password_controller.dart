@@ -1,8 +1,8 @@
 import 'package:asuka/snackbars/asuka_snack_bar.dart';
 import 'package:dartz/dartz.dart';
-import 'package:fidelin_user_app/app/core/errors/Failure.dart';
-import 'package:fidelin_user_app/app/modules/auth/domain/usecases/forgot_password_usecase.dart';
-import 'package:fidelin_user_app/app/modules/auth/domain/usecases/update_password_usecase.dart';
+import 'package:fidelyn_user_app/app/core/errors/Failure.dart';
+import 'package:fidelyn_user_app/app/modules/auth/domain/usecases/forgot_password_usecase.dart';
+import 'package:fidelyn_user_app/app/modules/auth/domain/usecases/update_password_usecase.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:mobx/mobx.dart';

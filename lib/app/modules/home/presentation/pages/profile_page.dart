@@ -1,8 +1,8 @@
 import 'dart:convert';
 
-import 'package:fidelin_user_app/app/core/services/config_service.dart';
-import 'package:fidelin_user_app/app/core/stores/app_store.dart';
-import 'package:fidelin_user_app/app/modules/home/presentation/mixins/home_mixin.dart';
+import 'package:fidelyn_user_app/app/core/services/config_service.dart';
+import 'package:fidelyn_user_app/app/core/stores/app_store.dart';
+import 'package:fidelyn_user_app/app/modules/home/presentation/mixins/home_mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:crypto/crypto.dart';

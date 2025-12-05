@@ -1,6 +1,6 @@
 Aqui está um modelo completo e profissional de `README.md` focado na integração do Google Sign-In com Firebase.
 
-Ele cobre desde a configuração no console até o código que corrigimos juntos, servindo como uma documentação sólida para o seu projeto `fidelin_user_app`.
+Ele cobre desde a configuração no console até o código que corrigimos juntos, servindo como uma documentação sólida para o seu projeto `fidelyn_user_app`.
 
 -----
 

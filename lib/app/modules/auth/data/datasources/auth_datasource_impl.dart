@@ -1,11 +1,11 @@
 import 'dart:convert';
 
-import 'package:fidelin_user_app/app/core/errors/Failure.dart';
-import 'package:fidelin_user_app/app/core/services/http_client.dart';
-import 'package:fidelin_user_app/app/core/stores/app_store.dart';
-import 'package:fidelin_user_app/app/modules/auth/data/dto/create_user_dto.dart';
-import 'package:fidelin_user_app/app/modules/auth/data/dto/user_dto.dart';
-import 'package:fidelin_user_app/app/modules/auth/data/mapper/user_mapper.dart';
+import 'package:fidelyn_user_app/app/core/errors/Failure.dart';
+import 'package:fidelyn_user_app/app/core/services/http_client.dart';
+import 'package:fidelyn_user_app/app/core/stores/app_store.dart';
+import 'package:fidelyn_user_app/app/modules/auth/data/dto/create_user_dto.dart';
+import 'package:fidelyn_user_app/app/modules/auth/data/dto/user_dto.dart';
+import 'package:fidelyn_user_app/app/modules/auth/data/mapper/user_mapper.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:http/http.dart' as http;
 import 'package:logger/logger.dart';

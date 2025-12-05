@@ -1,5 +1,5 @@
-import 'package:fidelin_user_app/app/app_module.dart';
-import 'package:fidelin_user_app/app/core/core_module.dart';
+import 'package:fidelyn_user_app/app/app_module.dart';
+import 'package:fidelyn_user_app/app/core/core_module.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:flutter_test/flutter_test.dart';
 

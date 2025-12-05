@@ -1,4 +1,4 @@
-import 'package:fidelin_user_app/utils/buttons_theme.dart';
+import 'package:fidelyn_user_app/utils/buttons_theme.dart';
 import 'package:flutter/material.dart';
 
 class BottomSheetWidget {

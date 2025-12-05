@@ -18,7 +18,7 @@ ANDROID_GRADLE_FILES = [
 ]
 LOCAL_PROPERTIES_FILE = Path("android/local.properties")
 CHANGELOG_FILE = Path("CHANGELOG.md")
-GITHUB_REPO = "fidelyn-app/fidelin-user-app"  # usuário/repositorio
+GITHUB_REPO = "fidelyn-app/fidelyn-user-app"  # usuário/repositorio
 GITHUB_TOKEN = os.getenv("GITHUB_TOKEN")       # passado pelo workflow
 
 # -------------------------

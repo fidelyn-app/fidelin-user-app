@@ -1,5 +1,5 @@
 import 'dart:async';
-import 'package:fidelin_user_app/app/modules/home/domain/entities/user_card_entity.dart';
+import 'package:fidelyn_user_app/app/modules/home/domain/entities/user_card_entity.dart';
 import 'package:flutter/material.dart';
 
 class CountdownTimer extends StatefulWidget {

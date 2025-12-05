@@ -1,10 +1,10 @@
 import 'package:asuka/snackbars/asuka_snack_bar.dart';
 import 'package:dartz/dartz.dart';
-import 'package:fidelin_user_app/app/modules/home/domain/entities/user_card_entity.dart';
-import 'package:fidelin_user_app/app/modules/home/domain/usecases/add_card_usecase.dart';
-import 'package:fidelin_user_app/app/modules/home/domain/usecases/add_point_usecase.dart';
-import 'package:fidelin_user_app/app/modules/home/domain/usecases/delete_card_usecase.dart';
-import 'package:fidelin_user_app/app/modules/home/domain/usecases/fetch_cards_usecase.dart';
+import 'package:fidelyn_user_app/app/modules/home/domain/entities/user_card_entity.dart';
+import 'package:fidelyn_user_app/app/modules/home/domain/usecases/add_card_usecase.dart';
+import 'package:fidelyn_user_app/app/modules/home/domain/usecases/add_point_usecase.dart';
+import 'package:fidelyn_user_app/app/modules/home/domain/usecases/delete_card_usecase.dart';
+import 'package:fidelyn_user_app/app/modules/home/domain/usecases/fetch_cards_usecase.dart';
 import 'package:mobx/mobx.dart';
 
 part 'home_controller.g.dart';
