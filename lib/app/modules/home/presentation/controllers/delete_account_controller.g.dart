@@ -9,8 +9,10 @@ part of 'delete_account_controller.dart';
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic, no_leading_underscores_for_local_identifiers
 
 mixin _$DeleteAccountController on _DeleteAccountControllerBase, Store {
-  late final _$isLoadingAtom =
-      Atom(name: '_DeleteAccountControllerBase.isLoading', context: context);
+  late final _$isLoadingAtom = Atom(
+    name: '_DeleteAccountControllerBase.isLoading',
+    context: context,
+  );
 
   @override
   bool get isLoading {
@@ -25,8 +27,10 @@ mixin _$DeleteAccountController on _DeleteAccountControllerBase, Store {
     });
   }
 
-  late final _$successAtom =
-      Atom(name: '_DeleteAccountControllerBase.success', context: context);
+  late final _$successAtom = Atom(
+    name: '_DeleteAccountControllerBase.success',
+    context: context,
+  );
 
   @override
   bool get success {
@@ -41,8 +45,10 @@ mixin _$DeleteAccountController on _DeleteAccountControllerBase, Store {
     });
   }
 
-  late final _$errorAtom =
-      Atom(name: '_DeleteAccountControllerBase.error', context: context);
+  late final _$errorAtom = Atom(
+    name: '_DeleteAccountControllerBase.error',
+    context: context,
+  );
 
   @override
   String? get error {
@@ -58,8 +64,9 @@ mixin _$DeleteAccountController on _DeleteAccountControllerBase, Store {
   }
 
   late final _$deleteAccountAsyncAction = AsyncAction(
-      '_DeleteAccountControllerBase.deleteAccount',
-      context: context);
+    '_DeleteAccountControllerBase.deleteAccount',
+    context: context,
+  );
 
   @override
   Future<void> deleteAccount() {

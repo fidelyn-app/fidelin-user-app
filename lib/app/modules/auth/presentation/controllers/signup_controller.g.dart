@@ -9,8 +9,10 @@ part of 'signup_controller.dart';
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic, no_leading_underscores_for_local_identifiers
 
 mixin _$SignUpController on _SignUpControllerBase, Store {
-  late final _$passwordVisibleAtom =
-      Atom(name: '_SignUpControllerBase.passwordVisible', context: context);
+  late final _$passwordVisibleAtom = Atom(
+    name: '_SignUpControllerBase.passwordVisible',
+    context: context,
+  );
 
   @override
   bool get passwordVisible {
@@ -26,7 +28,9 @@ mixin _$SignUpController on _SignUpControllerBase, Store {
   }
 
   late final _$confirmPasswordVisibleAtom = Atom(
-      name: '_SignUpControllerBase.confirmPasswordVisible', context: context);
+    name: '_SignUpControllerBase.confirmPasswordVisible',
+    context: context,
+  );
 
   @override
   bool get confirmPasswordVisible {
@@ -36,14 +40,19 @@ mixin _$SignUpController on _SignUpControllerBase, Store {
 
   @override
   set confirmPasswordVisible(bool value) {
-    _$confirmPasswordVisibleAtom
-        .reportWrite(value, super.confirmPasswordVisible, () {
-      super.confirmPasswordVisible = value;
-    });
+    _$confirmPasswordVisibleAtom.reportWrite(
+      value,
+      super.confirmPasswordVisible,
+      () {
+        super.confirmPasswordVisible = value;
+      },
+    );
   }
 
-  late final _$isLoadingAtom =
-      Atom(name: '_SignUpControllerBase.isLoading', context: context);
+  late final _$isLoadingAtom = Atom(
+    name: '_SignUpControllerBase.isLoading',
+    context: context,
+  );
 
   @override
   bool get isLoading {
@@ -58,21 +67,26 @@ mixin _$SignUpController on _SignUpControllerBase, Store {
     });
   }
 
-  late final _$signUpAsyncAction =
-      AsyncAction('_SignUpControllerBase.signUp', context: context);
+  late final _$signUpAsyncAction = AsyncAction(
+    '_SignUpControllerBase.signUp',
+    context: context,
+  );
 
   @override
   Future<void> signUp() {
     return _$signUpAsyncAction.run(() => super.signUp());
   }
 
-  late final _$_SignUpControllerBaseActionController =
-      ActionController(name: '_SignUpControllerBase', context: context);
+  late final _$_SignUpControllerBaseActionController = ActionController(
+    name: '_SignUpControllerBase',
+    context: context,
+  );
 
   @override
   void togglePasswordVisible() {
     final _$actionInfo = _$_SignUpControllerBaseActionController.startAction(
-        name: '_SignUpControllerBase.togglePasswordVisible');
+      name: '_SignUpControllerBase.togglePasswordVisible',
+    );
     try {
       return super.togglePasswordVisible();
     } finally {
@@ -83,7 +97,8 @@ mixin _$SignUpController on _SignUpControllerBase, Store {
   @override
   void toggleConfirmPasswordVisible() {
     final _$actionInfo = _$_SignUpControllerBaseActionController.startAction(
-        name: '_SignUpControllerBase.toggleConfirmPasswordVisible');
+      name: '_SignUpControllerBase.toggleConfirmPasswordVisible',
+    );
     try {
       return super.toggleConfirmPasswordVisible();
     } finally {

@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:fidelin_user_app/app/core/utils/text_validators.dart';
 import 'package:fidelin_user_app/app/core/widgets/spacer.dart';
 import 'package:fidelin_user_app/app/modules/auth/presentation/controllers/signin_controller.dart';
@@ -191,7 +193,26 @@ class _SignInPageState extends State<SignInPage> {
                                 () => _controller.signInWithGoogleFirebase(),
                           ),
                         ),
-
+                        SpaceWidget(size: SpaceSize.l),
+                        Visibility(
+                          visible: Platform.isIOS,
+                          child: SizedBox(
+                            height: 50,
+                            child: SignInButton(
+                              Buttons.apple,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              text: "Entrar com o Apple",
+                              textStyle: TextStyle(
+                                fontSize: 16.0,
+                                //color: Theme.of(context).colorScheme.primary,
+                              ),
+                              onPressed:
+                                  () => _controller.signInWithAppleFirebase(),
+                            ),
+                          ),
+                        ),
                         SpaceWidget(size: SpaceSize.l),
                         Container(
                           padding: EdgeInsets.all(10),
