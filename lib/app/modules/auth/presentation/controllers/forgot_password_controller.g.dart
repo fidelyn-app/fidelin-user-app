@@ -10,7 +10,9 @@ part of 'forgot_password_controller.dart';
 
 mixin _$ForgotPasswordController on _ForgotPasswordControllerBase, Store {
   late final _$passwordVisibleAtom = Atom(
-      name: '_ForgotPasswordControllerBase.passwordVisible', context: context);
+    name: '_ForgotPasswordControllerBase.passwordVisible',
+    context: context,
+  );
 
   @override
   bool get passwordVisible {
@@ -26,8 +28,9 @@ mixin _$ForgotPasswordController on _ForgotPasswordControllerBase, Store {
   }
 
   late final _$confirmPasswordVisibleAtom = Atom(
-      name: '_ForgotPasswordControllerBase.confirmPasswordVisible',
-      context: context);
+    name: '_ForgotPasswordControllerBase.confirmPasswordVisible',
+    context: context,
+  );
 
   @override
   bool get confirmPasswordVisible {
@@ -37,14 +40,19 @@ mixin _$ForgotPasswordController on _ForgotPasswordControllerBase, Store {
 
   @override
   set confirmPasswordVisible(bool value) {
-    _$confirmPasswordVisibleAtom
-        .reportWrite(value, super.confirmPasswordVisible, () {
-      super.confirmPasswordVisible = value;
-    });
+    _$confirmPasswordVisibleAtom.reportWrite(
+      value,
+      super.confirmPasswordVisible,
+      () {
+        super.confirmPasswordVisible = value;
+      },
+    );
   }
 
-  late final _$isLoadingAtom =
-      Atom(name: '_ForgotPasswordControllerBase.isLoading', context: context);
+  late final _$isLoadingAtom = Atom(
+    name: '_ForgotPasswordControllerBase.isLoading',
+    context: context,
+  );
 
   @override
   bool get isLoading {
@@ -60,32 +68,38 @@ mixin _$ForgotPasswordController on _ForgotPasswordControllerBase, Store {
   }
 
   late final _$requestForgotPasswordAsyncAction = AsyncAction(
-      '_ForgotPasswordControllerBase.requestForgotPassword',
-      context: context);
+    '_ForgotPasswordControllerBase.requestForgotPassword',
+    context: context,
+  );
 
   @override
   Future<void> requestForgotPassword() {
-    return _$requestForgotPasswordAsyncAction
-        .run(() => super.requestForgotPassword());
+    return _$requestForgotPasswordAsyncAction.run(
+      () => super.requestForgotPassword(),
+    );
   }
 
   late final _$updatePasswordAsyncAction = AsyncAction(
-      '_ForgotPasswordControllerBase.updatePassword',
-      context: context);
+    '_ForgotPasswordControllerBase.updatePassword',
+    context: context,
+  );
 
   @override
   Future<void> updatePassword() {
     return _$updatePasswordAsyncAction.run(() => super.updatePassword());
   }
 
-  late final _$_ForgotPasswordControllerBaseActionController =
-      ActionController(name: '_ForgotPasswordControllerBase', context: context);
+  late final _$_ForgotPasswordControllerBaseActionController = ActionController(
+    name: '_ForgotPasswordControllerBase',
+    context: context,
+  );
 
   @override
   void togglePasswordVisible() {
-    final _$actionInfo =
-        _$_ForgotPasswordControllerBaseActionController.startAction(
-            name: '_ForgotPasswordControllerBase.togglePasswordVisible');
+    final _$actionInfo = _$_ForgotPasswordControllerBaseActionController
+        .startAction(
+          name: '_ForgotPasswordControllerBase.togglePasswordVisible',
+        );
     try {
       return super.togglePasswordVisible();
     } finally {
@@ -95,9 +109,10 @@ mixin _$ForgotPasswordController on _ForgotPasswordControllerBase, Store {
 
   @override
   void toggleConfirmPasswordVisible() {
-    final _$actionInfo =
-        _$_ForgotPasswordControllerBaseActionController.startAction(
-            name: '_ForgotPasswordControllerBase.toggleConfirmPasswordVisible');
+    final _$actionInfo = _$_ForgotPasswordControllerBaseActionController
+        .startAction(
+          name: '_ForgotPasswordControllerBase.toggleConfirmPasswordVisible',
+        );
     try {
       return super.toggleConfirmPasswordVisible();
     } finally {

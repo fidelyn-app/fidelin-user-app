@@ -10,6 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 import 'package:mobx/mobx.dart';
 
 part 'signin_controller.g.dart';
@@ -124,5 +125,70 @@ abstract class _SignInControllerBase with Store {
       }
       AsukaSnackbar.alert(errorMessage).show();
     }
+  }
+
+  @action
+  Future<void> signInWithAppleFirebase() async {
+    try {
+
+      // Solicita autenticação com Apple incluindo email
+      final appleCredential = await SignInWithApple.getAppleIDCredential(
+        scopes: [
+          AppleIDAuthorizationScopes.email,
+          AppleIDAuthorizationScopes.fullName,
+        ],
+      );
+
+      // Cria a credencial OAuth para o Firebase
+      final oauthCredential = OAuthProvider("apple.com").credential(
+        idToken: appleCredential.identityToken,
+        accessToken: appleCredential.authorizationCode,
+      );
+
+      // Faz login no Firebase com a credencial
+      final UserCredential userCredential =
+          await _auth.signInWithCredential(oauthCredential);
+      final User? firebaseUser = userCredential.user;
+
+      if (firebaseUser != null) {
+        // Atualiza o display name se fornecido pela Apple
+        if (appleCredential.givenName != null || appleCredential.familyName != null) {
+          final displayName = '${appleCredential.givenName ?? ''} ${appleCredential.familyName ?? ''}'.trim();
+          if (displayName.isNotEmpty && firebaseUser.displayName != displayName) {
+            await firebaseUser.updateDisplayName(displayName);
+          }
+        }
+
+        // O email (real ou ofuscado) estará disponível em firebaseUser.email
+        // ou em appleCredential.email (apenas na primeira autenticação)
+        debugPrint('Email do usuário: ${firebaseUser.email ?? appleCredential.email}');
+
+        final String? tokenParaBackend = await firebaseUser.getIdToken();
+
+        final Either<Failure, UserEntity> response =
+            await _signInWithGoogleUseCase.call(firebaseToken: tokenParaBackend!);
+        response.fold(
+          (Failure e) {
+            AsukaSnackbar.alert(e.message).show();
+          },
+          (UserEntity user) {
+            _userStore.setUser(user);
+            Modular.to.navigate('/home/');
+          },
+        );
+      }
+    } catch (error) {
+      debugPrint('Erro no login com Apple: $error');
+      String errorMessage = 'Ocorreu um erro. Tente novamente.';
+      if (error is SignInWithAppleAuthorizationException) {
+        if (error.code == AuthorizationErrorCode.canceled) {
+          return; // Usuário cancelou, não mostra erro
+        }
+        errorMessage = 'Erro na autenticação com Apple.';
+      } else if (error is FirebaseException) {
+        errorMessage = error.message ?? errorMessage;
+      }
+      AsukaSnackbar.alert(errorMessage).show();
+    } 
   }
 }
