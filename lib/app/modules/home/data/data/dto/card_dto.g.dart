@@ -7,23 +7,24 @@ part of 'card_dto.dart';
 // **************************************************************************
 
 CardDTO _$CardDTOFromJson(Map<String, dynamic> json) => CardDTO(
-      id: json['id'] as String,
-      color: json['color'] as String?,
-      storeId: json['storeId'] as String,
-      timeToExpire: CardDTO._timeToExpireFromJson(
-          json['timeToExpire'] as Map<String, dynamic>?),
-      store: CardDTO._storeFromJson(json['store'] as Map<String, dynamic>),
-      style: CardDTO._styleFromJson(json['style'] as Map<String, dynamic>),
-    );
+  id: json['id'] as String,
+  color: json['color'] as String?,
+  storeId: json['storeId'] as String,
+  timeToExpire: CardDTO._timeToExpireFromJson(
+    json['timeToExpire'] as Map<String, dynamic>?,
+  ),
+  store: CardDTO._storeFromJson(json['store'] as Map<String, dynamic>),
+  style: CardDTO._styleFromJson(json['style'] as Map<String, dynamic>),
+);
 
 Map<String, dynamic> _$CardDTOToJson(CardDTO instance) => <String, dynamic>{
-      'id': instance.id,
-      'color': instance.color,
-      'storeId': instance.storeId,
-      'timeToExpire': CardDTO._timeToExpireToJson(instance.timeToExpire),
-      'store': CardDTO._storeToJson(instance.store),
-      'style': CardDTO._styleToJson(instance.style),
-    };
+  'id': instance.id,
+  'color': instance.color,
+  'storeId': instance.storeId,
+  'timeToExpire': CardDTO._timeToExpireToJson(instance.timeToExpire),
+  'store': CardDTO._storeToJson(instance.store),
+  'style': CardDTO._styleToJson(instance.style),
+};
 
 TimeToExpireDTO _$TimeToExpireDTOFromJson(Map<String, dynamic> json) =>
     TimeToExpireDTO(
