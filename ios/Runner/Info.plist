@@ -40,6 +40,8 @@
 	<key>NSCameraUsageDescription</key>
 	<string>Precisamos acessar a câmera para ler QR Codes usados para adicionar cartões e pontos a sua conta.
 	</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Este aplicativo precisa acessar sua localização para mostrar lojas próximas no mapa.</string>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
 	<key>UILaunchStoryboardName</key>
