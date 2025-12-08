@@ -108,17 +108,14 @@ class _HomePageState extends State<HomePage> {
       builder:
           (context, snapshot) => Container(
             color: Colors.white,
-            height: 80,
+            padding: const EdgeInsets.only(bottom: 10),
+            height: 90,
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 InkWell(
                   onTap: () => _tapHandler(0),
                   child: Container(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 25,
-                      vertical: 8,
-                    ),
                     child: Icon(
                       Icons.home,
                       color:
@@ -131,10 +128,6 @@ class _HomePageState extends State<HomePage> {
                 InkWell(
                   onTap: () => _tapHandler(1),
                   child: Container(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 25,
-                      vertical: 8,
-                    ),
                     child: Icon(
                       Icons.history,
                       color:
@@ -146,30 +139,7 @@ class _HomePageState extends State<HomePage> {
                 ),
                 InkWell(
                   onTap: () async {
-                    // final result = await Navigator.of(context).push<String>(
-                    //   MaterialPageRoute(builder: (_) => const QRScannerPage()),
-                    // );
-
-                    Modular.to.pushNamed('/home/qr'); // correto
-
-                    // if (result != null) {
-                    //   final command = result.split('/')[0];
-                    //   final value = result.split('/')[1];
-
-                    //   switch (command) {
-                    //     case 'ADD_CARD':
-                    //       _qrController.addCard(value);
-                    //       break;
-                    //     case 'ADD_POINT':
-                    //       _qrController.addPoint(value);
-                    //       break;
-                    //     default:
-                    //       ScaffoldMessenger.of(context).showSnackBar(
-                    //         const SnackBar(content: Text('QR Code inválido')),
-                    //       );
-                    //       break;
-                    //   }
-                    // }
+                    Modular.to.pushNamed('/home/qr');
                   },
                   child: Container(
                     decoration: const BoxDecoration(
@@ -190,10 +160,6 @@ class _HomePageState extends State<HomePage> {
                 InkWell(
                   onTap: () => _tapHandler(2),
                   child: Container(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 25,
-                      vertical: 8,
-                    ),
                     child: Icon(
                       Icons.search,
                       color:
@@ -207,10 +173,6 @@ class _HomePageState extends State<HomePage> {
                 InkWell(
                   onTap: () => _tapHandler(3),
                   child: Container(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 25,
-                      vertical: 8,
-                    ),
                     child: Icon(
                       Icons.person,
                       color:

@@ -2,6 +2,7 @@ import 'package:fidelyn_user_app/app/modules/home/data/data/mapper/card_mapper.d
 import 'package:fidelyn_user_app/app/modules/home/data/data/mapper/point_mapper.dart';
 import 'package:fidelyn_user_app/app/modules/home/data/data/mapper/reward_mapper.dart';
 import 'package:fidelyn_user_app/app/modules/home/domain/entities/user_card_entity.dart';
+import 'package:fidelyn_user_app/app/modules/home/domain/enums/user_card_status.enum.dart';
 
 import '../dto/user_card_dto.dart';
 
@@ -17,6 +18,7 @@ class UserCardMapper {
           dto.points.map((pointDTO) => PointMapper.toEntity(pointDTO)).toList(),
       shortCode: dto.shortCode,
       reward: RewardMapper.toEntity(dto.reward),
+      status: UserCardStatus.fromString(dto.status),
     );
   }
 
@@ -30,6 +32,7 @@ class UserCardMapper {
       points: entity.points.map((point) => PointMapper.toDto(point)).toList(),
       shortCode: entity.shortCode,
       reward: RewardMapper.toDto(entity.reward),
+      status: entity.status.value,
     );
   }
 }

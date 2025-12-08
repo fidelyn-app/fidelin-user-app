@@ -13,6 +13,7 @@ class UserCardDTO {
   final int pointsCount;
   final String userId;
   final String shortCode;
+  final String status;
 
   @JsonKey(fromJson: _cardFromJson, toJson: _cardToJson)
   final CardDTO card;
@@ -32,6 +33,7 @@ class UserCardDTO {
     required this.points,
     required this.shortCode,
     required this.reward,
+    required this.status,
   });
 
   static CardDTO _cardFromJson(Map<String, dynamic> json) =>

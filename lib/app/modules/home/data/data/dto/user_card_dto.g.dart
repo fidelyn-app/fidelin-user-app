@@ -18,6 +18,7 @@ UserCardDTO _$UserCardDTOFromJson(Map<String, dynamic> json) => UserCardDTO(
   points: UserCardDTO._pointsFromJson(json['points'] as List),
   shortCode: json['shortCode'] as String,
   reward: UserCardDTO._rewardFromJson(json['reward'] as Map<String, dynamic>),
+  status: json['status'] as String,
 );
 
 Map<String, dynamic> _$UserCardDTOToJson(UserCardDTO instance) =>
@@ -27,6 +28,7 @@ Map<String, dynamic> _$UserCardDTOToJson(UserCardDTO instance) =>
       'pointsCount': instance.pointsCount,
       'userId': instance.userId,
       'shortCode': instance.shortCode,
+      'status': instance.status,
       'card': UserCardDTO._cardToJson(instance.card),
       'points': UserCardDTO._pointsToJson(instance.points),
       'reward': UserCardDTO._rewardToJson(instance.reward),

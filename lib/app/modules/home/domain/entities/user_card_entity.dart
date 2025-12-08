@@ -1,4 +1,5 @@
 import 'package:fidelyn_user_app/app/modules/home/domain/entities/reward_entity.dart';
+import 'package:fidelyn_user_app/app/modules/home/domain/enums/user_card_status.enum.dart';
 
 import 'card_entity.dart';
 import 'point_entity.dart';
@@ -9,6 +10,7 @@ class UserCard {
   final int pointsCount;
   final String userId;
   final String shortCode;
+  final UserCardStatus status;
 
   final Card card;
   final List<Point> points;
@@ -23,6 +25,7 @@ class UserCard {
     required this.points,
     required this.shortCode,
     required this.reward,
+    required this.status,
   });
 
   @override
@@ -36,6 +39,7 @@ class UserCard {
         reward: ${reward.toString()},
         card: ${card.toString()},
         points: ${points.map((point) => point.toString())} points (details omitted for brevity)
+        status: $status
       )
       ''';
   }

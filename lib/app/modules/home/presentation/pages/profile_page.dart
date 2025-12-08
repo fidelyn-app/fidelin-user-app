@@ -1,11 +1,11 @@
 import 'dart:convert';
 
+import 'package:crypto/crypto.dart';
 import 'package:fidelyn_user_app/app/core/services/config_service.dart';
 import 'package:fidelyn_user_app/app/core/stores/app_store.dart';
 import 'package:fidelyn_user_app/app/modules/home/presentation/mixins/home_mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
-import 'package:crypto/crypto.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -30,7 +30,7 @@ class _ProfilePageState extends State<ProfilePage>
       body: LayoutBuilder(
         builder:
             (BuildContext context, BoxConstraints constraints) => Container(
-              margin: EdgeInsets.only(top: constraints.maxWidth / 4),
+              margin: EdgeInsets.only(top: constraints.maxWidth * 0.1),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.vertical(top: Radius.circular(30.0)),
                 color: Colors.white,
@@ -77,6 +77,7 @@ class _ProfilePageState extends State<ProfilePage>
                       ),
                     ),
                     Text(_userStore.user!.email, textAlign: TextAlign.center),
+                    const SizedBox(height: 32),
                     Expanded(
                       child: ListView(
                         physics: const NeverScrollableScrollPhysics(),
@@ -141,22 +142,6 @@ class _ProfilePageState extends State<ProfilePage>
                                 title: const Text('Política de Privacidade'),
                                 onTap: () {
                                   Modular.to.pushNamed("/auth/privacy-policy");
-                                },
-                              ),
-                            ),
-                          ),
-                          const Divider(height: 1),
-                          Visibility(
-                            visible: true,
-                            child: Padding(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 15,
-                              ),
-                              child: ListTile(
-                                leading: const Icon(Icons.map_outlined),
-                                title: const Text('Mapa'),
-                                onTap: () {
-                                  Modular.to.pushNamed("/home/stores_map");
                                 },
                               ),
                             ),
