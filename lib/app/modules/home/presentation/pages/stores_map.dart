@@ -424,18 +424,21 @@ class _StoresMapPageState extends State<StoresMapPage> {
     return byteData.buffer.asUint8List();
   }
 
-  void _handleMapTap(ScreenCoordinate coordinate) async {
+  void _handleMapTap(ScreenCoordinate coordinate) {
     if (mapboxMap == null) return;
 
-    try {
-      // Converte coordenada da tela para coordenada geográfica
-      final coordinateGeo = await mapboxMap!.coordinateForPixel(coordinate);
-      final coords = coordinateGeo.coordinates;
-      // Position do Mapbox é uma lista [longitude, latitude], então acessamos por índices
-      final clickLat = coords[1]?.toDouble() ?? 0.0; // latitude
-      final clickLon = coords[0]?.toDouble() ?? 0.0; // longitude
+    // Processa o clique de forma assíncrona mas sem bloquear
+    _processTapAsync(coordinate);
+  }
 
+  Future<void> _processTapAsync(ScreenCoordinate coordinate) async {
+    try {
       // Verifica se o clique foi próximo a algum store
+      // Usa uma área maior de detecção baseada em pixels para melhor sensibilidade
+      const double tapTolerancePixels =
+          50.0; // Área de toque de 50 pixels de raio
+
+      // Processa todas as annotations de forma eficiente
       for (
         int i = 0;
         i < storeAnnotations.length && i < controller.stores.length;
@@ -451,16 +454,27 @@ class _StoresMapPageState extends State<StoresMapPage> {
           final annotationLat = annotationCoords[1]?.toDouble() ?? 0.0;
           final annotationLon = annotationCoords[0]?.toDouble() ?? 0.0;
 
-          final distance = _calculateDistance(
-            clickLat,
-            clickLon,
-            annotationLat,
-            annotationLon,
+          // Converte a posição da annotation para coordenadas de tela
+          final annotationPoint = Point(
+            coordinates: Position(annotationLon, annotationLat),
+          );
+          final annotationScreenCoord = await mapboxMap!.pixelForCoordinate(
+            annotationPoint,
           );
 
-          // Se o clique foi dentro de ~50 metros do marcador, mostra o diálogo
-          if (distance < 0.05) {
-            _showStoreInfoDialog(store);
+          // Calcula a distância em pixels entre o clique e o centro do ícone
+          final dx = coordinate.x - annotationScreenCoord.x;
+          final dy = coordinate.y - annotationScreenCoord.y;
+          final distanceInPixels = (dx * dx + dy * dy);
+
+          // Se o clique foi dentro da área de tolerância (raio de 50 pixels)
+          if (distanceInPixels <= tapTolerancePixels * tapTolerancePixels) {
+            // Abre o diálogo imediatamente (sem delay)
+            if (mounted) {
+              _showStoreInfoDialog(store);
+              // Foca e aproxima o mapa na loja após abrir o diálogo
+              _focusOnStore(annotationLat, annotationLon);
+            }
             return;
           }
         } catch (e) {
@@ -470,14 +484,19 @@ class _StoresMapPageState extends State<StoresMapPage> {
 
       // Verifica se o clique foi próximo ao marcador do usuário
       if (userPosition != null && userLocationAnnotation != null) {
-        final distance = _calculateDistance(
-          clickLat,
-          clickLon,
-          userPosition!.latitude,
-          userPosition!.longitude,
+        final userPoint = Point(
+          coordinates: Position(
+            userPosition!.longitude,
+            userPosition!.latitude,
+          ),
         );
+        final userScreenCoord = await mapboxMap!.pixelForCoordinate(userPoint);
 
-        if (distance < 0.05) {
+        final dx = coordinate.x - userScreenCoord.x;
+        final dy = coordinate.y - userScreenCoord.y;
+        final distanceInPixels = (dx * dx + dy * dy);
+
+        if (distanceInPixels <= tapTolerancePixels * tapTolerancePixels) {
           _showUserLocationInfo();
         }
       }
@@ -486,14 +505,21 @@ class _StoresMapPageState extends State<StoresMapPage> {
     }
   }
 
-  double _calculateDistance(
-    double lat1,
-    double lon1,
-    double lat2,
-    double lon2,
-  ) {
-    return geo.Geolocator.distanceBetween(lat1, lon1, lat2, lon2) /
-        1000; // retorna em km
+  Future<void> _focusOnStore(double latitude, double longitude) async {
+    if (mapboxMap == null) return;
+
+    try {
+      // Aproxima o mapa para um zoom mais próximo (16.0) e foca na loja
+      await mapboxMap!.flyTo(
+        CameraOptions(
+          center: Point(coordinates: Position(longitude, latitude)),
+          zoom: 16.0, // Zoom mais próximo para destacar a loja
+        ),
+        MapAnimationOptions(duration: 800), // Animação suave
+      );
+    } catch (e) {
+      debugPrint('Erro ao focar no store: $e');
+    }
   }
 
   void _showStoreInfoDialog(NearbyStore store) {
@@ -690,12 +716,12 @@ class _StoresMapPageState extends State<StoresMapPage> {
       //appBar: AppBar(title: const Text('Mapa de Lojas')),
       body: Stack(
         children: [
-          GestureDetector(
-            onTapDown: (details) async {
+          Listener(
+            onPointerDown: (event) {
               if (mapboxMap != null) {
                 final coordinate = ScreenCoordinate(
-                  x: details.globalPosition.dx,
-                  y: details.globalPosition.dy,
+                  x: event.position.dx,
+                  y: event.position.dy,
                 );
                 _handleMapTap(coordinate);
               }
