@@ -41,7 +41,7 @@ abstract class _InputCodeControllerBase with Store {
 
     final Either<Exception, Unit> response = await _addPointUseCase.call(
       pointId: shortCodeId,
-      cardId: cardShortCode,
+      cardId: cardShortCode ?? '',
     );
     response.fold(
       (Exception e) {

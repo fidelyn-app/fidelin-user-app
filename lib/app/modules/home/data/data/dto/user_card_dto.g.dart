@@ -16,7 +16,7 @@ UserCardDTO _$UserCardDTOFromJson(Map<String, dynamic> json) => UserCardDTO(
   userId: json['userId'] as String,
   card: UserCardDTO._cardFromJson(json['card'] as Map<String, dynamic>),
   points: UserCardDTO._pointsFromJson(json['points'] as List),
-  shortCode: json['shortCode'] as String,
+  shortCode: json['shortCode'] as String?,
   reward: UserCardDTO._rewardFromJson(json['reward'] as Map<String, dynamic>),
   status: json['status'] as String,
 );

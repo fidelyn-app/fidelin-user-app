@@ -12,7 +12,7 @@ class UserCardDTO {
   final DateTime? expiration;
   final int pointsCount;
   final String userId;
-  final String shortCode;
+  final String? shortCode;
   final String status;
 
   @JsonKey(fromJson: _cardFromJson, toJson: _cardToJson)
@@ -31,7 +31,7 @@ class UserCardDTO {
     required this.userId,
     required this.card,
     required this.points,
-    required this.shortCode,
+    this.shortCode,
     required this.reward,
     required this.status,
   });

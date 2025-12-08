@@ -1,25 +1,17 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:fidelyn_user_app/app/modules/home/domain/entities/user_card_entity.dart';
 import 'package:flutter/material.dart';
 
 class HistoryCardWidget extends StatelessWidget {
-  final String? storeName;
-  final String? avatarUrl;
-  final String? backgroundImageUrl;
-  final String? rewardDescription;
+  final UserCard userCard;
 
-  const HistoryCardWidget({
-    super.key,
-    this.storeName,
-    this.avatarUrl,
-    this.backgroundImageUrl,
-    this.rewardDescription,
-  });
+  const HistoryCardWidget({super.key, required this.userCard});
 
   @override
   Widget build(BuildContext context) {
     return Container(
       margin: const EdgeInsets.only(bottom: 16),
-      height: 250,
+      height: 300,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),
         border: Border.all(color: Colors.grey),
@@ -29,10 +21,10 @@ class HistoryCardWidget extends StatelessWidget {
         child: Stack(
           children: [
             // Imagem de fundo
-            if (backgroundImageUrl != null)
+            if (userCard.card.style.backgroundUrl != null)
               Positioned.fill(
                 child: CachedNetworkImage(
-                  imageUrl: backgroundImageUrl!,
+                  imageUrl: userCard.card.style.backgroundUrl!,
                   fit: BoxFit.cover,
                   placeholder:
                       (context, url) => Container(
@@ -81,8 +73,8 @@ class HistoryCardWidget extends StatelessWidget {
                   ),
                   child: Center(
                     child: Text(
-                      'DELETADO',
-                      style: TextStyle(
+                      userCard.status.toString(),
+                      style: const TextStyle(
                         color: Colors.white,
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
@@ -92,12 +84,13 @@ class HistoryCardWidget extends StatelessWidget {
                 ),
                 Row(
                   children: [
-                    if (avatarUrl != null)
+                    if (userCard.card.store.avatarUrl != null)
                       Padding(
-                        padding: EdgeInsets.all(5.0),
-                        child: Positioned.fill(
+                        padding: const EdgeInsets.all(5.0),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(8.0),
                           child: CachedNetworkImage(
-                            imageUrl: avatarUrl!,
+                            imageUrl: userCard.card.store.avatarUrl!,
                             fit: BoxFit.cover,
                             width: 100,
                             height: 100,
@@ -120,34 +113,26 @@ class HistoryCardWidget extends StatelessWidget {
                         ),
                       ),
                     Padding(
-                      padding: EdgeInsets.all(5.0),
+                      padding: const EdgeInsets.all(5.0),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            '$storeName',
-                            style: TextStyle(
+                            userCard.card.store.businessName,
+                            style: const TextStyle(
                               color: Colors.white,
                               fontSize: 24,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
-                          Text(
-                            '',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
+                          if (userCard.card.store.legalName != null)
+                            Text(
+                              userCard.card.store.legalName!,
+                              style: const TextStyle(
+                                color: Colors.white70,
+                                fontSize: 14,
+                              ),
                             ),
-                          ),
-                          Text(
-                            '',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
                         ],
                       ),
                     ),
@@ -170,18 +155,17 @@ class HistoryCardWidget extends StatelessWidget {
                         borderRadius: BorderRadius.circular(5.0),
                       ),
                       child:
-                          rewardDescription != null
+                          userCard.reward.description != null
                               ? SingleChildScrollView(
                                 child: Text(
-                                  rewardDescription ?? '',
+                                  userCard.reward.description!,
                                   textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                    //color: ,
+                                  style: const TextStyle(
                                     fontWeight: FontWeight.bold,
                                   ),
                                 ),
                               )
-                              : Center(
+                              : const Center(
                                 child: Text(
                                   'Sem descrição',
                                   style: TextStyle(

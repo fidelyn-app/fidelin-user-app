@@ -9,7 +9,7 @@ class UserCard {
   final DateTime? expiration;
   final int pointsCount;
   final String userId;
-  final String shortCode;
+  final String? shortCode;
   final UserCardStatus status;
 
   final Card card;
@@ -23,7 +23,7 @@ class UserCard {
     required this.userId,
     required this.card,
     required this.points,
-    required this.shortCode,
+    this.shortCode,
     required this.reward,
     required this.status,
   });

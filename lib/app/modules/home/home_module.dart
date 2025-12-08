@@ -1,19 +1,25 @@
 import 'package:fidelyn_user_app/app/modules/home/data/data/datasources/cards_datasource.dart';
 import 'package:fidelyn_user_app/app/modules/home/data/data/datasources/cards_datasource_impl.dart';
+import 'package:fidelyn_user_app/app/modules/home/data/data/datasources/history_datasource.dart';
+import 'package:fidelyn_user_app/app/modules/home/data/data/datasources/history_datasource_impl.dart';
 import 'package:fidelyn_user_app/app/modules/home/data/data/datasources/nearby_stores_datasource.dart';
 import 'package:fidelyn_user_app/app/modules/home/data/data/datasources/nearby_stores_datasource_impl.dart';
 import 'package:fidelyn_user_app/app/modules/home/data/data/repositories/cards_repository_impl.dart';
+import 'package:fidelyn_user_app/app/modules/home/data/data/repositories/history_repository_impl.dart';
 import 'package:fidelyn_user_app/app/modules/home/data/data/repositories/nearby_stores_repository_impl.dart';
 import 'package:fidelyn_user_app/app/modules/home/domain/repositories/cards_repository.dart';
+import 'package:fidelyn_user_app/app/modules/home/domain/repositories/history_repository.dart';
 import 'package:fidelyn_user_app/app/modules/home/domain/repositories/nearby_stores_repository.dart';
 import 'package:fidelyn_user_app/app/modules/home/domain/usecases/add_card_usecase.dart';
 import 'package:fidelyn_user_app/app/modules/home/domain/usecases/add_point_usecase.dart';
 import 'package:fidelyn_user_app/app/modules/home/domain/usecases/delete_account_usecase.dart';
 import 'package:fidelyn_user_app/app/modules/home/domain/usecases/delete_card_usecase.dart';
 import 'package:fidelyn_user_app/app/modules/home/domain/usecases/fetch_cards_usecase.dart';
+import 'package:fidelyn_user_app/app/modules/home/domain/usecases/fetch_history_usecase.dart';
 import 'package:fidelyn_user_app/app/modules/home/domain/usecases/fetch_nearby_stores_usecase.dart';
 import 'package:fidelyn_user_app/app/modules/home/home_page.dart';
 import 'package:fidelyn_user_app/app/modules/home/presentation/controllers/delete_account_controller.dart';
+import 'package:fidelyn_user_app/app/modules/home/presentation/controllers/history_controller.dart';
 import 'package:fidelyn_user_app/app/modules/home/presentation/controllers/home_controller.dart';
 import 'package:fidelyn_user_app/app/modules/home/presentation/controllers/input_code_controller.dart';
 import 'package:fidelyn_user_app/app/modules/home/presentation/controllers/stores_map_controller.dart';
@@ -38,6 +44,15 @@ class HomeModule extends Module {
 
     i.add<CardsRepository>(CardsRepositoryImpl.new);
 
+    // History
+    i.add<HistoryDataSource>(
+      () => HistoryDataSourceImpl(baseUrl: dotenv.env['BASE_URL']!),
+    );
+
+    i.add<HistoryRepository>(HistoryRepositoryImpl.new);
+
+    i.add<FetchHistoryUseCase>(FetchHistoryUseCaseImpl.new);
+
     i.add<FetchCardsUseCase>(FetchCardsUseCaseImpl.new);
     i.add<AddCardUseCase>(AddCardUseCaseImpl.new);
     i.add<AddPointUseCase>(AddPointUseCaseImpl.new);
@@ -57,6 +72,7 @@ class HomeModule extends Module {
     i.add(InputCodeController.new);
     i.add(DeleteAccountController.new);
     i.add(StoresMapController.new);
+    i.add(HistoryController.new);
   }
 
   @override

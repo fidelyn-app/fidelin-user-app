@@ -12,6 +12,7 @@ class CardDTO {
   final String? color;
   //final bool active;
   final String storeId;
+  final String? shortCode;
   @JsonKey(fromJson: _timeToExpireFromJson, toJson: _timeToExpireToJson)
   final TimeToExpireDTO? timeToExpire;
 
@@ -21,15 +22,19 @@ class CardDTO {
   @JsonKey(fromJson: _styleFromJson, toJson: _styleToJson)
   final StyleDTO style;
 
+  @JsonKey(fromJson: _rewardFromJson, toJson: _rewardToJson)
+  final RewardDTO? reward;
+
   CardDTO({
     required this.id,
     this.color,
     //required this.active,
     required this.storeId,
+    this.shortCode,
     required this.timeToExpire,
     required this.store,
     required this.style,
-    //required this.reward,
+    this.reward,
   });
 
   static TimeToExpireDTO? _timeToExpireFromJson(Map<String, dynamic>? json) =>
@@ -45,6 +50,11 @@ class CardDTO {
   static StyleDTO _styleFromJson(Map<String, dynamic> json) =>
       StyleDTO.fromJson(json);
   static Map<String, dynamic> _styleToJson(StyleDTO style) => style.toJson();
+
+  static RewardDTO? _rewardFromJson(Map<String, dynamic>? json) =>
+      json != null ? RewardDTO.fromJson(json) : null;
+  static Map<String, dynamic>? _rewardToJson(RewardDTO? reward) =>
+      reward?.toJson();
 
   factory CardDTO.fromJson(Map<String, dynamic> json) =>
       _$CardDTOFromJson(json);
