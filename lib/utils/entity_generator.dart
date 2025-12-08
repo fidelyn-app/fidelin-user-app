@@ -12,6 +12,7 @@ import 'package:fidelyn_user_app/app/modules/home/domain/entities/store_entity.d
 import 'package:fidelyn_user_app/app/modules/home/domain/entities/style_entity.dart';
 import 'package:fidelyn_user_app/app/modules/home/domain/entities/time_to_expire_entity.dart';
 import 'package:fidelyn_user_app/app/modules/home/domain/entities/user_card_entity.dart';
+import 'package:fidelyn_user_app/app/modules/home/domain/enums/user_card_status.enum.dart';
 import 'package:fidelyn_user_app/utils/color_mapper.dart';
 
 class EntityGenerator {
@@ -57,6 +58,7 @@ class EntityGenerator {
       ),
       shortCode: faker.randomGenerator.string(6).toUpperCase(),
       reward: generateReward(),
+      status: UserCardStatus.fromString('ACTIVE'),
     );
   }
 

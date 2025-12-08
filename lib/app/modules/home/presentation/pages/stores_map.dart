@@ -3,6 +3,7 @@ import 'dart:typed_data';
 import 'dart:ui' as ui;
 
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:fidelyn_user_app/app/core/utils/masks.dart';
 import 'package:fidelyn_user_app/app/modules/home/domain/entities/nearby_store_entity.dart';
 import 'package:fidelyn_user_app/app/modules/home/presentation/controllers/stores_map_controller.dart';
 import 'package:flutter/material.dart';
@@ -72,6 +73,7 @@ class _StoresMapPageState extends State<StoresMapPage> {
       geo.Position position = await geo.Geolocator.getCurrentPosition(
         desiredAccuracy: geo.LocationAccuracy.high,
       );
+      if (!mounted) return;
       setState(() {
         userPosition = position;
       });
@@ -119,7 +121,7 @@ class _StoresMapPageState extends State<StoresMapPage> {
     _cameraCheckTimer = Timer.periodic(const Duration(milliseconds: 500), (
       timer,
     ) async {
-      if (mapboxMap == null) return;
+      if (mapboxMap == null || !mounted) return;
 
       try {
         final cameraState = await mapboxMap!.getCameraState();
@@ -139,6 +141,8 @@ class _StoresMapPageState extends State<StoresMapPage> {
                 (previousCenter.coordinates[1]?.toDouble() ?? 0.0);
 
         if (zoomChanged || centerChanged) {
+          if (!mounted) return;
+
           setState(() {
             currentZoom = zoom;
             lastCameraCenter = center;
@@ -147,12 +151,14 @@ class _StoresMapPageState extends State<StoresMapPage> {
           });
 
           // Se o zoom estiver muito baixo, remove os stores
-          if (zoom < minZoomForStores) {
+          if (zoom < minZoomForStores && mounted) {
             await _clearStores();
           }
         }
       } catch (e) {
-        debugPrint('Erro ao verificar câmera: $e');
+        if (mounted) {
+          debugPrint('Erro ao verificar câmera: $e');
+        }
       }
     });
   }
@@ -280,7 +286,7 @@ class _StoresMapPageState extends State<StoresMapPage> {
   }
 
   Future<void> _searchInCurrentArea() async {
-    if (mapboxMap == null || lastCameraCenter == null) return;
+    if (mapboxMap == null || lastCameraCenter == null || !mounted) return;
 
     setState(() {
       showSearchButton = false;
@@ -598,7 +604,9 @@ class _StoresMapPageState extends State<StoresMapPage> {
                 if (store.contact.primaryPhone != null) ...[
                   _buildInfoRow(
                     Icons.phone,
-                    store.contact.primaryPhone!,
+                    PhoneMaskTextInputFormatter.mask(
+                      store.contact.primaryPhone!,
+                    ),
                     context,
                   ),
                   const SizedBox(height: 8),
@@ -716,23 +724,25 @@ class _StoresMapPageState extends State<StoresMapPage> {
       //appBar: AppBar(title: const Text('Mapa de Lojas')),
       body: Stack(
         children: [
-          Listener(
-            onPointerDown: (event) {
-              if (mapboxMap != null) {
-                final coordinate = ScreenCoordinate(
-                  x: event.position.dx,
-                  y: event.position.dy,
-                );
-                _handleMapTap(coordinate);
-              }
-            },
-            child: MapWidget(
-              onMapCreated: (mapController) async {
-                mapboxMap = mapController;
-                if (userPosition != null) {
-                  await _setupMap();
+          Positioned.fill(
+            child: Listener(
+              onPointerDown: (event) {
+                if (mapboxMap != null) {
+                  final coordinate = ScreenCoordinate(
+                    x: event.position.dx,
+                    y: event.position.dy,
+                  );
+                  _handleMapTap(coordinate);
                 }
               },
+              child: MapWidget(
+                onMapCreated: (mapController) async {
+                  mapboxMap = mapController;
+                  if (userPosition != null) {
+                    await _setupMap();
+                  }
+                },
+              ),
             ),
           ),
           // Botão "Pesquisar nesta área"

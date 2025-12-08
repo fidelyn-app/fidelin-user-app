@@ -42,7 +42,7 @@ class HistoryCardWidget extends StatelessWidget {
                 ),
               )
             else
-              Container(color: Colors.white),
+              Container(color: userCard.card.style.colorPrimary),
             // Overlay escuro para melhorar legibilidade
             Positioned.fill(
               child: Container(
@@ -84,56 +84,73 @@ class HistoryCardWidget extends StatelessWidget {
                 ),
                 Row(
                   children: [
-                    if (userCard.card.store.avatarUrl != null)
-                      Padding(
-                        padding: const EdgeInsets.all(5.0),
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(8.0),
-                          child: CachedNetworkImage(
-                            imageUrl: userCard.card.store.avatarUrl!,
-                            fit: BoxFit.cover,
-                            width: 100,
-                            height: 100,
-                            placeholder:
-                                (context, url) => Container(
-                                  color: Colors.grey[300],
-                                  child: const Center(
-                                    child: CircularProgressIndicator(),
-                                  ),
-                                ),
-                            errorWidget:
-                                (context, url, error) => Container(
-                                  color: Colors.grey[200],
-                                  child: const Icon(
-                                    Icons.image_not_supported,
-                                    color: Colors.grey,
-                                  ),
-                                ),
-                          ),
-                        ),
-                      ),
                     Padding(
                       padding: const EdgeInsets.all(5.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            userCard.card.store.businessName,
-                            style: const TextStyle(
-                              color: Colors.white,
-                              fontSize: 24,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          if (userCard.card.store.legalName != null)
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(8.0),
+                        child:
+                            userCard.card.store.avatarUrl != null
+                                ? CachedNetworkImage(
+                                  imageUrl: userCard.card.store.avatarUrl!,
+                                  fit: BoxFit.cover,
+                                  width: 100,
+                                  height: 100,
+                                  placeholder:
+                                      (context, url) => Container(
+                                        color: Colors.grey[300],
+                                        child: const Center(
+                                          child: CircularProgressIndicator(),
+                                        ),
+                                      ),
+                                  errorWidget:
+                                      (context, url, error) => Container(
+                                        color: Colors.grey[400],
+                                        child: const Icon(
+                                          Icons.image_not_supported,
+                                          color: Colors.grey,
+                                        ),
+                                      ),
+                                )
+                                : Container(
+                                  width: 100,
+                                  height: 100,
+                                  color: Colors.grey[400],
+                                  child: const Icon(
+                                    Icons.store,
+                                    color: Colors.grey,
+                                    size: 40,
+                                  ),
+                                ),
+                      ),
+                    ),
+                    Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.all(5.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
                             Text(
-                              userCard.card.store.legalName!,
+                              userCard.card.store.businessName,
                               style: const TextStyle(
-                                color: Colors.white70,
-                                fontSize: 14,
+                                color: Colors.white,
+                                fontSize: 24,
+                                fontWeight: FontWeight.bold,
                               ),
+                              maxLines: 3,
+                              overflow: TextOverflow.ellipsis,
                             ),
-                        ],
+                            if (userCard.card.store.legalName != null)
+                              Text(
+                                userCard.card.store.legalName!,
+                                style: const TextStyle(
+                                  color: Colors.white70,
+                                  fontSize: 14,
+                                ),
+                                maxLines: 2,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                          ],
+                        ),
                       ),
                     ),
                   ],
