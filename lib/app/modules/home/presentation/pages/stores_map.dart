@@ -11,6 +11,7 @@ import 'package:flutter_modular/flutter_modular.dart';
 import 'package:geolocator/geolocator.dart' as geo;
 import 'package:http/http.dart' as http;
 import 'package:mapbox_maps_flutter/mapbox_maps_flutter.dart';
+import 'package:maps_launcher/maps_launcher.dart';
 
 class StoresMapPage extends StatefulWidget {
   const StoresMapPage({super.key});
@@ -642,14 +643,19 @@ class _StoresMapPageState extends State<StoresMapPage> {
                 SizedBox(
                   width: double.infinity,
                   child: ElevatedButton(
-                    onPressed: () => Navigator.of(context).pop(),
+                    onPressed: () {
+                      MapsLauncher.launchCoordinates(
+                        store.location.coordinates!.latitude,
+                        store.location.coordinates!.longitude,
+                      );
+                    },
                     style: ElevatedButton.styleFrom(
                       padding: const EdgeInsets.symmetric(vertical: 12),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(8),
                       ),
                     ),
-                    child: const Text('Fechar'),
+                    child: const Text('Ir até lá'),
                   ),
                 ),
               ],

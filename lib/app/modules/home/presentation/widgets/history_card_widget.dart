@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:fidelyn_user_app/app/modules/home/domain/entities/user_card_entity.dart';
 import 'package:flutter/material.dart';
+import 'package:shimmer/shimmer.dart';
 
 class HistoryCardWidget extends StatelessWidget {
   final UserCard userCard;
@@ -27,9 +28,10 @@ class HistoryCardWidget extends StatelessWidget {
                   imageUrl: userCard.card.style.backgroundUrl!,
                   fit: BoxFit.cover,
                   placeholder:
-                      (context, url) => Container(
-                        color: Colors.grey[300],
-                        child: const Center(child: CircularProgressIndicator()),
+                      (context, url) => Shimmer.fromColors(
+                        baseColor: Colors.grey[300]!,
+                        highlightColor: Colors.grey[100]!,
+                        child: Container(color: Colors.grey[300]),
                       ),
                   errorWidget:
                       (context, url, error) => Container(
@@ -96,10 +98,13 @@ class HistoryCardWidget extends StatelessWidget {
                                   width: 100,
                                   height: 100,
                                   placeholder:
-                                      (context, url) => Container(
-                                        color: Colors.grey[300],
-                                        child: const Center(
-                                          child: CircularProgressIndicator(),
+                                      (context, url) => Shimmer.fromColors(
+                                        baseColor: Colors.grey[300]!,
+                                        highlightColor: Colors.grey[100]!,
+                                        child: Container(
+                                          color: Colors.grey[300],
+                                          width: 100,
+                                          height: 100,
                                         ),
                                       ),
                                   errorWidget:

@@ -82,7 +82,7 @@ class _InputCodeState extends State<InputCode> with HomeMixin {
                               textStyle: TextStyle(
                                 color: const Color(0xFFF22F52),
                                 fontWeight: FontWeight.bold, // 🅱️ Negrito
-                                fontSize: 24,
+                                fontSize: 20,
                               ),
                               onSubmit: (String verificationCode) {},
                               handleControllers: (controllers) {
