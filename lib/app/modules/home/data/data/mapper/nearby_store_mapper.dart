@@ -1,42 +1,38 @@
-import 'package:fidelyn_user_app/app/modules/home/data/data/dto/store_dto.dart';
+import 'package:fidelyn_user_app/app/modules/home/data/data/dto/nearby_store_dto.dart';
 import 'package:fidelyn_user_app/app/modules/home/data/data/mapper/contact_mapper.dart';
 import 'package:fidelyn_user_app/app/modules/home/data/data/mapper/location_mapper.dart';
-import 'package:fidelyn_user_app/app/modules/home/domain/entities/store_entity.dart';
+import 'package:fidelyn_user_app/app/modules/home/domain/entities/nearby_store_entity.dart';
 
-class StoreMapper {
-  static Store toEntity(StoreDTO dto) {
-    return Store(
+class NearbyStoreMapper {
+  static NearbyStore toEntity(NearbyStoreDTO dto) {
+    return NearbyStore(
       id: dto.id,
       businessName: dto.businessName,
       legalName: dto.legalName,
       taxId: dto.taxId,
       email: dto.email,
       avatarUrl: dto.avatarUrl,
-      phone: dto.phone,
       active: dto.active,
       stripeId: dto.stripeId,
-      location:
-          dto.location != null ? LocationMapper.toEntity(dto.location!) : null,
+      location: LocationMapper.toEntity(dto.location),
       contact: ContactMapper.toEntity(dto.contact),
+      distance: dto.distance,
     );
   }
 
-  static StoreDTO toDto(Store entity) {
-    return StoreDTO(
+  static NearbyStoreDTO toDto(NearbyStore entity) {
+    return NearbyStoreDTO(
       id: entity.id,
       businessName: entity.businessName,
       legalName: entity.legalName,
       taxId: entity.taxId,
       email: entity.email,
       avatarUrl: entity.avatarUrl,
-      phone: entity.phone,
       active: entity.active,
       stripeId: entity.stripeId,
-      location:
-          entity.location != null
-              ? LocationMapper.toDto(entity.location!)
-              : null,
+      location: LocationMapper.toDto(entity.location),
       contact: ContactMapper.toDto(entity.contact),
+      distance: entity.distance,
     );
   }
 }

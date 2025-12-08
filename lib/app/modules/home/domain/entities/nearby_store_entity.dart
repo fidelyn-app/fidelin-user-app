@@ -1,48 +1,48 @@
 import 'contact_entity.dart';
 import 'location_entity.dart';
 
-class Store {
+class NearbyStore {
   final String id;
   final String businessName;
   final String? legalName;
   final String taxId;
   final String email;
   final String? avatarUrl;
-  final String? phone;
   final bool active;
   final String stripeId;
+  final LocationEntity location;
   final ContactEntity contact;
-  final LocationEntity? location;
+  final double distance;
 
-  Store({
+  NearbyStore({
     required this.id,
     required this.businessName,
     this.legalName,
     required this.taxId,
     required this.email,
     this.avatarUrl,
-    this.phone,
     required this.active,
     required this.stripeId,
+    required this.location,
     required this.contact,
-    this.location,
+    required this.distance,
   });
 
   @override
   String toString() {
     return '''
-        Store(
+        NearbyStore(
           id: $id,
           businessName: $businessName,
           legalName: ${legalName ?? 'Not provided'},
           taxId: $taxId,
           email: $email,
           avatarUrl: $avatarUrl,
-          phone: $phone,
           active: $active,
           stripeId: $stripeId,
-          location: ${location?.toString() ?? 'null'},
+          location: ${location.toString()},
           contact: ${contact.toString()},
+          distance: $distance,
         )
         ''';
   }

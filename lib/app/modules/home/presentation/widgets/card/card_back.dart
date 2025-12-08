@@ -7,7 +7,6 @@ import 'package:material_design_icons_flutter/material_design_icons_flutter.dart
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:auto_size_text/auto_size_text.dart';
 
 import 'countdown_time.dart';
 
@@ -189,7 +188,7 @@ Widget _bottom(UserCard userCard) {
           icon: const Icon(FontAwesomeIcons.whatsapp, color: Colors.white),
           onPressed: () {
             final Uri url = Uri.parse(
-              "https://wa.me/${userCard.card.store.contacts.phone}?text=Olá!",
+              "https://wa.me/${userCard.card.store.contact.primaryPhone}?text=Olá!",
             );
             _launchUrl(url);
           },
@@ -201,10 +200,10 @@ Widget _bottom(UserCard userCard) {
           icon: const Icon(FontAwesomeIcons.instagram, color: Colors.white),
           onPressed: () async {
             final Uri nativeUrl = Uri.parse(
-              "instagram://user?username=${userCard.card.store.contacts.instagram}",
+              "instagram://user?username=${userCard.card.store.contact.instagram}",
             );
             final Uri webUrl = Uri.parse(
-              "https://www.instagram.com/${userCard.card.store.contacts.instagram}/",
+              "https://www.instagram.com/${userCard.card.store.contact.instagram}/",
             );
             if (await canLaunchUrl(nativeUrl)) {
               await _launchUrl(nativeUrl);
@@ -231,7 +230,7 @@ Widget _bottom(UserCard userCard) {
         child: IconButton(
           icon: const Icon(FontAwesomeIcons.globe, color: Colors.white),
           onPressed: () {
-            final Uri url = Uri.parse(userCard.card.store.contacts.site!);
+            final Uri url = Uri.parse(userCard.card.store.contact.website!);
             _launchUrl(url);
           },
         ),

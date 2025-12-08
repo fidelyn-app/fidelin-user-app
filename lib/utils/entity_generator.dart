@@ -4,6 +4,8 @@ import 'dart:math' as math;
 
 import 'package:faker/faker.dart';
 import 'package:fidelyn_user_app/app/modules/home/domain/entities/card_entity.dart';
+import 'package:fidelyn_user_app/app/modules/home/domain/entities/contact_entity.dart';
+import 'package:fidelyn_user_app/app/modules/home/domain/entities/location_entity.dart';
 import 'package:fidelyn_user_app/app/modules/home/domain/entities/point_entity.dart';
 import 'package:fidelyn_user_app/app/modules/home/domain/entities/reward_entity.dart';
 import 'package:fidelyn_user_app/app/modules/home/domain/entities/store_entity.dart';
@@ -103,19 +105,42 @@ class EntityGenerator {
       phone: faker.phoneNumber.toString(),
       active: faker.randomGenerator.boolean(),
       stripeId: faker.guid.guid(),
-      contacts: generateContacts(),
+      contact: generateContact(),
+      location: null,
     );
   }
 
-  static Contacts generateContacts() {
+  static LocationEntity generateLocation() {
+    final faker = Faker();
+    return LocationEntity(
+      id: faker.guid.guid(),
+      postalCode: faker.address.zipCode(),
+      street: faker.address.streetName(),
+      complement: faker.address.buildingNumber(),
+      district: faker.address.neighborhood(),
+      city: faker.address.city(),
+      state: faker.address.state(),
+      stateName: faker.address.state(),
+      region: faker.address.state(),
+      ddd: faker.phoneNumber.toString(),
+      coordinates: CoordinatesEntity(
+        latitude: faker.randomGenerator.decimal(scale: 180) - 90,
+        longitude: faker.randomGenerator.decimal(scale: 360) - 180,
+      ),
+    );
+  }
+
+  static ContactEntity generateContact() {
     final faker = Faker();
 
-    // Generate random values for Contacts properties (some might be null)
-    return Contacts(
+    // Generate random values for Contact properties (some might be null)
+    return ContactEntity(
+      id: faker.guid.guid(),
+      email: faker.internet.email(),
+      primaryPhone: faker.phoneNumber.toString(),
       instagram: '@${faker.internet.userName()}',
-      phone: faker.phoneNumber.toString(),
-      site: 'http://${faker.internet.domainName()}',
-      whatsapp: faker.randomGenerator.boolean(),
+      website: 'http://${faker.internet.domainName()}',
+      whatsapp: faker.phoneNumber.toString(),
     );
   }
 

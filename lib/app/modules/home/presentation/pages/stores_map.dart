@@ -1,12 +1,12 @@
 import 'dart:async';
-import 'dart:math';
 import 'dart:typed_data';
 import 'dart:ui' as ui;
 
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:fidelyn_user_app/app/modules/home/domain/entities/store_entity.dart';
-import 'package:fidelyn_user_app/utils/entity_generator.dart';
+import 'package:fidelyn_user_app/app/modules/home/domain/entities/nearby_store_entity.dart';
+import 'package:fidelyn_user_app/app/modules/home/presentation/controllers/stores_map_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_modular/flutter_modular.dart';
 import 'package:geolocator/geolocator.dart' as geo;
 import 'package:http/http.dart' as http;
 import 'package:mapbox_maps_flutter/mapbox_maps_flutter.dart';
@@ -19,13 +19,13 @@ class StoresMapPage extends StatefulWidget {
 }
 
 class _StoresMapPageState extends State<StoresMapPage> {
+  late StoresMapController controller;
   MapboxMap? mapboxMap;
   PointAnnotationManager? pointAnnotationManager;
   geo.Position? userPosition;
   PointAnnotation? userLocationAnnotation;
 
-  // Lista de stores e annotations
-  final List<Store> stores = [];
+  // Lista de annotations
   final List<PointAnnotation> storeAnnotations = [];
 
   // Controle do botão de pesquisa
@@ -35,15 +35,13 @@ class _StoresMapPageState extends State<StoresMapPage> {
   Timer? _cameraCheckTimer;
 
   // Constantes
-  static const int numberOfStores = 20;
   static const double minZoomForStores =
       12.0; // Zoom mínimo para mostrar stores (zoom out muito alto = zoom baixo)
-
-  final Random _random = Random();
 
   @override
   void initState() {
     super.initState();
+    controller = Modular.get<StoresMapController>();
     _requestLocationPermission();
   }
 
@@ -197,40 +195,70 @@ class _StoresMapPageState extends State<StoresMapPage> {
   Future<void> _loadStoresForCurrentView() async {
     if (pointAnnotationManager == null || userPosition == null) return;
     if (currentZoom < minZoomForStores) return;
+    if (controller.isLoading) return;
 
-    // Limpa stores anteriores
-    await _clearStores();
+    try {
+      // Limpa stores anteriores
+      await _clearStores();
 
-    // Gera 20 stores com posições aleatórias
-    for (int i = 0; i < numberOfStores; i++) {
-      final store = EntityGenerator.generateStore();
+      // Chama o controller para buscar lojas próximas
+      await controller.fetchNearbyStores(
+        latitude: userPosition!.latitude,
+        longitude: userPosition!.longitude,
+      );
 
-      // Gera uma posição aleatória próxima ao usuário (raio de ~5km)
-      final latOffset = (_random.nextDouble() - 0.5) * 0.05; // ~5km
-      final lonOffset = (_random.nextDouble() - 0.5) * 0.05;
+      // Verifica se houve erro
+      if (controller.errorMessage != null) {
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(
+                'Erro ao carregar lojas próximas: ${controller.errorMessage}',
+              ),
+              duration: const Duration(seconds: 3),
+            ),
+          );
+        }
+        return;
+      }
 
-      final storeLat = userPosition!.latitude + latOffset;
-      final storeLon = userPosition!.longitude + lonOffset;
+      // Cria annotations para cada loja retornada
+      for (final store in controller.stores) {
+        final latitude = store.location.coordinates?.latitude;
+        final longitude = store.location.coordinates?.longitude;
 
-      // Cria o pin com imagem da loja
-      final imageUrl =
-          store.avatarUrl ?? 'https://picsum.photos/seed/${store.id}/200';
+        if (latitude == null || longitude == null) continue;
 
-      try {
-        final annotation = PointAnnotationOptions(
-          geometry: Point(coordinates: Position(storeLon, storeLat)),
-          image: await _createStorePinIcon(imageUrl, store),
+        // Cria o pin com imagem da loja
+        final imageUrl =
+            store.avatarUrl ?? 'https://picsum.photos/seed/${store.id}/200';
+
+        try {
+          final annotation = PointAnnotationOptions(
+            geometry: Point(coordinates: Position(longitude, latitude)),
+            image: await _createStorePinIcon(imageUrl, store),
+          );
+
+          final createdAnnotation = await pointAnnotationManager!.create(
+            annotation,
+          );
+
+          // Armazena a annotation
+          storeAnnotations.add(createdAnnotation);
+        } catch (e) {
+          debugPrint('Erro ao criar annotation para store ${store.id}: $e');
+        }
+      }
+    } catch (e) {
+      debugPrint('Erro ao carregar lojas: $e');
+      // Mostra um snackbar com erro se necessário
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Erro ao carregar lojas próximas: ${e.toString()}'),
+            duration: const Duration(seconds: 3),
+          ),
         );
-
-        final createdAnnotation = await pointAnnotationManager!.create(
-          annotation,
-        );
-
-        // Armazena a store e a annotation
-        stores.add(store);
-        storeAnnotations.add(createdAnnotation);
-      } catch (e) {
-        debugPrint('Erro ao criar annotation para store ${store.id}: $e');
       }
     }
   }
@@ -247,8 +275,7 @@ class _StoresMapPageState extends State<StoresMapPage> {
       }
     }
 
-    // Limpa as listas
-    stores.clear();
+    // Limpa a lista de annotations
     storeAnnotations.clear();
   }
 
@@ -260,7 +287,7 @@ class _StoresMapPageState extends State<StoresMapPage> {
     });
 
     // Atualiza a posição do usuário para o centro da câmera atual
-    // (simulando que estamos pesquisando na área visível)
+    // (pesquisando na área visível)
     final coords = lastCameraCenter!.coordinates;
     userPosition = geo.Position(
       latitude: coords[1]?.toDouble() ?? userPosition?.latitude ?? 0.0,
@@ -279,7 +306,10 @@ class _StoresMapPageState extends State<StoresMapPage> {
     await _loadStoresForCurrentView();
   }
 
-  Future<Uint8List> _createStorePinIcon(String imageUrl, Store store) async {
+  Future<Uint8List> _createStorePinIcon(
+    String imageUrl,
+    NearbyStore store,
+  ) async {
     // Usa potência de 2 para compatibilidade com Mapbox (128 = 2^7)
     const size = 128.0;
     const circleRadius = size * 0.4; // Círculo maior, centralizado
@@ -406,9 +436,13 @@ class _StoresMapPageState extends State<StoresMapPage> {
       final clickLon = coords[0]?.toDouble() ?? 0.0; // longitude
 
       // Verifica se o clique foi próximo a algum store
-      for (int i = 0; i < storeAnnotations.length && i < stores.length; i++) {
+      for (
+        int i = 0;
+        i < storeAnnotations.length && i < controller.stores.length;
+        i++
+      ) {
         final annotation = storeAnnotations[i];
-        final store = stores[i];
+        final store = controller.stores[i];
 
         try {
           // Obtém a posição da annotation
@@ -462,7 +496,7 @@ class _StoresMapPageState extends State<StoresMapPage> {
         1000; // retorna em km
   }
 
-  void _showStoreInfoDialog(Store store) {
+  void _showStoreInfoDialog(NearbyStore store) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -535,25 +569,40 @@ class _StoresMapPageState extends State<StoresMapPage> {
                 ],
                 const SizedBox(height: 16),
                 // Informações de contato
-                if (store.phone != null) ...[
-                  _buildInfoRow(Icons.phone, store.phone!, context),
+                if (store.contact.primaryPhone != null) ...[
+                  _buildInfoRow(
+                    Icons.phone,
+                    store.contact.primaryPhone!,
+                    context,
+                  ),
                   const SizedBox(height: 8),
                 ],
                 if (store.email.isNotEmpty) ...[
                   _buildInfoRow(Icons.email, store.email, context),
                   const SizedBox(height: 8),
                 ],
-                if (store.contacts.instagram != null) ...[
+                if (store.contact.instagram != null) ...[
                   _buildInfoRow(
                     Icons.camera_alt,
-                    store.contacts.instagram!,
+                    store.contact.instagram!,
                     context,
                   ),
                   const SizedBox(height: 8),
                 ],
-                if (store.contacts.site != null) ...[
-                  _buildInfoRow(Icons.language, store.contacts.site!, context),
+                if (store.contact.website != null) ...[
+                  _buildInfoRow(
+                    Icons.language,
+                    store.contact.website!,
+                    context,
+                  ),
+                  const SizedBox(height: 8),
                 ],
+                // Distância
+                _buildInfoRow(
+                  Icons.location_on,
+                  '${store.distance.toStringAsFixed(2)} km de distância',
+                  context,
+                ),
                 const SizedBox(height: 16),
                 // Botão de fechar
                 SizedBox(

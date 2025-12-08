@@ -16,6 +16,10 @@ StoreDTO _$StoreDTOFromJson(Map<String, dynamic> json) => StoreDTO(
   phone: json['phone'] as String?,
   active: json['active'] as bool,
   stripeId: json['stripeId'] as String,
+  location: StoreDTO._locationFromJson(
+    json['location'] as Map<String, dynamic>?,
+  ),
+  contact: StoreDTO._contactFromJson(json['contact'] as Map<String, dynamic>),
 );
 
 Map<String, dynamic> _$StoreDTOToJson(StoreDTO instance) => <String, dynamic>{
@@ -28,4 +32,6 @@ Map<String, dynamic> _$StoreDTOToJson(StoreDTO instance) => <String, dynamic>{
   'avatarUrl': instance.avatarUrl,
   'phone': instance.phone,
   'stripeId': instance.stripeId,
+  'location': StoreDTO._locationToJson(instance.location),
+  'contact': StoreDTO._contactToJson(instance.contact),
 };
